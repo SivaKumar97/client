@@ -7,11 +7,12 @@ import ListViewContainer from './ListViewContainer';
 import LeftPanelContainer from './LeftPanelContainer';
 import RightPanelContainer from './RightPanelContainer';
 import DetailViewContainer from './DetailViewContainer';
-import { getMovies } from '../Dispatcher/Action';
+import { getMovies, getSearchedMovies } from '../Dispatcher/Action';
 import { normalizeObj } from '../Utils/Utils';
+import { searchDetails } from './../Action/APIAction';
 let intialCall = false;
 function AppContainer(props) {
-    const { state, getMovies } = props;
+    const { state, getMovies, getSearchedMovies, movies } = props;
     let [initialCallMade, setInitialCall ] = useState(false)
     useEffect(()=>{
       if(!initialCallMade){
@@ -23,23 +24,34 @@ function AppContainer(props) {
           })
       }
     },initialCallMade)
+    const searchDv = (str) =>{
+      const searchCall = str.length  == 0 ? getMvDetails : searchDetails;
+      searchCall(str,Object.values(movies)).then(resp=>{
+        getSearchedMovies(normalizeObj(resp.mvDetails,'mvId'))
+      },err=>{
+  
+      })
+    }
   return (
     <Container sx={{ display: 'flex', p:0, m:0, height:'100%'}}> 
         <LeftPanelContainer />
         <RightPanelContainer />
-        <ListViewContainer />
-        <DetailViewContainer />
+        <ListViewContainer searchDv={searchDv}/>
+        <DetailViewContainer searchDv={searchDv} />
     </Container>
     
   );
 }
 
 const mapStateToProps = state => {
+  const { movies={} } = state;
     return {
-        state
+        state,
+        movies
       }
 };
 
 export default connect(mapStateToProps,{
-  getMovies
+  getMovies,
+  getSearchedMovies
 })(AppContainer);

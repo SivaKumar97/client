@@ -82,7 +82,7 @@ export default class RightPanel extends Component {
             <Rating name={fieldName} onChange={onChange} value={value} />
           </React.Fragment>
         )
-      }else if(type == 'url' || type == 'img'){
+      }else if(type == 'url' || type == 'imageLink'){
         return (
           <TextField  sx={{ width: 300 }} onChange={onChange} value={value} label={fieldName} variant="standard" />
         )

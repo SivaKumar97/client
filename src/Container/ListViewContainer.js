@@ -11,7 +11,9 @@ function ListViewContainer(props) {
     datas,
     deleteMovie,
     getSearchedMovies,
-    getMovies
+    getMovies,
+    movies,
+    searchDv
    } = props;
   const deleteDv = (id) =>{
     deleteDetails(id).then(resp=>{
@@ -22,20 +24,12 @@ function ListViewContainer(props) {
   }
   const [field,setField] = React.useState('')
   const sortDetails = (sortField) =>{
-    const type = field == sortField ? 'DESC' : 'ASC'
+    const type = field == sortField ? 'desc' : 'asc'
     getMvDetails(sortField,type).then(
       data=>{
-        setField(field)
-        getMovies(normalizeObj(data.mvDetails,'mvId'))
+        setField(sortField)
+        getMovies(normalizeObj(data.mvDetails,sortField,type))
       })
-  }
-  const searchDv = (str) =>{
-    const searchCall = str.length  == 0 ? getMvDetails : searchDetails;
-    searchCall(str).then(resp=>{
-      getSearchedMovies(normalizeObj(resp.mvDetails,'mvId'))
-    },err=>{
-
-    })
   }
   return (
     <Drawer
@@ -62,10 +56,14 @@ function ListViewContainer(props) {
 }
 
 const mapStateToProps = state => {
-
+  const { movies } =state;
+  const { searchedMovies = {} } = movies;
+  const datas = JSON.stringify(searchedMovies) == "{}" ? movies : searchedMovies || {}
+  delete datas.searchedMovies
   return {
       state,
-      datas: state.movies
+      datas,
+      movies
     }
 };
 

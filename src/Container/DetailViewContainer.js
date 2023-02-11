@@ -9,7 +9,8 @@ function DetailViewContainer(props) {
     canShowImage,
     movieDetail,
     movies,
-    openForm
+    openForm,
+    searchDv
    } = props;
    const getMvId = (type) =>{
     const keys = Object.keys(movies)
@@ -23,6 +24,9 @@ function DetailViewContainer(props) {
     const id = getMvId(type)
     openForm('detailView',{"recordId": id})
   }
+  const editForm = ()=>{
+    openForm('editForm')
+  }
   return (
       <DetailView 
         formType={formType}
@@ -32,6 +36,8 @@ function DetailViewContainer(props) {
         getMvId={getMvId}
         movies={movies}
         changeDv={changeDv}
+        editForm={editForm}
+        searchDv={searchDv}
       />
   )
 }
@@ -40,12 +46,15 @@ const mapStateToProps = state => {
   const { config={}, form={}, movies } = state;
   const formType = form.isFormOpened;
   const { isShowImage } = config;
+  const { searchedMovies = {} } = movies;
+  const datas = JSON.stringify(searchedMovies) == "{}" ? movies : searchedMovies || {}
+  delete movies.searchedMovies
   return {
       state,
       formType,
       canShowImage: isShowImage,
       movies,
-      movieDetail: movies[form.recordId] || {}
+      movieDetail: searchedMovies[Object.keys(searchedMovies)[0]] || movies[form.recordId] || {}
     }
 };
 

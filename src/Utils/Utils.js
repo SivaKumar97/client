@@ -43,11 +43,11 @@ export const getRightPanelObj = (type,mvObj={}) =>{
                 'apiName' : 'name',
                 'value' : mvObj['name'] || ''
             },
-            'img' : {
+            'imageLink' : {
                 'fieldName' : 'Image',
-                'type' : 'img',
-                'apiName' : 'img',
-                'value' : mvObj['img'] || ''
+                'type' : 'imageLink',
+                'apiName' : 'imageLink',
+                'value' : mvObj['imageLink'] || ''
             },
             'actName' : {
                 'fieldName' : 'Act Name',
@@ -137,7 +137,17 @@ export const getAPIAndValue = (obj,key,value)=>{
     return resultObj;
 }
 
-export const normalizeObj = (arr,key) =>{
+export const normalizeObj = (arr,key, isSortBy) =>{
+    if(isSortBy){
+       return {
+        'mvDetail' : arr.sort((prevMov,nextMov)=>{
+            if(isSortBy == 'asc'){
+                return (prevMov[key] - nextMov[key] || prevMov[key].localeCompare(nextMov[key]))
+            }
+            return - (prevMov[key] - nextMov[key] || prevMov[key].localeCompare(nextMov[key]))
+        })
+       } 
+    }
     const resultObj = {};
     arr.map(val=>{
         resultObj[val[key].toString()] = val;

@@ -16,6 +16,10 @@ import { Autocomplete, Button, CardContent, FormControl, FormLabel, Modal, Ratin
 import { generate, getLinks, getListViewColumns, NO_IMAGE, selectn } from '../Utils/Utils';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import Paper from '@mui/material/Paper';
+import { InputBase } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 const fields = getListViewColumns();
 export default function DetailView(props) {
     const { 
@@ -28,14 +32,25 @@ export default function DetailView(props) {
       movieDetail,
       changeDv,
       getMvId,
-      movies
+      movies,
+      editForm,
+      searchDv
     } = props;
     const prevId = getMvId('prev');
     const nextId = getMvId('next');
+    const [searchMvStr,searchMvState] = React.useState('')
     const [openImgPreview,toggleImgPreview] = React.useState(false);
     const toggleImagePreview = ()=>{
         toggleImgPreview(!openImgPreview)
     }
+    const searchMv = (e) =>{
+        const str = e.target.value
+        searchMvState(str)
+        if(str.length > 2 || str.length == 0){
+          searchDv(str);
+        }
+    
+      }
     const openNext = ()=>{
         changeDv('next')
     }
@@ -64,7 +79,7 @@ export default function DetailView(props) {
             aria-describedby="modal-modal-description"
           >
             <Box sx={style}>
-                <img width={width} src={canShowImage ? movieDetail['img'] : NO_IMAGE} />
+                <img width={width} src={canShowImage ? movieDetail['imageLink'] : NO_IMAGE} />
             </Box>
           </Modal>
         )
@@ -82,6 +97,22 @@ export default function DetailView(props) {
             sx={{ width:1200 }}
             >
                 <Box sx={{ justifyContent: 'center', display:'flex', p:2, bgcolor: 'text.secondary' }}>
+                    <Box sx={{ml:10}}>
+                        <Paper
+                            sx={{ display: 'flex', width: 200 }}
+                        >
+                            <InputBase
+                            sx={{ ml: 1, flex: 1 }}
+                            placeholder="Search Here"
+                            inputProps={{ 'aria-label': 'search here' }}
+                            onChange={searchMv}
+                            value={searchMvStr}
+                        />
+                            <IconButton type="button" sx={{ p: '3px' }} aria-label="search">
+                                <SearchIcon />
+                            </IconButton>
+                        </Paper>
+                    </Box>
                     <Box 
                         sx={{
                             textTransform: 'uppercase',
@@ -93,10 +124,13 @@ export default function DetailView(props) {
                             textAlign: 'center'
                         }}>
                            {movieDetail.name}
+                           <IconButton edge="end" sx={{ml:2}} aria-label="close" onClick={editForm} color="info">
+                                <ModeEditOutlineIcon sx={{color:'background.paper'}}/>
+                            </IconButton>
                     </Box>
                     <Box sx={{
                         justifyContent: 'flex-end',
-                        flexShrink: 1 
+                        flexShrink: 1
                     }}>
                         <IconButton edge="end" aria-label="close" onClick={closeForm} color="info">
                             <CloseIcon sx={{color:'background.paper'}}/>
@@ -126,7 +160,7 @@ export default function DetailView(props) {
                         {/* <IconButton sx={{height: 50}} aria-label="close" onClick={openPrev} color="info">
                             <NavigateBeforeIcon sx={{fontSize: '50px'}}/>
                         </IconButton> */}
-                        <img onClick={openPrev} width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? movies[prevId]['img'] : NO_IMAGE} />
+                        <img onClick={openPrev} width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? movies[prevId]['imageLink'] : NO_IMAGE} />
                         </Box>
                         ) : null}
                         
@@ -144,7 +178,7 @@ export default function DetailView(props) {
                                 cursor:'pointer'
                             }}
                         >
-                                <img onClick={toggleImagePreview} width={canShowImage ? '450' : '300'} src={canShowImage ? movieDetail['img'] : NO_IMAGE} />
+                                <img onClick={toggleImagePreview} width={canShowImage ? '450' : '300'} src={canShowImage ? movieDetail['imageLink'] : NO_IMAGE} />
                         </Box >
                         {nextId != movieDetail['mvId'] ? (
                         <Box sx={{
@@ -164,7 +198,7 @@ export default function DetailView(props) {
                         {/* <IconButton sx={{height: 50}} aria-label="close" onClick={openNext} color="info">
                             <NavigateNextIcon sx={{fontSize: '50px'}}/>
                         </IconButton> */}
-                        <img onClick={openNext}  width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? movies[nextId]['img'] : NO_IMAGE} />
+                        <img onClick={openNext}  width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? movies[nextId]['imageLink'] : NO_IMAGE} />
                         </Box>
                         ):null}
                 </Box>

@@ -24,6 +24,9 @@ function RightPanelContainer(props) {
     detailsAPICall(payload).then((res)=>{
       setLoading(false)
       updateMovies(normalizeObj(res.mvDetails,'mvId'))
+      if(type == 'editForm'){
+        return openForm('detailView')
+      }
       closeForm();
     },err=>{
       setLoading(false)
