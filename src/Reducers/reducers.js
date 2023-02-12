@@ -5,9 +5,9 @@ export const movieReducer = (state={}, action)=>{
         case 'GET_MOVIES':
             return {...state, ...action.data, searchedMovies:{}, mvDetail: []}
         case 'SEARCHED_MOVIES':
-            return {...state, searchedMovies: {...action.data}}
+            return {...state, searchedMovies: {...action.data}, mvDetail: []}
         case 'SORTED_MOVIES':
-            return {...state, ...action.data}
+            return {...state, ...action.data, searchedMovies:{}}
         case 'DELETE_MOVIE':
             const oldState = state;
             delete oldState[action.data];
