@@ -37,7 +37,7 @@ function AppContainer(props) {
     }
     const [searchMvStr,searchMvState] = React.useState('')
     const searchMv = (e) =>{
-      const str = selectn('target.value',e) || e
+      const str = selectn('target.value',e)
       searchMvState(str)
       if(str.length > 2 || str.length == 0){
         searchDv(str);
@@ -46,7 +46,7 @@ function AppContainer(props) {
     const [showSearch, canShowSearch] = React.useState(false)
     const toggleSearch = ()=>{
       canShowSearch(!showSearch)
-      searchMv('')
+      searchMv({target : {value: ''}})
     }
     const searchContainer = (type)=>{
       let stl ={

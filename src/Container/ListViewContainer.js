@@ -26,13 +26,13 @@ function ListViewContainer(props) {
       console.log("LV Error :",err)
     })
   }
-  const [field,setField] = React.useState('')
-  
+  const [fields,setFields] = React.useState({})
   const sortDetails = (sortField) =>{
-    const type = field == sortField ? 'desc' : 'asc'
+    const type = fields[sortField] == 'asc' ? 'desc' : fields[sortField] == 'desc'? 'asc' : 'asc'
+    fields[sortField] = type;
     getMvDetails(sortField,type).then(
       data=>{
-        setField(sortField)
+        setFields({...fields})
         getSortedMovies(normalizeObj(data.mvDetails,sortField,type))
       })
   }
