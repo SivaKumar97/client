@@ -5,6 +5,7 @@ import { deleteDetails, getMvDetails, searchDetails } from '../Action/APIAction'
 import ListView from '../Component/ListView';
 import { closeForm, openForm, deleteMovie, getSearchedMovies, getMovies } from '../Dispatcher/Action';
 import { normalizeObj } from '../Utils/Utils';
+import { getSortedMovies } from './../Dispatcher/Action';
 function ListViewContainer(props) {
   const { 
     openForm : openDv,
@@ -15,7 +16,8 @@ function ListViewContainer(props) {
     movies,
     searchContainer,
     toggleSearch,
-    showSearch
+    showSearch,
+    getSortedMovies
    } = props;
   const deleteDv = (id) =>{
     deleteDetails(id).then(resp=>{
@@ -31,7 +33,7 @@ function ListViewContainer(props) {
     getMvDetails(sortField,type).then(
       data=>{
         setField(sortField)
-        getMovies(normalizeObj(data.mvDetails,sortField,type))
+        getSortedMovies(normalizeObj(data.mvDetails,sortField,type))
       })
   }
   return (
@@ -51,7 +53,7 @@ function ListViewContainer(props) {
       {showSearch && searchContainer("LV")}
       <ListView 
         openDv={openDv}
-        datas={datas}
+        rows={datas}
         deleteDv={deleteDv}
         searchContainer={searchContainer}
         sortDetails={sortDetails}
@@ -63,9 +65,8 @@ function ListViewContainer(props) {
 
 const mapStateToProps = state => {
   const { movies } =state;
-  const { searchedMovies = {} } = movies;
-  const datas = JSON.stringify(searchedMovies) == "{}" ? movies : searchedMovies || {}
-  delete datas.searchedMovies
+  const { searchedMovies = {}, mvDetail=[] } = movies;
+  const datas = JSON.stringify(mvDetail) != '[]' ? mvDetail :  Object.values(JSON.stringify(searchedMovies) == "{}" ? movies : searchedMovies || {})
   return {
       state,
       datas,
@@ -78,5 +79,6 @@ export default connect(mapStateToProps, {
   openForm,
   deleteMovie,
   getSearchedMovies,
-  getMovies
+  getMovies,
+  getSortedMovies
 })(ListViewContainer);

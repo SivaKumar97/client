@@ -41,8 +41,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 export default function ListView(props) {
   const [searchMvStr,searchMvState] = React.useState('')
-  const { datas, openDv, deleteDv,toggleSearch, sortDetails} = props
-  const rows = Object.values(datas);
+  const { rows, openDv, deleteDv,toggleSearch, sortDetails} = props
 
   const editDetails = (id) =>{
     openDv('editForm',{"recordId": id});

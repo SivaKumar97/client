@@ -26,6 +26,11 @@ export const getSearchedMovies = (data) =>({
     type: 'SEARCHED_MOVIES',
     data
 })
+export const getSortedMovies = (data) =>({
+    type: 'SORTED_MOVIES',
+    data
+})
+
 
 
 export const updateMovies = (data) =>({
