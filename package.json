@@ -12,7 +12,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.jsx ./src",
     "lint:fix": "eslint --fix --ext .js,.jsx ./src",
-    "pre-steps": "pip install flask-cors"
+    "pre-steps": "pip install flask-cors",
+    "liveUpdate" : "npm run build && firebase deploy"
   },
   "babel": {
     "presets": [
