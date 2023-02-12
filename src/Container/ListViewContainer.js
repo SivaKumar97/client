@@ -13,7 +13,9 @@ function ListViewContainer(props) {
     getSearchedMovies,
     getMovies,
     movies,
-    searchDv
+    searchContainer,
+    toggleSearch,
+    showSearch
    } = props;
   const deleteDv = (id) =>{
     deleteDetails(id).then(resp=>{
@@ -23,6 +25,7 @@ function ListViewContainer(props) {
     })
   }
   const [field,setField] = React.useState('')
+  
   const sortDetails = (sortField) =>{
     const type = field == sortField ? 'desc' : 'asc'
     getMvDetails(sortField,type).then(
@@ -44,12 +47,15 @@ function ListViewContainer(props) {
             }
           }}
         >
+          
+      {showSearch && searchContainer("LV")}
       <ListView 
         openDv={openDv}
         datas={datas}
         deleteDv={deleteDv}
-        searchDv={searchDv}
+        searchContainer={searchContainer}
         sortDetails={sortDetails}
+        toggleSearch={toggleSearch}
       />
     </Drawer>
   )

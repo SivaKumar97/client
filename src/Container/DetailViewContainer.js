@@ -10,7 +10,7 @@ function DetailViewContainer(props) {
     movieDetail,
     movies,
     openForm,
-    searchDv
+    searchContainer
    } = props;
    const getMvId = (type) =>{
     const keys = Object.keys(movies)
@@ -37,7 +37,7 @@ function DetailViewContainer(props) {
         movies={movies}
         changeDv={changeDv}
         editForm={editForm}
-        searchDv={searchDv}
+        searchContainer={searchContainer}
       />
   )
 }

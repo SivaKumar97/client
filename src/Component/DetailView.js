@@ -34,23 +34,23 @@ export default function DetailView(props) {
       getMvId,
       movies,
       editForm,
-      searchDv
+      searchContainer
     } = props;
     const prevId = getMvId('prev');
     const nextId = getMvId('next');
-    const [searchMvStr,searchMvState] = React.useState('')
+    // const [searchMvStr,searchMvState] = React.useState('')
     const [openImgPreview,toggleImgPreview] = React.useState(false);
     const toggleImagePreview = ()=>{
         toggleImgPreview(!openImgPreview)
     }
-    const searchMv = (e) =>{
-        const str = e.target.value
-        searchMvState(str)
-        if(str.length > 2 || str.length == 0){
-          searchDv(str);
-        }
+    // const searchMv = (e) =>{
+    //     const str = e.target.value
+    //     searchMvState(str)
+    //     if(str.length > 2 || str.length == 0){
+    //       searchDv(str);
+    //     }
     
-      }
+    //   }
     const openNext = ()=>{
         changeDv('next')
     }
@@ -98,20 +98,7 @@ export default function DetailView(props) {
             >
                 <Box sx={{ justifyContent: 'center', display:'flex', p:2, bgcolor: 'text.secondary' }}>
                     <Box sx={{ml:10}}>
-                        <Paper
-                            sx={{ display: 'flex', width: 200 }}
-                        >
-                            <InputBase
-                            sx={{ ml: 1, flex: 1 }}
-                            placeholder="Search Here"
-                            inputProps={{ 'aria-label': 'search here' }}
-                            onChange={searchMv}
-                            value={searchMvStr}
-                        />
-                            <IconButton type="button" sx={{ p: '3px' }} aria-label="search">
-                                <SearchIcon />
-                            </IconButton>
-                        </Paper>
+                        {searchContainer()}
                     </Box>
                     <Box 
                         sx={{
