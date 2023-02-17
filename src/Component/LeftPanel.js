@@ -17,30 +17,31 @@ import { IconButton, Switch, Typography } from '@mui/material';
 import BackupIcon from '@mui/icons-material/Backup';
 import { generate } from '../Utils/Utils';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import { LEFT_PANEL_WIDTH } from '../Utils/CssCalc';
+import { LEFT_PANEL_WIDTH, isMobileSize } from '../Utils/CssCalc';
+import { Tooltip } from '@mui/material';
 import style from './LeftPanel.css'
 
 export default function LeftPanel(props) {
-    const { window, leftPanelObj, openForm, isShowImage = false, exportData } = props;
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const { window, leftPanelObj, openForm, isShowImage = false, exportData, windowSize, toggleView } = props;
     const [loading,setLoading] = React.useState(false);
     const [loadingVal,setLoadingVal] = React.useState(0)
-    const handleDrawerToggle = () => {
-      setMobileOpen(!mobileOpen);
-    }; 
     const leftPanelAction = (type) =>{
       if(type == 'addForm'){
         openForm(type);
+      }else if(type == 'viewToggle'){
+        toggleView()
       }else {
         setLoading(true)
         exportData(type,setLoading,setLoadingVal)
       }
     }
+    const isMobile = isMobileSize(windowSize);
     const toggleImage = () =>{
       const { showImage, hideImage } = props;
       isShowImage ? hideImage() : showImage();
     }
     const leftPanelkeys = Object.keys(leftPanelObj);
+
     const getListItems = ()=>{
         const listArr = [];
         const getList = (key)=>{
@@ -84,14 +85,16 @@ export default function LeftPanel(props) {
                           </Box>
                         ) 
                         :(
-                            <ListItem key={label} disablePadding onClick={()=>leftPanelAction(apiName)} >
-                            <ListItemButton sx={{display:'flex'}}>
-                                <ListItemIcon>
-                                { iconName == 'AddToPhotosIcon' ? <AddToPhotosIcon /> : null}
-                                </ListItemIcon>
-                                <ListItemText primary={label} />
-                            </ListItemButton>
+                          <Tooltip title={isMobile && label}>
+                            <ListItem key={label} disablePadding sx={{align:'center'}} onClick={()=>leftPanelAction(apiName)} >
+                              <ListItemButton sx={{display:'flex'}}>
+                                    <ListItemIcon className={''}>
+                                    { iconName == 'AddToPhotosIcon' ? <AddToPhotosIcon /> : null}
+                                    </ListItemIcon>
+                                    {!isMobile && <ListItemText primary={label} />}
+                              </ListItemButton>
                             </ListItem>
+                          </Tooltip>
                           ) 
                         )                      
                        })}

@@ -4,6 +4,7 @@ import { exportDatas, exportProject, getPercentage, importDatas } from '../Actio
 import LeftPanel from '../Component/LeftPanel';
 import { closeForm, openForm, showImage, hideImage, getMovies } from '../Dispatcher/Action';
 import { getLeftPanelObj, normalizeObj } from '../Utils/Utils';
+import { toggleView } from './../Dispatcher/Action';
 function LeftPanelContainer(props) {
   const { 
     openForm, 
@@ -11,7 +12,9 @@ function LeftPanelContainer(props) {
     isShowImage,
     showImage, 
     hideImage,
-    getMovies
+    getMovies,
+    windowSize,
+    toggleView
   } = props;
 
   const exportData = (type,setLoading,setLoadingVal)=>{
@@ -49,6 +52,8 @@ function LeftPanelContainer(props) {
         showImage={showImage}
         hideImage={hideImage}
         exportData={exportData}
+        windowSize={windowSize}
+        toggleView={toggleView}
       />
     </React.Fragment>
   );
@@ -68,6 +73,7 @@ export default connect(mapStateToProps,{
   closeForm,
   showImage, 
   hideImage,
-  getMovies
+  getMovies,
+  toggleView
   
 })(LeftPanelContainer);

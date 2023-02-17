@@ -30,6 +30,8 @@ export const configReducer = (state={},action) =>{
     switch(action.type){
         case 'SET_IMAGE_STATE':
             return {...state,...action.data}
+        case 'TOGGLE_VIEW':
+            return {...state, view: state.view == 'classic' ? 'table' : 'classic'}
         default:
             return state;
     }

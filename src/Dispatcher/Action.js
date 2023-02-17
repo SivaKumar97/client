@@ -18,6 +18,9 @@ export const hideImage = () =>({
     data: { 'isShowImage': false }
 })
 
+export const toggleView = () =>({
+    type: 'TOGGLE_VIEW'
+})
 export const getMovies = (data) =>({
     type: 'GET_MOVIES',
     data

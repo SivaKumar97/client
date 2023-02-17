@@ -2,6 +2,7 @@ import {  Drawer } from '@mui/material';
 import React from 'react'
 import { connect } from 'react-redux'
 import { deleteDetails, getMvDetails, searchDetails } from '../Action/APIAction';
+import ClassicView from '../Component/ClassicView';
 import ListView from '../Component/ListView';
 import { closeForm, openForm, deleteMovie, getSearchedMovies, getMovies } from '../Dispatcher/Action';
 import { normalizeObj } from '../Utils/Utils';
@@ -17,7 +18,9 @@ function ListViewContainer(props) {
     searchContainer,
     toggleSearch,
     showSearch,
-    getSortedMovies
+    getSortedMovies,
+    canShowImage,
+    view
    } = props;
   const deleteDv = (id) =>{
     deleteDetails(id).then(resp=>{
@@ -50,27 +53,42 @@ function ListViewContainer(props) {
           }}
         >
           
-      {showSearch && searchContainer("LV")}
-      <ListView 
+      {(showSearch || view=='classic') && searchContainer("LV")}
+      {view == 'table' ? (<ListView 
         openDv={openDv}
         rows={datas}
         deleteDv={deleteDv}
         searchContainer={searchContainer}
         sortDetails={sortDetails}
         toggleSearch={toggleSearch}
-      />
+      />) : (
+        <ClassicView 
+          rows={datas}
+          openDv={openDv}
+          canShowImage={canShowImage}
+          />
+        )}
+      
     </Drawer>
   )
 }
 
 const mapStateToProps = state => {
-  const { movies } =state;
+  const { movies, config={} } =state;
+  const { isShowImage, view='table' } = config;
   const { searchedMovies = {}, mvDetail=[] } = movies;
-  const datas = JSON.stringify(mvDetail) != '[]' ? mvDetail :  Object.values(JSON.stringify(searchedMovies) == "{}" ? movies : searchedMovies || {})
+  const datas = JSON.stringify(mvDetail) != '[]' ? mvDetail :  JSON.stringify(searchedMovies) == "{}" ? movies : searchedMovies || {};
+  if(JSON.stringify(mvDetail) == '[]' && JSON.stringify(searchedMovies) == "{}"){
+    delete datas.mvDetail;
+    delete datas.searchedMovies
+  }
+
   return {
       state,
-      datas,
-      movies
+      datas: Object.values(datas),
+      canShowImage: isShowImage,
+      movies,
+      view
     }
 };
 

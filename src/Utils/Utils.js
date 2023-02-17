@@ -13,6 +13,10 @@ export const getLeftPanelObj = () => {
             'imgConfig' : {
                 label: 'Image Config',
                 apiName: 'imgConfig'
+            },
+            'classicView' : {
+                label: 'Toggle View',
+                apiName: 'viewToggle'
             }           
         },
         'google' : {

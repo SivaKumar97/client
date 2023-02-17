@@ -1,4 +1,4 @@
-import { Container, Grid, InputBase, IconButton } from '@mui/material';
+import { Container, InputBase, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
@@ -13,6 +13,13 @@ import { searchDetails } from './../Action/APIAction';
 import Paper from '@mui/material/Paper';
 import SearchIcon from '@mui/icons-material/Search';
 import { selectn } from './../Utils/Utils';
+import Grid from '@mui/material/Grid';
+import { styled } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 let intialCall = false;
 function AppContainer(props) {
     const { state, getMovies, getSearchedMovies, movies } = props;
@@ -35,6 +42,7 @@ function AppContainer(props) {
   
       })
     }
+    const size = useWindowSize();
     const [searchMvStr,searchMvState] = React.useState('')
     const searchMv = (e) =>{
       const str = selectn('target.value',e)
@@ -76,11 +84,19 @@ function AppContainer(props) {
     }
   return (
     <Container sx={{ display: 'flex', p:0, m:0, height:'100%'}}> 
-        <LeftPanelContainer />
+        <LeftPanelContainer windowSize={size}/>
         <RightPanelContainer />
         <ListViewContainer searchContainer={searchContainer} toggleSearch={toggleSearch} showSearch={showSearch}/>
         <DetailViewContainer searchContainer={searchContainer} />
     </Container>
+      // <Box sx={{height: maxHeight, display:'inline-flex'}}>
+      //   <Box sx={{width:'15%', background:'Yellow'}}>
+      //     Testing
+      //   </Box>
+      //   <Box sx={{width:'84%', ml:"1%", background:'red'}}>
+      //     Testing
+      //   </Box>
+      // </Box>
     
   );
 }
@@ -97,3 +113,29 @@ export default connect(mapStateToProps,{
   getMovies,
   getSearchedMovies
 })(AppContainer);
+
+function useWindowSize() {
+  // Initialize state with undefined width/height so server and client renders match
+  // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
+  const [windowSize, setWindowSize] = useState({
+    width: undefined,
+    height: undefined,
+  });
+  useEffect(() => {
+    // Handler to call on window resize
+    function handleResize() {
+      // Set window width/height to state
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+    // Call handler right away so state gets updated with initial window size
+    handleResize();
+    // Remove event listener on cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []); // Empty array ensures that effect is only run on mount
+  return windowSize;
+}
