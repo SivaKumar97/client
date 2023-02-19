@@ -49,8 +49,8 @@ export default function DetailView(props) {
         changeDv('prev')
     }
     const extraOptions = getLinks(movieDetail['name'])
-    const getImagePreview = () =>{
-        const width = canShowImage ?'1000' : '400'
+    const getImagePreview = (isMobileView) =>{
+        const width = canShowImage && !isMobileView ? '1000' : '400'
         const style = {
             position: 'absolute',
             top: '50%',
@@ -86,7 +86,7 @@ export default function DetailView(props) {
                 open={formType == 'detailView'}
                 onClose={closeForm}
                 >
-                {getImagePreview()}
+                {getImagePreview(isMobileView)}
                 <Box
                     role="presentation"
                     sx={{ width: getMaxWidth(windowObj) }}
