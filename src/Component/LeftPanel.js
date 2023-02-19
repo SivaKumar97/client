@@ -19,8 +19,9 @@ import { generate } from '../Utils/Utils';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { LEFT_PANEL_WIDTH, isMobileSize } from '../Utils/CssCalc';
 import { Tooltip } from '@mui/material';
-import style from './LeftPanel.css'
-
+import { ResponsiveReceiver } from '@zohodesk/components/lib/Responsive/CustomResponsive';
+import { responsiveFunc } from './../Utils/Utils';
+import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 export default function LeftPanel(props) {
     const { window, leftPanelObj, openForm, isShowImage = false, exportData, windowSize, toggleView } = props;
     const [loading,setLoading] = React.useState(false);
@@ -42,7 +43,7 @@ export default function LeftPanel(props) {
     }
     const leftPanelkeys = Object.keys(leftPanelObj);
 
-    const getListItems = ()=>{
+    const getListItems = (isMobileView)=>{
         const listArr = [];
         const getList = (key)=>{
             return (
@@ -64,9 +65,11 @@ export default function LeftPanel(props) {
                                     </IconButton>
                                   }
                                 >
-                                    <Typography component="div">
-                                    { label}
-                                    </Typography>
+                                  {isMobileView ? null : (
+                                      <Typography component="div">
+                                      { label}
+                                      </Typography>
+                                  )}
                                 </ListItem>
                               )
                         : (apiName == 'exportData' || apiName == 'exportProject' || apiName == 'importData') ? (
@@ -87,9 +90,9 @@ export default function LeftPanel(props) {
                         :(
                           <Tooltip title={isMobile && label}>
                             <ListItem key={label} disablePadding sx={{align:'center'}} onClick={()=>leftPanelAction(apiName)} >
-                              <ListItemButton sx={{display:'flex'}}>
+                              <ListItemButton sx={{display:'flex' , pt:isMobile ? 5 : 0}}>
                                     <ListItemIcon className={''}>
-                                    { iconName == 'AddToPhotosIcon' ? <AddToPhotosIcon /> : null}
+                                    { iconName == 'AddToPhotosIcon' ? <AddToPhotosIcon /> : iconName == 'viewToggle' ? <ViewAgendaIcon /> : null}
                                     </ListItemIcon>
                                     {!isMobile && <ListItemText primary={label} />}
                               </ListItemButton>
@@ -109,10 +112,16 @@ export default function LeftPanel(props) {
         return listArr;
     }
     const drawer = (
-      <React.Fragment>
-        <Toolbar />
-        {getListItems()}
-      </React.Fragment>
+      <ResponsiveReceiver query={responsiveFunc}>
+          {(windowObj) => {
+          const { isMobileView } = windowObj;
+          return (
+          <>
+            <Toolbar />
+            {getListItems(isMobileView)}
+          </>
+          )}}
+        </ResponsiveReceiver>
     );
   
     const container = window !== undefined ? () => window().document.body : undefined;

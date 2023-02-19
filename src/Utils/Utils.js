@@ -18,7 +18,8 @@ export const getLeftPanelObj = () => {
             },
             'classicView' : {
                 label: 'Toggle View',
-                apiName: 'viewToggle'
+                apiName: 'viewToggle',
+                iconName: 'viewToggle'
             }           
         },
         'google' : {
