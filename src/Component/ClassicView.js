@@ -1,20 +1,28 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Box, Grid, Rating, Modal } from '@mui/material';
+import { Box, Grid, Rating, Modal, Tooltip } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { NO_IMAGE } from '../Utils/Utils';
-
+import { NO_IMAGE, responsiveFunc } from '../Utils/Utils';
+import DownloadIcon from '@mui/icons-material/Download';
+import ClosedCaptionIcon from '@mui/icons-material/ClosedCaption';
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
+import { ResponsiveReceiver } from '@zohodesk/components/lib/Responsive/CustomResponsive';
+import IconButton from '@mui/material/IconButton';
  
 const ClassicView = props => {
 const [openImgPreview,toggleImgPreview] = React.useState(false);
+const { openDv } = props;
 const toggleImagePreview = (row={})=>{
     toggleImgPreview(!row['imageLink'])
 }
+const openDetailView = (row) =>{
+    openDv('detailView',{"recordId": row['mvId']});
+  }
 const getImagePreview = () =>{
     const width = canShowImage ?'1000' : '400'
     const style = {
@@ -41,44 +49,70 @@ const getImagePreview = () =>{
         </Modal>
     )
 }
+  const openLink = (link) =>{
+    window.open(link,"_blank")
+  }
   const { rows, canShowImage } = props;
   return (
-    <Box sx={{height:'100%', background:'#ffff'}} >
-        {openImgPreview && getImagePreview()}
-        <Box sx={{m:2}}>
-            <Grid container spacing={7}>
-                    {rows.map((row)=>{
-                        return ( 
-                        <Grid item xs={7} md={5} lg={3}>
-                                <Card sx={{ maxWidth: 345 }}>
-                                    <CardMedia
-                                        sx={{  height: canShowImage ? 230 : 230}}
-                                        image={canShowImage ? row['imageLink'] : NO_IMAGE}
-                                        title="green iguana"
-                                        onClick={()=>toggleImagePreview(row)}
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="div">
-                                        {row['name']}
-                                        </Typography>
-                                        <Rating name="read-only" value={row['rating']} readOnly />
-                                        <Typography variant="body2" color="text.secondary">
-                                        Act Name : {row['actName']}
-                                        </Typography>
-                                    </CardContent>
-                                    <CardActions>
-                                        <Button color="secondary" href={row['downloadLink']} disabled={row['downloadLink'] ? false : true} >Download</Button>
-                                        <Button color="secondary" href={row['subLink']} disabled={row['subLink'] ? false : true} >Sub Link</Button>
-                                    </CardActions>
-                                </Card>
+    <ResponsiveReceiver query={responsiveFunc}>
+        {({ isMobileView }) => {
+          return (
+                <Box sx={{height:'100%', background:'#ffff'}} >
+                    {openImgPreview && getImagePreview()}
+                    <Box sx={{m:isMobileView ? 0 : 2}}>
+                        <Grid container spacing={isMobileView ? 3 : 7}>
+                                {rows.map((row)=>{
+                                    return ( 
+                                    <Grid item xs={7} md={5} lg={3}>
+                                            <Card sx={{ maxWidth: 345 }}>
+                                                <CardMedia
+                                                    sx={{  height: isMobileView ? 100 : 230}}
+                                                    image={canShowImage ? row['imageLink'] : NO_IMAGE}
+                                                    title="green iguana"
+                                                    onClick={()=>toggleImagePreview(row)}
+                                                />
+                                                <CardContent>
+                                                    <Typography gutterBottom variant="h5" component="div"  sx={{fontSize: isMobileView ? 15 : 25 }}>
+                                                        {row['name']}
+                                                    </Typography>
+                                                    <Rating name="read-only" value={row['rating']} readOnly size={isMobileView ? 'small' : 'large'} />
+                                                    <Typography variant="body2" color="text.secondary" sx={{fontSize: isMobileView ? 10 : 20 }}>
+                                                        { `Act Name : ${row['actName']}`}
+                                                    </Typography>
+                                                </CardContent>
+                                                <CardActions>
+                                                    {isMobileView ? (
+                                                            <>
+                                                                <IconButton >
+                                                                    <DownloadIcon onClick={()=>{openLink(row['downloadLink'])}} />
+                                                                </IconButton>
+                                                                <IconButton >
+                                                                    <ClosedCaptionIcon onClick={()=>{openLink(row['subLink'])}} />
+                                                                </IconButton>
+                                                                <IconButton >
+                                                                    <OpenInFullIcon onClick={()=>openDetailView(row)} />
+                                                                </IconButton>
+                                                            </>
+                                                    ) : (
+                                                        <>
+                                                            <Button color="secondary" href={row['downloadLink']} disabled={row['downloadLink'] ? false : true} >Download</Button>
+                                                            <Button color="secondary" href={row['subLink']} disabled={row['subLink'] ? false : true} >Sub Link</Button>
+                                                            <Button color="secondary" onClick={()=>openDetailView(row)}  >Open DV</Button>
+                                                        </>
+                                                    )}
+                                                    
+                                                </CardActions>
+                                            </Card>
+                                    </Grid>
+                                    )
+                                })
+                            }
+                        
                         </Grid>
-                        )
-                    })
-                }
-               
-            </Grid>
-        </Box>
-    </Box>
+                    </Box>
+                </Box>
+            )}}
+    </ResponsiveReceiver>
   )
 }
 

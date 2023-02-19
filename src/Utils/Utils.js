@@ -1,5 +1,7 @@
 import * as React from 'react';
 export const NO_IMAGE = 'https://www.freeiconspng.com/uploads/no-image-icon-15.png'
+
+export let windowType = '' ;
 export const getLeftPanelObj = () => {
     return {
         'movies' : {
@@ -93,10 +95,18 @@ export const getRightPanelObj = (type,mvObj={}) =>{
         return fieldObj[type]
     }
 }
-export const getListViewColumns = () =>{
-    return [
+export const getListViewColumns = (type) =>{
+    const columns =  [
+                { id: 'mvId', label: 'Date', minWidth: 130, type:'date' },
                 { id: 'name', label: 'Name', minWidth: 130, type:'text' },
                 { id: 'actName', label: 'Act Name', minWidth: 170 , type:'text' },
+                {
+                    id: 'rating',
+                    label: 'Rating',
+                    minWidth: 170,
+                    align: 'right',
+                    type:'rating'
+                },
                 { id: 'downloadLink', label: 'Download Link', minWidth: 100, type:'url' },
                 {
                     id: 'subLink',
@@ -105,15 +115,9 @@ export const getListViewColumns = () =>{
                     align: 'right', 
                     type:'url'
                 },
-                {
-                    id: 'rating',
-                    label: 'Rating',
-                    minWidth: 170,
-                    align: 'right',
-                    type:'rating'
-                },
                 { id: 'icons', label: '', minWidth: 100, type: 'icons', align: 'right' },
     ]
+    return type == 'dv' ? columns : columns.slice(1,columns.length)
 }
 export const selectn = (str,obj) =>{
     let value = obj;
@@ -195,4 +199,27 @@ export function getLinks(idCode){
           'STB' : `https://sextb.net/search/${idCode}`,
           'CATSUB' : `https://www.subtitlecat.com/index.php?search=${idCode}`
     }
+}
+
+export function responsiveFunc({ mediaQueryOR, isParentSize }) {
+    return {
+      isTabLetView : mediaQueryOR([{ maxWidth: 768 }]),
+      LAPTOP_S: mediaQueryOR([{ maxWidth: 1024 }]),
+      MONITOR: mediaQueryOR([{ minWidth: 1601 }]),
+      isMobileView: isParentSize ? mediaQueryOR([{ maxWidth: 480 }]) : true
+    };
+  }
+
+export function getMaxWidth(obj){
+    Object.keys(obj).map(key=>{
+        if(obj[key]){
+            windowType = key;
+        }
+    })
+    return {
+        isTabLetView :700,
+        LAPTOP_S: 1000,
+        MONITOR: 1600,
+        isMobileView: 400
+    }[windowType]
 }

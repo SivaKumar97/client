@@ -13,7 +13,7 @@
     "lint": "eslint --ext .js,.jsx ./src",
     "lint:fix": "eslint --fix --ext .js,.jsx ./src",
     "pre-steps": "pip install flask-cors",
-    "liveUpdate" : "npm run build && firebase deploy"
+    "liveUpdate": "npm run build && firebase deploy"
   },
   "babel": {
     "presets": [
@@ -33,6 +33,8 @@
     ]
   },
   "dependencies": {
+    "@zohodesk/components": "1.0.0-alpha-256",
+    "@zohodesk/dot": "1.0.0-beta.245",
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
     "@faker-js/faker": "^6.0.0-alpha.7",
