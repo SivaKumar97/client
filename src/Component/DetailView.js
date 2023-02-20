@@ -210,17 +210,22 @@ export default function DetailView(props) {
                                     if(field.type == 'icons'){
                                         return null;
                                     }
+                                    const links = field.type == 'url' ? decodeURI(value).split("|") : ''
                                     return (
                                             <Box sx={{p:2,m:2,borderRadius: 2,boxShadow: 1}}>
                                                 {field.type == 'url' ? (
-                                                    <Button color="secondary" href={value} disabled={value ? false : true} >{field.label}</Button>
+                                                    links.map((val,index)=>{
+                                                        return (
+                                                            <Button color="secondary" href={val} disabled={val ? false : true} >{field.label} {`${links.length > 1 ? '-'+ parseInt(index+1) : ''}`}</Button>
+                                                        )
+                                                    })
                                                 ) : field.type == 'rating' ? (
                                                     <Rating name="read-only" value={value} readOnly />
                                                 ) : field.type == 'date' ? (
                                                     <TextField
                                                         label={field.label}
                                                         sx={{display:'flex'}}
-                                                        value={value > 50 ? new Date(value).toLocaleString('en-GB'): value}
+                                                        value={value > 50 ? new Date(value).toLocaleString('en-GB', {hour12: true}): value}
                                                         InputProps={{
                                                             readOnly: true,
                                                         }}

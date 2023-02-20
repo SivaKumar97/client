@@ -72,6 +72,8 @@ export default function ListView(props) {
             onClick={column.id == 'icons' ? ()=>{} :()=>sortDetails(column.id)}
             sx={{
               backgroundColor: 'background.paper',
+              fontSize: '0.8rem',
+              textAlign:'left'
             }}
           >
             {column.id == 'icons' ? (
@@ -90,6 +92,7 @@ export default function ListView(props) {
     return (
       columns.map((column) => {
         const value = row[column.id];
+        const links = column.type == 'url' ? decodeURI(value).split("|") : ''
         return (
           <StyledTableCell  
             key={column.id} 
@@ -110,10 +113,23 @@ export default function ListView(props) {
               </Tooltip>
             </React.Fragment>
           ) : column.type == 'url' ? (
-                <Button color="secondary" href={value} disabled={value ? false : true} >{column.label}</Button>
+              links.map((val,index)=>{
+                return (
+                      <Tooltip title={val}>
+                        <Button color="secondary" sx={{fontSize: '0.8rem'}} href={val} disabled={val ? false : true} >{links.length > 1 ? column.sLabel : column.label} {`${links.length > 1 ? '-'+ parseInt(index+1) : ''}`}</Button>
+                      </Tooltip>
+                  )
+              })
           ) : column.type == 'rating' ? (
-                <Rating name="read-only" value={value} readOnly />
-          ) : <div onClick={()=>openDetailView(row['mvId'])}>{value}</div>  }
+                <Rating 
+                  name="read-only" 
+                  value={value} 
+                  readOnly 
+                  sx={{
+                    fontSize: '1.2rem'
+                  }}
+                />
+          ) : <Box sx={{fontSize: '1rem'}} onClick={()=>openDetailView(row['mvId'])}>{value}</Box>  }
           </StyledTableCell >
         )
       })

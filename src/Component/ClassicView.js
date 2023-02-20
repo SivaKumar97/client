@@ -72,35 +72,46 @@ const getImagePreview = () =>{
                                                     onClick={()=>toggleImagePreview(row)}
                                                 />
                                                 <CardContent>
-                                                    <Typography gutterBottom variant="h5" component="div"  sx={{fontSize: isMobileView ? 15 : 25 }}>
+                                                    <Typography gutterBottom variant="h5" component="div"  sx={{fontSize: "1.2rem" }}>
                                                         {row['name']}
                                                     </Typography>
-                                                    <Rating name="read-only" value={row['rating']} readOnly size={isMobileView ? 'small' : 'large'} />
-                                                    <Typography variant="body2" color="text.secondary" sx={{fontSize: isMobileView ? 10 : 20 }}>
+                                                    <Rating name="read-only" value={row['rating']} readOnly sx={{fontSize: '1.2rem'}} />
+                                                    <Typography variant="body2" color="text.secondary" sx={{fontSize: "1rem" }}>
                                                         { `Act Name : ${row['actName']}`}
                                                     </Typography>
                                                 </CardContent>
                                                 <CardActions>
                                                     {isMobileView ? (
                                                             <>
-                                                                <IconButton >
-                                                                    <DownloadIcon onClick={()=>{openLink(row['downloadLink'])}} />
+                                                                <IconButton>
+                                                                    <DownloadIcon  onClick={()=>{openLink(row['downloadLink'])}} />
                                                                 </IconButton>
-                                                                <IconButton >
-                                                                    <ClosedCaptionIcon onClick={()=>{openLink(row['subLink'])}} />
+                                                                <IconButton>
+                                                                    <ClosedCaptionIcon  onClick={()=>{openLink(row['subLink'])}} />
                                                                 </IconButton>
-                                                                <IconButton >
-                                                                    <OpenInFullIcon onClick={()=>openDetailView(row)} />
+                                                                <IconButton>
+                                                                    <OpenInFullIcon  onClick={()=>openDetailView(row)} />
                                                                 </IconButton>
                                                             </>
                                                     ) : (
                                                         <>
-                                                            <Button color="secondary" href={row['downloadLink']} disabled={row['downloadLink'] ? false : true} >Download</Button>
-                                                            <Button color="secondary" href={row['subLink']} disabled={row['subLink'] ? false : true} >Sub Link</Button>
-                                                            <Button color="secondary" onClick={()=>openDetailView(row)}  >Open DV</Button>
+                                                                <Button noWrap color="secondary" href={row['downloadLink']} disabled={row['downloadLink'] ? false : true} > 
+                                                                    <Typography noWrap sx={{fontSize:'1rem'}}>
+                                                                        Download
+                                                                    </Typography>
+                                                                    </Button>
+                                                                <Button color="secondary" noWrap href={row['subLink']} disabled={row['subLink'] ? false : true} > 
+                                                                    <Typography noWrap sx={{fontSize:'1rem'}}>
+                                                                        Sub Link
+                                                                    </Typography>
+                                                                </Button>
+                                                                <Button color="secondary"  onClick={()=>openDetailView(row)}  >
+                                                                    <Typography noWrap sx={{fontSize:'1rem'}}>
+                                                                        Open DV
+                                                                    </Typography> 
+                                                                </Button>
                                                         </>
                                                     )}
-                                                    
                                                 </CardActions>
                                             </Card>
                                     </Grid>

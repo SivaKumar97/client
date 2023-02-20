@@ -105,16 +105,17 @@ export const getListViewColumns = (type) =>{
                     id: 'rating',
                     label: 'Rating',
                     minWidth: 170,
-                    align: 'right',
+                    align: 'left',
                     type:'rating'
                 },
-                { id: 'downloadLink', label: 'Download Link', minWidth: 100, type:'url' },
+                { id: 'downloadLink', label: 'Download Link', minWidth: 100, type:'url', sLabel: 'D Link' },
                 {
                     id: 'subLink',
                     label: 'Sub Link',
                     minWidth: 170,
-                    align: 'right', 
-                    type:'url'
+                    align: 'left', 
+                    type:'url',
+                    sLabel: 'S Link'
                 },
                 { id: 'icons', label: '', minWidth: 100, type: 'icons', align: 'right' },
     ]
