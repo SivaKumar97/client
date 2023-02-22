@@ -28,17 +28,20 @@ function DetailViewContainer(props) {
     openForm('editForm')
   }
   return (
-      <DetailView 
-        formType={formType}
-        closeForm={closeForm}
-        canShowImage={canShowImage}
-        movieDetail={movieDetail}
-        getMvId={getMvId}
-        movies={movies}
-        changeDv={changeDv}
-        editForm={editForm}
-        searchContainer={searchContainer}
-      />
+      JSON.stringify(movieDetail) != '{}' ? (
+        <DetailView 
+          formType={formType}
+          closeForm={closeForm}
+          canShowImage={canShowImage}
+          movieDetail={movieDetail}
+          getMvId={getMvId}
+          movies={movies}
+          changeDv={changeDv}
+          editForm={editForm}
+          searchContainer={searchContainer}
+        />
+      ) : null
+      
   )
 }
 

@@ -144,7 +144,7 @@ export default function DetailView(props) {
                                         <NavigateBeforeIcon sx={{fontSize: '50px'}}/>
                                     </IconButton>
                                 ) : (
-                                    <img onClick={openPrev} width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? movies[prevId]['imageLink'] : NO_IMAGE} />
+                                    <img onClick={openPrev} width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? (movies[prevId]['imageComLink'] || movies[prevId]['imageLink'])  : NO_IMAGE} />
                                 )}
                                 {/*  */}
                                 
@@ -165,7 +165,7 @@ export default function DetailView(props) {
                                         cursor:'pointer'
                                     }}
                                 >
-                                        <img onClick={toggleImagePreview} width={isMobileView ? '200' : '450'} src={canShowImage ? movieDetail['imageLink'] : NO_IMAGE} />
+                                        <img onClick={toggleImagePreview} width={isMobileView ? '200' : '450'} src={canShowImage ? (movieDetail['imageComLink'] || movieDetail['imageLink']) : NO_IMAGE} />
                                 </Box >
                                 {nextId != movieDetail['mvId'] ? (
                                 <Box sx={{
@@ -187,7 +187,7 @@ export default function DetailView(props) {
                                         <NavigateNextIcon sx={{fontSize: '50px'}}/>
                                     </IconButton>
                                     ) : (
-                                        <img onClick={openNext}  width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? movies[nextId]['imageLink'] : NO_IMAGE} />
+                                        <img onClick={openNext}  width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? (movies[nextId]['imageComLink'] || movies[nextId]['imageLink']) : NO_IMAGE} />
                                     )}
                                 </Box>
                                 ):null}

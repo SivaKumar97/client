@@ -142,9 +142,13 @@ export const getAPIAndValue = (obj,key,value)=>{
     const arr = Object.keys(obj);
     const resultObj = {};
     arr.map(val=>{
-        resultObj[obj[val][key]] = (val == 'name' ? obj[val][value].toUpperCase() : obj[val][value]) || (val == 'rating' ? '0' : '');
+        resultObj[obj[val][key]] = (val == 'name' ? obj[val][value].toUpperCase() : val == 'imageLink' ? getReplacedDomains(obj[val][value]) : obj[val][value]) || (val == 'rating' ? '0' : '');
     })
     return resultObj;
+}
+
+export const getReplacedDomains = (link)=>{
+    return link.replace("pics.dmm.co.jp", "pics.vpdmm.cc");
 }
 
 export const normalizeObj = (arr,key, isSortBy) =>{

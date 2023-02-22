@@ -67,7 +67,7 @@ const getImagePreview = () =>{
                                             <Card sx={{ maxWidth: 345 }}>
                                                 <CardMedia
                                                     sx={{  height: isMobileView ? 100 : 230}}
-                                                    image={canShowImage ? row['imageLink'] : NO_IMAGE}
+                                                    image={canShowImage ? (row['imageComLink'] || row['imageLink']) : NO_IMAGE}
                                                     title="green iguana"
                                                     onClick={()=>toggleImagePreview(row)}
                                                 />
