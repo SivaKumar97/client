@@ -22,6 +22,7 @@ import { Tooltip } from '@mui/material';
 import { ResponsiveReceiver } from '@zohodesk/components/lib/Responsive/CustomResponsive';
 import { responsiveFunc } from './../Utils/Utils';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
+import LEDTime from './LEDTime';
 export default function LeftPanel(props) {
     const { window, leftPanelObj, openForm, isShowImage = false, exportData, windowSize, toggleView } = props;
     const [loading,setLoading] = React.useState(false);
@@ -118,6 +119,7 @@ export default function LeftPanel(props) {
           return (
           <>
             <Toolbar />
+            <LEDTime />
             {getListItems(isMobileView)}
           </>
           )}}
