@@ -22,6 +22,28 @@ export const getLeftPanelObj = () => {
                 iconName: 'viewToggle'
             }           
         },
+        'search':{
+            'allData': {
+                label: 'All Data',
+                apiName: 'allData',
+                iconName: 'today'
+            },
+            'today': {
+                label: 'Today Release',
+                apiName: 'today',
+                iconName: 'today'
+            },
+            'thisWeek': {
+                label: 'This Week Release',
+                apiName: 'thisWeek',
+                iconName: 'today'
+            },
+            'nextWeek':{
+                label: 'Next Week Release',
+                apiName: 'nextWeek',
+                iconName: 'today'
+            }
+        }
         // 'google' : {
         //     'importData' : {
         //         label: 'Import Data',

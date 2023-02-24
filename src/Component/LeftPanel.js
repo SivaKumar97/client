@@ -15,7 +15,7 @@ import Toolbar from '@mui/material/Toolbar';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 import { IconButton, Switch, Typography } from '@mui/material';
 import BackupIcon from '@mui/icons-material/Backup';
-import { generate } from '../Utils/Utils';
+import { generate, normalizeObj } from '../Utils/Utils';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { LEFT_PANEL_WIDTH, isMobileSize } from '../Utils/CssCalc';
 import { Tooltip } from '@mui/material';
@@ -23,8 +23,10 @@ import { ResponsiveReceiver } from '@zohodesk/components/lib/Responsive/CustomRe
 import { responsiveFunc } from './../Utils/Utils';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import LEDTime from './LEDTime';
+import TodayIcon from '@mui/icons-material/Today';
+import { getDatasByDay } from '../Utils/selector';
 export default function LeftPanel(props) {
-    const { window, leftPanelObj, openForm, isShowImage = false, exportData, windowSize, toggleView } = props;
+    const { window, leftPanelObj, openForm, isShowImage = false, exportData, windowSize, toggleView,getSearchedMovies, movies } = props;
     const [loading,setLoading] = React.useState(false);
     const [loadingVal,setLoadingVal] = React.useState(0)
     const leftPanelAction = (type) =>{
@@ -32,6 +34,9 @@ export default function LeftPanel(props) {
         openForm(type);
       }else if(type == 'viewToggle'){
         toggleView()
+      }else if(['today','nextWeek','thisWeek', 'allData'].includes(type)){
+        const datas = type == 'allData' ? [] : getDatasByDay(movies,type)
+        getSearchedMovies(normalizeObj(datas,'mvId'))
       }else {
         setLoading(true)
         exportData(type,setLoading,setLoadingVal)
@@ -90,14 +95,15 @@ export default function LeftPanel(props) {
                         ) 
                         :(
                           <Tooltip title={isMobile && label}>
-                            <ListItem key={label} disablePadding sx={{align:'center'}} onClick={()=>leftPanelAction(apiName)} >
-                              <ListItemButton sx={{display:'flex' , pt:isMobile ? 5 : 0}}>
-                                    <ListItemIcon className={''}>
-                                    { iconName == 'AddToPhotosIcon' ? <AddToPhotosIcon /> : iconName == 'viewToggle' ? <ViewAgendaIcon /> : null}
+                            <ListItemButton sx={{display:'flex' , pt:isMobile ? 5 : 0}} onClick={()=>leftPanelAction(apiName)}>
+                                    <ListItemIcon>
+                                    { iconName == 'AddToPhotosIcon' ? <AddToPhotosIcon /> 
+                                      : iconName == 'viewToggle' ? <ViewAgendaIcon /> 
+                                      : iconName == 'today' ? <TodayIcon />
+                                      : null}
                                     </ListItemIcon>
                                     {!isMobile && <ListItemText primary={label} />}
                               </ListItemButton>
-                            </ListItem>
                           </Tooltip>
                           ) 
                         )                      
