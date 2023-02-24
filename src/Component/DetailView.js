@@ -225,7 +225,7 @@ export default function DetailView(props) {
                                                     <TextField
                                                         label={field.label}
                                                         sx={{display:'flex'}}
-                                                        value={value > 50 ? new Date(value).toLocaleString('en-GB', {hour12: true}): value}
+                                                        value={(value > 50 || (value && value.indexOf("T") !=-1)) ? new Date(value).toLocaleString('en-GB', {hour12: true}): value}
                                                         InputProps={{
                                                             readOnly: true,
                                                         }}

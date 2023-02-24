@@ -3,11 +3,11 @@ export const movieReducer = (state={}, action)=>{
         case 'UPDATE_MOVIES':
             return {...state, ...action.data}
         case 'GET_MOVIES':
-            return {...state, mvDetail: [], ...action.data, searchedMovies:{}}
+            return {...state, mvDetail: [], ...action.data, searchedMovies:[]}
         case 'SEARCHED_MOVIES':
-            return {...state, searchedMovies: {...action.data}, mvDetail: []}
+            return {...state, searchedMovies: [...Object.keys(action.data)], mvDetail: []}
         case 'SORTED_MOVIES':
-            return {...state, ...action.data, searchedMovies:{}}
+            return {...state, ...action.data, searchedMovies:[]}
         case 'DELETE_MOVIE':
             const oldState = state;
             delete oldState[action.data];

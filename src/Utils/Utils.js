@@ -62,6 +62,12 @@ export const getRightPanelObj = (type,mvObj={}) =>{
                 'apiName' : 'actName',
                 'value' : mvObj['actName'] ||''
             },
+            'releaseDate':{
+                'fieldName' : 'Release Date',
+                'type' : 'releaseDate',
+                'apiName' : 'releaseDate',
+                'value' : mvObj['releaseDate'] || ''
+            },
             'downloadLink' : {
                 'fieldName' : 'DownloadLink',
                 'type' : 'url',
@@ -79,7 +85,7 @@ export const getRightPanelObj = (type,mvObj={}) =>{
                 'type' : 'rating',
                 'apiName' : 'rating',
                 'value' : mvObj['rating'] || ''
-            }
+            },
         }
     }
 
@@ -101,6 +107,7 @@ export const getListViewColumns = (type) =>{
                 { id: 'mvId', label: 'Date', minWidth: 130, type:'date' },
                 { id: 'name', label: 'Name', minWidth: 130, type:'text' },
                 { id: 'actName', label: 'Act Name', minWidth: 170 , type:'text' },
+                { id: 'releaseDate', label: 'Release Date', minWidth: 130, type:'date' },
                 {
                     id: 'rating',
                     label: 'Rating',
@@ -151,7 +158,6 @@ export const getAPIAndValue = (obj,key,value)=>{
 export const getReplacedDomains = (link)=>{
     return link.replace("pics.dmm.co.jp", "pics.vpdmm.cc");
 }
-
 export const normalizeObj = (arr,key, isSortBy) =>{
     const getSortedObj = ()=>{
         return {

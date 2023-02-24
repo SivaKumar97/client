@@ -130,7 +130,7 @@ export default function ListView(props) {
                   }}
                 />
           ) : column.type == 'date' ? (
-            <Box sx={{fontSize: '1rem'}} onClick={()=>openDetailView(row['mvId'])}>{value > 50 ? new Date(value).toLocaleString('en-GB', {hour12: true}): value}</Box>
+            <Box sx={{fontSize: '1rem'}} onClick={()=>openDetailView(row['mvId'])}>{(value > 50 || (value && value.indexOf("T") !=-1)) ? new Date(value).toLocaleDateString('en-GB'): value}</Box>
           )
           : <Box sx={{fontSize: '1rem'}} onClick={()=>openDetailView(row['mvId'])}>{value}</Box>  }
           </StyledTableCell >

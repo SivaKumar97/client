@@ -7,9 +7,10 @@ import IconButton from '@mui/material/IconButton';
 import Drawer from '@mui/material/Drawer';
 import LoadingButton from '@mui/lab/LoadingButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { Autocomplete,  FormControl,  Rating, TextField, Typography } from '@mui/material';
+import { Autocomplete,  FormControl,  Rating, Stack, TextField, Typography } from '@mui/material';
 import { generate, getAPIAndValue, selectn } from '../Utils/Utils';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import DateField from './DatePicker';
 
 const drawerWidth = 350;
 export default class RightPanel extends Component {
@@ -28,6 +29,8 @@ export default class RightPanel extends Component {
       this.changeFormDetails = this.changeFormDetails.bind(this)
       this.submitClick = this.submitClick.bind(this)
       this.getFromClipBoard = this.getFromClipBoard.bind(this)
+      this.handleGetRef = this.handleGetRef.bind(this)
+      this.dateRef = null
     }
     setLoading(type){
       this.setState({
@@ -47,16 +50,15 @@ export default class RightPanel extends Component {
     getFromClipBoard(){
       const { rightPanelObject } = this.state;
       const movieDetail = prompt('Enter the copied Datas')
-      const { dvdId:name, casts=[], releaseTime, image:imageLink } = JSON.parse(movieDetail);
+      const { dvdId:name, casts=[], releaseDate, image:imageLink } = JSON.parse(movieDetail);
       const actName = casts[0].name;
       const fieldObj = {
-        name, actName, imageLink
+        name, actName, imageLink, releaseDate
       }
       Object.keys(fieldObj).map((type)=>{
           rightPanelObject[type].value = fieldObj[type]
       })
       this.setRightPanelObject(rightPanelObject)
-      
     }
     componentDidUpdate(prevProps,prevStat){
       if(prevProps.recordId != this.props.recordId){
@@ -64,6 +66,9 @@ export default class RightPanel extends Component {
         this.setId(this.props.recordId)
         this.setRightPanelObject(rightPanelObj) 
       }
+    }
+    handleGetRef(ref){
+      this.dateRef = ref
     }
     getField(key){
       const { rightPanelObject } = this.state;
@@ -74,7 +79,7 @@ export default class RightPanel extends Component {
         apiName
       } = rightPanelObject[key] || {};
       const onChange = (e, val) =>{
-        const value = selectn('target.value',e) || val;
+        const value = e == 'dateField' ? val.toISOString() : selectn('target.value',e) || val;
         rightPanelObject[key].value = typeof value == 'string' ? value.trim() : value;
         this.setRightPanelObject({...rightPanelObject})
       }
@@ -102,6 +107,10 @@ export default class RightPanel extends Component {
         return (
           <TextField  sx={{ width: 300 }} onChange={onChange} value={value} label={fieldName} variant="standard" />
         )
+      }else if(type =='releaseDate'){
+              return (
+                <DateField value={value} label={fieldName} onChange={onChange}/>
+              )
       }
     }
     getListItems(){

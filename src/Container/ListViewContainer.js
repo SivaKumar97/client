@@ -7,6 +7,7 @@ import ListView from '../Component/ListView';
 import { closeForm, openForm, deleteMovie, getSearchedMovies, getMovies } from '../Dispatcher/Action';
 import { normalizeObj } from '../Utils/Utils';
 import { getSortedMovies } from './../Dispatcher/Action';
+import { getMoviesSelector } from './../Utils/selector';
 function ListViewContainer(props) {
   const { 
     openForm : openDv,
@@ -76,9 +77,9 @@ function ListViewContainer(props) {
 const mapStateToProps = state => {
   const { movies, config={} } =state;
   const { isShowImage, view='table' } = config;
-  const { searchedMovies = {}, mvDetail=[] } = movies;
-  const datas = mvDetail.length > 0 ? mvDetail :  Object.keys(searchedMovies).length == 0 ? movies : searchedMovies || {};
-  if( mvDetail.length > 0 && Object.keys(searchedMovies).length == 0){
+  const { searchedMovies = [], mvDetail=[] } = movies;
+  const datas = mvDetail.length > 0 ? mvDetail :  searchedMovies.length == 0 ? movies : getMoviesSelector(searchedMovies, movies) || {};
+  if( mvDetail.length > 0 && searchedMovies.length == 0){
     delete datas.mvDetail;
     delete datas.searchedMovies
   }
