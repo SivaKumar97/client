@@ -73,7 +73,7 @@ const getImagePreview = () =>{
                                                 />
                                                 <CardContent>
                                                     <Typography gutterBottom variant="h5" component="div"  sx={{fontSize: "1.2rem" }}>
-                                                        {row['name']}
+                                                        {`${row['name']} ${row['releaseDate'] ? `[${new Date(row['releaseDate']).toLocaleDateString('en-GB')}]`: null}`} 
                                                     </Typography>
                                                     <Rating name="read-only" value={row['rating']} readOnly sx={{fontSize: '1.2rem'}} />
                                                     <Typography variant="body2" color="text.secondary" sx={{fontSize: "1rem" }}>
