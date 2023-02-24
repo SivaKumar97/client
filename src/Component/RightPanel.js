@@ -51,7 +51,7 @@ export default class RightPanel extends Component {
       const { rightPanelObject } = this.state;
       const movieDetail = prompt('Enter the copied Datas')
       const { dvdId:name, casts=[], releaseDate, image:imageLink } = JSON.parse(movieDetail);
-      const actName = casts[0].name || '';
+      const actName = casts[0] && casts[0].name || '';
       const fieldObj = {
         name, actName, imageLink, releaseDate
       }
