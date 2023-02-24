@@ -13,13 +13,6 @@ import { searchDetails } from './../Action/APIAction';
 import Paper from '@mui/material/Paper';
 import SearchIcon from '@mui/icons-material/Search';
 import { selectn } from './../Utils/Utils';
-import Grid from '@mui/material/Grid';
-import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 let intialCall = false;
 function AppContainer(props) {
     const { state, getMovies, getSearchedMovies, movies } = props;
@@ -30,7 +23,7 @@ function AppContainer(props) {
         intialCall = true;
         getMvDetails().then(
           data=>{
-            getMovies(normalizeObj(data.mvDetails,'mvId'))
+            getMovies(normalizeObj(data.mvDetails,'mvId', 'mvId'))
           })
       }
     },initialCallMade)

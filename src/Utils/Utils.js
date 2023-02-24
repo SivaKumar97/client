@@ -119,7 +119,8 @@ export const getListViewColumns = (type) =>{
                 },
                 { id: 'icons', label: '', minWidth: 100, type: 'icons', align: 'right' },
     ]
-    return type == 'dv' ? columns : columns.slice(1,columns.length)
+    //return type == 'dv' ? columns : columns.slice(1,columns.length)
+    return columns
 }
 export const selectn = (str,obj) =>{
     let value = obj;
@@ -152,20 +153,26 @@ export const getReplacedDomains = (link)=>{
 }
 
 export const normalizeObj = (arr,key, isSortBy) =>{
-    if(isSortBy){
-       return {
-        'mvDetail' : arr.sort((prevMov,nextMov)=>{
-            if(isSortBy == 'asc'){
-                return (prevMov[key] - nextMov[key] || prevMov[key].localeCompare(nextMov[key]))
-            }
-            return - (prevMov[key] - nextMov[key] || prevMov[key].localeCompare(nextMov[key]))
-        })
-       } 
+    const getSortedObj = ()=>{
+        return {
+            'mvDetail' : arr.sort((prevMov,nextMov)=>{
+                if(isSortBy == 'asc' || isSortBy == 'mvId'){
+                    return (prevMov[key] - nextMov[key] || prevMov[key].localeCompare(nextMov[key]))
+                }
+                return - (prevMov[key] - nextMov[key] || prevMov[key].localeCompare(nextMov[key]))
+            })
+           } 
     }
-    const resultObj = {};
+    if(isSortBy && isSortBy != 'mvId'){
+        return getSortedObj()
+    }
+    let resultObj = {};
     arr.map(val=>{
         resultObj[val[key].toString()] = val;
     })
+    if(isSortBy == 'mvId'){
+        resultObj = {...resultObj, ... getSortedObj()}
+    }
     return resultObj;
 }
 

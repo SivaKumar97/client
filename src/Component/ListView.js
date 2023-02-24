@@ -129,7 +129,10 @@ export default function ListView(props) {
                     fontSize: '1.2rem'
                   }}
                 />
-          ) : <Box sx={{fontSize: '1rem'}} onClick={()=>openDetailView(row['mvId'])}>{value}</Box>  }
+          ) : column.type == 'date' ? (
+            <Box sx={{fontSize: '1rem'}} onClick={()=>openDetailView(row['mvId'])}>{value > 50 ? new Date(value).toLocaleString('en-GB', {hour12: true}): value}</Box>
+          )
+          : <Box sx={{fontSize: '1rem'}} onClick={()=>openDetailView(row['mvId'])}>{value}</Box>  }
           </StyledTableCell >
         )
       })
