@@ -45,7 +45,7 @@ function AppContainer(props) {
     const size = useWindowSize();
     const [searchMvStr,searchMvState] = React.useState('')
     const searchMv = (e) =>{
-      const str = selectn('target.value',e)
+      const str = selectn('target.value',e) || ''
       searchMvState(str)
       if(str.length > 2 || str.length == 0){
         searchDv(str);
