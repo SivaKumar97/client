@@ -173,7 +173,7 @@ export const getActName = (movies) =>{
     const actNames = [];
     Object.values(movies).map(movie=>{
         const { actName } = movie;
-        if(!actNames.includes(actName)){
+        if(!actNames.includes(actName) && actName){
             actNames.push(actName)
         }
     })
@@ -186,7 +186,7 @@ export const getMovieName = (movies) =>{
     const names = []
     Object.values(movies).map(movie=>{
         const { name, mvId } = movie;
-        if(!names.includes(name)){
+        if(!names.includes(name) && name){
             movieNames.push({id: mvId, label:name})
             names.push(name)
         }
