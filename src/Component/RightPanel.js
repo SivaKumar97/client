@@ -9,6 +9,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { Autocomplete,  FormControl,  Rating, TextField, Typography } from '@mui/material';
 import { generate, getAPIAndValue, selectn } from '../Utils/Utils';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 
 const drawerWidth = 350;
 export default class RightPanel extends Component {
@@ -26,6 +27,7 @@ export default class RightPanel extends Component {
       this.getListItems = this.getListItems.bind(this)
       this.changeFormDetails = this.changeFormDetails.bind(this)
       this.submitClick = this.submitClick.bind(this)
+      this.getFromClipBoard = this.getFromClipBoard.bind(this)
     }
     setLoading(type){
       this.setState({
@@ -41,6 +43,20 @@ export default class RightPanel extends Component {
       this.setState({
         id
       })
+    }
+    getFromClipBoard(){
+      const { rightPanelObject } = this.state;
+      const movieDetail = prompt('Enter the copied Datas')
+      const { dvdId:name, casts=[], releaseTime, image:imageLink } = JSON.parse(movieDetail);
+      const actName = casts[0].name;
+      const fieldObj = {
+        name, actName, imageLink
+      }
+      Object.keys(fieldObj).map((type)=>{
+          rightPanelObject[type].value = fieldObj[type]
+      })
+      this.setRightPanelObject(rightPanelObject)
+      
     }
     componentDidUpdate(prevProps,prevStat){
       if(prevProps.recordId != this.props.recordId){
@@ -141,6 +157,9 @@ export default class RightPanel extends Component {
                 >
                     <Typography gutterBottom variant="h5" component="div">
                       {formType == 'editForm' ? 'Edit Form' : 'Add Form'}
+                      <IconButton onClick={this.getFromClipBoard}>
+                        <ContentPasteIcon />
+                      </IconButton>
                     </Typography>
                 </ListItem>
               )}
