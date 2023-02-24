@@ -28,7 +28,7 @@ function DetailViewContainer(props) {
     openForm('editForm')
   }
   return (
-      JSON.stringify(movieDetail) != '{}' ? (
+      Object.keys(movieDetail).length > 0 ? (
         <DetailView 
           formType={formType}
           closeForm={closeForm}
@@ -50,14 +50,14 @@ const mapStateToProps = state => {
   const formType = form.isFormOpened;
   const { isShowImage } = config;
   const { searchedMovies = {} } = movies;
-  const datas = JSON.stringify(searchedMovies) == "{}" ? movies : searchedMovies || {}
-  delete movies.searchedMovies
+  const datas = Object.keys(searchedMovies).length == 0 ? movies : searchedMovies || {}
+  Object.keys(searchedMovies).length == 0 && delete movies.searchedMovies
   return {
       state,
       formType,
       canShowImage: isShowImage,
-      movies,
-      movieDetail: searchedMovies[Object.keys(searchedMovies)[0]] || movies[form.recordId] || {}
+      movies: datas,
+      movieDetail: searchedMovies[form.recordId] || searchedMovies[Object.keys(searchedMovies)[0]] || movies[form.recordId] || {}
     }
 };
 

@@ -53,7 +53,7 @@ function ListViewContainer(props) {
           }}
         >
           
-      {(showSearch || view=='classic') && searchContainer("LV")}
+      {searchContainer("LV")}
       {view == 'table' ? (<ListView 
         openDv={openDv}
         rows={datas}
@@ -77,8 +77,8 @@ const mapStateToProps = state => {
   const { movies, config={} } =state;
   const { isShowImage, view='table' } = config;
   const { searchedMovies = {}, mvDetail=[] } = movies;
-  const datas = JSON.stringify(mvDetail) != '[]' ? mvDetail :  JSON.stringify(searchedMovies) == "{}" ? movies : searchedMovies || {};
-  if(JSON.stringify(mvDetail) == '[]' && JSON.stringify(searchedMovies) == "{}"){
+  const datas = mvDetail.length > 0 ? mvDetail :  Object.keys(searchedMovies).length == 0 ? movies : searchedMovies || {};
+  if( mvDetail.length > 0 && Object.keys(searchedMovies).length == 0){
     delete datas.mvDetail;
     delete datas.searchedMovies
   }

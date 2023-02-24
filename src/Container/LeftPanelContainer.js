@@ -16,7 +16,6 @@ function LeftPanelContainer(props) {
     windowSize,
     toggleView
   } = props;
-
   const exportData = (type,setLoading,setLoadingVal)=>{
       const getProgress = ()=>{
       setLoadingVal(0)
@@ -74,6 +73,5 @@ export default connect(mapStateToProps,{
   showImage, 
   hideImage,
   getMovies,
-  toggleView
-  
+  toggleView  
 })(LeftPanelContainer);

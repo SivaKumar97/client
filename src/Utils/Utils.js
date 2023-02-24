@@ -22,23 +22,23 @@ export const getLeftPanelObj = () => {
                 iconName: 'viewToggle'
             }           
         },
-        'google' : {
-            'importData' : {
-                label: 'Import Data',
-                apiName: 'importData',
-                iconName: 'importIcon'
-            },
-            'exportData' : {
-                label: 'Export Data',
-                apiName: 'exportData',
-                iconName: 'exportIcon'
-            },
-            'exportProject' : {
-                label: 'Export Project',
-                apiName: 'exportProject',
-                iconName: 'exportIcon'
-            }
-        }
+        // 'google' : {
+        //     'importData' : {
+        //         label: 'Import Data',
+        //         apiName: 'importData',
+        //         iconName: 'importIcon'
+        //     },
+        //     'exportData' : {
+        //         label: 'Export Data',
+        //         apiName: 'exportData',
+        //         iconName: 'exportIcon'
+        //     },
+        //     'exportProject' : {
+        //         label: 'Export Project',
+        //         apiName: 'exportProject',
+        //         iconName: 'exportIcon'
+        //     }
+        // }
     }
 }
 export const getRightPanelObj = (type,mvObj={}) =>{
