@@ -200,6 +200,7 @@ export function getLinks(idCode){
           'Lib' : `http://www.javlibrary.com/en/vl_searchbyid.php?keyword=${idCode}`,
           'Arc' : `https://arcjav.com/?s=${idCode}`,
           '357' : `https://javx357.com/?s=${idCode}`,
+          'SUPJAV' : `https://supjav.com/?s=${idCode}`,
           'One' : `https://onejav.com/search/${idCode}`,
           'FF' : `https://ffjav.com/?s=${idCode}`,
           'STB' : `https://sextb.net/search/${idCode}`,
