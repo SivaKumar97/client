@@ -108,13 +108,6 @@ export const getListViewColumns = (type) =>{
                 { id: 'name', label: 'Name', minWidth: 130, type:'text' },
                 { id: 'actName', label: 'Act Name', minWidth: 170 , type:'text' },
                 { id: 'releaseDate', label: 'Release Date', minWidth: 130, type:'date' },
-                {
-                    id: 'rating',
-                    label: 'Rating',
-                    minWidth: 170,
-                    align: 'left',
-                    type:'rating'
-                },
                 { id: 'downloadLink', label: 'Download Link', minWidth: 100, type:'url', sLabel: 'D Link' },
                 {
                     id: 'subLink',
@@ -123,6 +116,13 @@ export const getListViewColumns = (type) =>{
                     align: 'left', 
                     type:'url',
                     sLabel: 'S Link'
+                },
+                {
+                    id: 'rating',
+                    label: 'Rating',
+                    minWidth: 170,
+                    align: 'left',
+                    type:'rating'
                 },
                 { id: 'icons', label: '', minWidth: 100, type: 'icons', align: 'right' },
     ]

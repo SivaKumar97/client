@@ -200,8 +200,7 @@ export default function DetailView(props) {
                                     theme.palette.mode === 'dark' ? 'grey.300' : 'grey.800',
                                     textAlign: 'center',
                                     display:'grid',
-                                    gap: 1,
-                                    gridTemplateColumns: 'repeat(2, 1fr)',
+                                    gridTemplateColumns: 'repeat(3, 1fr)',
                                     maxHeight: 110
                                 }}
                             >
