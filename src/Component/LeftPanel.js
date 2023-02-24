@@ -34,7 +34,7 @@ export default function LeftPanel(props) {
         openForm(type);
       }else if(type == 'viewToggle'){
         toggleView()
-      }else if(['today','nextWeek','thisWeek', 'allData'].includes(type)){
+      }else if(Object.keys(leftPanelObj['search']).includes(type)){
         const datas = type == 'allData' ? [] : getDatasByDay(movies,type)
         getSearchedMovies(normalizeObj(datas,'mvId'))
       }else {

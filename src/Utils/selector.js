@@ -16,15 +16,18 @@ export const getDatasByDay = (movies,type) =>{
         const day = today.getDay();
         startTime = startTime - (day * dayInMs)
         endTime = startTime + (7 * dayInMs)
-    }else if(type == 'nextWeek'){
+    }else if(type == 'nextWeek' || type == 'otherReleases'){
         const day = 7 - today.getDay();
         startTime = startTime + (day * dayInMs)
         endTime = startTime + (7 * dayInMs)
     }
     Object.keys(movies).map(movie=>{
-        const { releaseDate = '' } = movies[movie];
+        const { releaseDate = '', name } = movies[movie];
         const releaseDateInMs = releaseDate && new Date(releaseDate).setHours(0,0,0,0);
-        if(releaseDate && releaseDateInMs >= startTime && releaseDateInMs < endTime){
+        if(type == 'otherReleases' && releaseDate && releaseDateInMs > endTime){
+            moviesObj.push(movies[movie]);
+        }
+        else if(type != 'otherReleases' && releaseDate && releaseDateInMs >= startTime && releaseDateInMs < endTime){
             moviesObj.push(movies[movie]);
         }
     })

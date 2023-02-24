@@ -42,6 +42,11 @@ export const getLeftPanelObj = () => {
                 label: 'Next Week Release',
                 apiName: 'nextWeek',
                 iconName: 'today'
+            },
+            'otherReleases':{
+                label: 'Other Releases',
+                apiName: 'otherReleases',
+                iconName: 'today'
             }
         }
         // 'google' : {
