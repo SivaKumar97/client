@@ -13,7 +13,7 @@ import ListItemText from '@mui/material/ListItemText';
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import Toolbar from '@mui/material/Toolbar';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
-import { IconButton, Switch, Typography } from '@mui/material';
+import { Avatar, IconButton, Switch, Typography } from '@mui/material';
 import BackupIcon from '@mui/icons-material/Backup';
 import { generate, normalizeObj } from '../Utils/Utils';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
@@ -48,7 +48,7 @@ export default function LeftPanel(props) {
       isShowImage ? hideImage() : showImage();
     }
     const leftPanelkeys = Object.keys(leftPanelObj);
-
+    const isTodayReleased = getDatasByDay(movies,'today').length
     const getListItems = (isMobileView)=>{
         const listArr = [];
         const getList = (key)=>{
@@ -103,6 +103,13 @@ export default function LeftPanel(props) {
                                       : null}
                                     </ListItemIcon>
                                     {!isMobile && <ListItemText primary={label} />}
+                                    {apiName == 'today' && isTodayReleased > 0 ? 
+                                    ( <Avatar
+                                          sx={{ bgcolor: 'black',width: 20, height: 20, fontSize:12  }}
+                                          alt="Remy Sharp"
+                                        >
+                                          {isTodayReleased}
+                                        </Avatar>) : null}
                               </ListItemButton>
                           </Tooltip>
                           ) 
