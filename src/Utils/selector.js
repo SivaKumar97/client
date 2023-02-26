@@ -21,10 +21,18 @@ export const getDatasByDay = (movies,type) =>{
         startTime = startTime + (day * dayInMs)
         endTime = startTime + (7 * dayInMs)
     }
+    delete movies['mvDetail']
+    delete movies['searchedMovies']
     Object.keys(movies).map(movie=>{
         const { releaseDate = '', name } = movies[movie];
         const releaseDateInMs = releaseDate && new Date(releaseDate).setHours(0,0,0,0);
-        if(type == 'otherReleases' && releaseDate && releaseDateInMs > endTime){
+        if(moviesObj.length == 97){debugger;}
+        if(type == 'releasedMovies'){
+            if(releaseDateInMs <= startTime || !releaseDate){
+                moviesObj.push(movies[movie]);
+            }
+        }
+        else if(type == 'otherReleases' && releaseDate && releaseDateInMs > endTime){
             moviesObj.push(movies[movie]);
         }
         else if(type != 'otherReleases' && releaseDate && releaseDateInMs >= startTime && releaseDateInMs < endTime){

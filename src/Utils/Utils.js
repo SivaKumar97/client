@@ -47,6 +47,11 @@ export const getLeftPanelObj = () => {
                 label: 'Other Releases',
                 apiName: 'otherReleases',
                 iconName: 'today'
+            },
+            'releasedMovies':{
+                label: 'Released Movies',
+                apiName: 'releasedMovies',
+                iconName: 'today'
             }
         }
         // 'google' : {
