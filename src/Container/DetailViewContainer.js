@@ -50,9 +50,12 @@ const mapStateToProps = state => {
   const { config={}, form={}, movies } = state;
   const formType = form.isFormOpened;
   const { isShowImage } = config;
-  const { searchedMovies = [] } = movies;
-  const datas = getMoviesSelector(searchedMovies, movies)
-  searchedMovies.length == 0 && delete datas.searchedMovies
+  const { searchedMovies = [],mvDetail=[] } = movies;
+  const datas = mvDetail.length > 0 ? mvDetail :  searchedMovies.length == 0 ? movies : getMoviesSelector(searchedMovies, movies) || {};
+  if( mvDetail.length > 0 && searchedMovies.length == 0){
+    delete datas.mvDetail;
+    delete datas.searchedMovies
+  }
   return {
       state,
       formType,
