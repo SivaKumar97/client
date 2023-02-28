@@ -31,6 +31,7 @@ export default class RightPanel extends Component {
       this.getFromClipBoard = this.getFromClipBoard.bind(this)
       this.handleGetRef = this.handleGetRef.bind(this)
       this.dateRef = null
+      this.rightPanObj = {}
     }
     setLoading(type){
       this.setState({
@@ -49,21 +50,31 @@ export default class RightPanel extends Component {
     }
     getFromClipBoard(){
       const { rightPanelObject } = this.state;
+      const {name:existNames=[]} = this.props;
       const movieDetail = prompt('Enter the copied Datas')
       const { dvdId:name, casts=[], releaseDate, image:imageLink } = JSON.parse(movieDetail);
       const actName = casts[0] && casts[0].name || '';
       const fieldObj = {
         name, actName, imageLink, releaseDate
       }
+      const existMovie = existNames.filter(obj=>obj.label.indexOf(name) != -1);
       Object.keys(fieldObj).map((type)=>{
-          rightPanelObject[type].value = fieldObj[type]
+        rightPanelObject[type].value = fieldObj[type]
       })
+      if(existMovie.length > 0){
+        this.rightPanObj = rightPanelObject
+        return this.changeFormDetails('',existMovie[0])
+      }
       this.setRightPanelObject(rightPanelObject)
     }
     componentDidUpdate(prevProps,prevStat){
       if(prevProps.recordId != this.props.recordId){
         const { rightPanelObj } = this.props;
         this.setId(this.props.recordId)
+        Object.keys(this.rightPanObj).map(key=>{
+          rightPanelObj[key]['value'] = this.rightPanObj[key]['value'] ? this.rightPanObj[key]['value'] : rightPanelObj[key]['value'] 
+        })        
+        this.rightPanObj = {}
         this.setRightPanelObject(rightPanelObj) 
       }
     }
