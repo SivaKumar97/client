@@ -5,12 +5,13 @@ import IconButton from '@mui/material/IconButton';
 import Drawer from '@mui/material/Drawer';
 import CloseIcon from '@mui/icons-material/Close';
 import { Button, Modal, Rating, TextField} from '@mui/material';
-import { getLinks, getListViewColumns, NO_IMAGE, responsiveFunc } from '../Utils/Utils';
+import { getLinks, getLinksLabel, getListViewColumns, NO_IMAGE, responsiveFunc } from '../Utils/Utils';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import { ResponsiveReceiver } from '@zohodesk/components/lib/Responsive/CustomResponsive';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { getMaxWidth } from './../Utils/Utils';
+import { Tooltip } from '@mui/material';
 const fields = getListViewColumns('dv');
 export default function DetailView(props) {
     const { 
@@ -215,7 +216,9 @@ export default function DetailView(props) {
                                                 {field.type == 'url' ? (
                                                     links.map((val,index)=>{
                                                         return (
-                                                            <Button color="secondary" href={val} disabled={val ? false : true} >{field.label} {`${links.length > 1 ? '-'+ parseInt(index+1) : ''}`}</Button>
+                                                         <Tooltip title={field.label}>
+                                                            <Button color="secondary" href={val} disabled={val ? false : true} >{getLinksLabel(links, field.label)} {`${links.length > 1 ? '-'+ parseInt(index+1) : ''}`}</Button>
+                                                        </Tooltip>
                                                         )
                                                     })
                                                 ) : field.type == 'rating' ? (

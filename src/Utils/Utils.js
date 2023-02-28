@@ -275,3 +275,21 @@ export function getMaxWidth(obj){
         isMobileView: 400
     }[windowType]
 }
+
+export const getLinksLabel = (link, label) =>{
+     if(link.indexOf('javgg') != -1){
+        return 'JGG'
+    }else if(link.indexOf('arcjav') !=-1){
+        if(link.indexOf("4k") != -1){
+            return 'ARC 4K Link'
+        }
+        return 'ARC Link'
+    }else if(link.indexOf('drive.google') != -1){
+        return 'GDrive Link'
+    }else if(link.indexOf('uptobox') !=-1){
+        return 'UpBox Link'
+    }else if(link.indexOf('github') !=-1){
+        return 'GitHub Link'
+    }
+    return label 
+}

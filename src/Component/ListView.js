@@ -9,7 +9,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { DV_HEIGHT } from '../Utils/CssCalc';
 import { styled } from '@mui/material/styles';
-import { getListViewColumns } from '../Utils/Utils';
+import { getLinksLabel, getListViewColumns } from '../Utils/Utils';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Button, IconButton, Input, InputBase, Rating, Tooltip } from '@mui/material';
@@ -115,8 +115,8 @@ export default function ListView(props) {
           ) : column.type == 'url' ? (
               links.map((val,index)=>{
                 return (
-                      <Tooltip title={val}>
-                        <Button color="secondary" sx={{fontSize: '0.8rem'}} href={val} disabled={val ? false : true} >{links.length > 1 ? column.sLabel : column.label} {`${links.length > 1 ? '-'+ parseInt(index+1) : ''}`}</Button>
+                      <Tooltip title={column.label}>
+                        <Button color="secondary" sx={{fontSize: '0.8rem'}} href={val} disabled={val ? false : true} >{getLinksLabel(val, column.label)} {`${links.length > 1 ? '-'+ parseInt(index+1) : ''}`}</Button>
                       </Tooltip>
                   )
               })
