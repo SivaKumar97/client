@@ -1,11 +1,19 @@
 export const movieReducer = (state={}, action)=>{
+    const { searchedMovies=[], mvDetail=[] } = state;
+    console.log(action, state)
     switch(action.type){
         case 'UPDATE_MOVIES':
-            return {...state, ...action.data}
+            if(searchedMovies.length > 0){
+                searchedMovies.splice(0,0,Object.keys(action.data)[0])
+            }
+            if(mvDetail.length > 0){
+                mvDetail.splice(0,0,Object.values(action.data)[0])
+            }
+            return {...state, ...action.data, mvDetail, searchedMovies}
         case 'GET_MOVIES':
-            return {...state, mvDetail: [], ...action.data, searchedMovies:[]}
+            return {...state,  ...action.data, searchedMovies:[], mvDetail}
         case 'SEARCHED_MOVIES':
-            return {...state, searchedMovies: [...Object.keys(action.data)], mvDetail: []}
+            return {...state, searchedMovies: [...Object.keys(action.data)], mvDetail}
         case 'SORTED_MOVIES':
             return {...state, ...action.data, searchedMovies:[]}
         case 'DELETE_MOVIE':

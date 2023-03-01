@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import DetailView from '../Component/DetailView';
 import { closeForm, openForm } from '../Dispatcher/Action';
-import { getMoviesSelector } from './../Utils/selector';
+import { getDatas, getMoviesSelector } from './../Utils/selector';
 function DetailViewContainer(props) {
   const { 
     formType,
@@ -51,11 +51,7 @@ const mapStateToProps = state => {
   const formType = form.isFormOpened;
   const { isShowImage } = config;
   const { searchedMovies = [],mvDetail=[] } = movies;
-  const datas = mvDetail.length > 0 ? mvDetail :  searchedMovies.length == 0 ? movies : getMoviesSelector(searchedMovies, movies) || {};
-  if( mvDetail.length > 0 && searchedMovies.length == 0){
-    delete datas.mvDetail;
-    delete datas.searchedMovies
-  }
+  const datas = getDatas(state)
   return {
       state,
       formType,

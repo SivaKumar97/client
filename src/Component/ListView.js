@@ -15,6 +15,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Button, IconButton, Input, InputBase, Rating, Tooltip } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { TableVirtuoso } from 'react-virtuoso';
+import MenuList from './Menu';
 
 const columns = getListViewColumns();
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -113,13 +114,20 @@ export default function ListView(props) {
               </Tooltip>
             </React.Fragment>
           ) : column.type == 'url' ? (
+            links.length < 3 ? (
               links.map((val,index)=>{
-                return (
-                      <Tooltip title={column.label}>
-                        <Button color="secondary" sx={{fontSize: '0.8rem'}} href={val} disabled={val ? false : true} >{getLinksLabel(val, column.label)} {`${links.length > 1 ? '-'+ parseInt(index+1) : ''}`}</Button>
-                      </Tooltip>
-                  )
-              })
+                 return (
+                     <Tooltip title={column.label}>
+                        <Button color="secondary" href={val} disabled={val ? false : true} >{getLinksLabel(val, column.label)} {`${links.length > 1 ? '-'+ parseInt(index+1) : ''}`}</Button>
+                    </Tooltip>
+                  )}
+                )
+              ) : (
+                  <MenuList 
+                      options={links}
+                      title={column.label}
+                  />
+              )
           ) : column.type == 'rating' ? (
                 <Rating 
                   name="read-only" 

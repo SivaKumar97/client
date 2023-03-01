@@ -30,6 +30,9 @@ function AppContainer(props) {
     const searchDv = (str) =>{
       const searchCall = str.length  == 0 ? getMvDetails : searchDetails;
       searchCall(str,Object.values(movies)).then(resp=>{
+        if(str == ''){
+          return getMovies(normalizeObj(resp.mvDetails,'mvId', 'mvId'))
+        }
         getSearchedMovies(normalizeObj(resp.mvDetails,'mvId'))
       },err=>{
   

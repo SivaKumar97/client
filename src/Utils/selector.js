@@ -6,9 +6,21 @@ export const getMoviesSelector = (searchedList=[],movies) =>{
     return movieList;
 }
 
+export const getDatas = (state) =>{
+    const { movies } = state;
+    const { mvDetail=[],searchedMovies=[] } = movies;
+    const datas = searchedMovies.length != 0 ? getMoviesSelector(searchedMovies, movies) : mvDetail.length > 0 ? mvDetail : {...movies}  || {};
+    if( mvDetail.length == 0 && searchedMovies.length == 0){
+        delete datas.mvDetail;
+        delete datas.searchedMovies
+      }
+    return datas
+}
+
 export const getDatasByDay = (movies,type) =>{
     const dayInMs = 86400000
     let today = new Date()
+    const movieObj = {...movies}
     let startTime = today.setHours(0,0,0,0);
     let endTime = startTime + dayInMs
     const moviesObj = []
@@ -21,9 +33,9 @@ export const getDatasByDay = (movies,type) =>{
         startTime = startTime + (day * dayInMs)
         endTime = startTime + (7 * dayInMs)
     }
-    delete movies['mvDetail']
-    delete movies['searchedMovies']
-    Object.keys(movies).map(movie=>{
+    delete movieObj['mvDetail']
+    delete movieObj['searchedMovies']
+    Object.keys(movieObj).map(movie=>{
         const { releaseDate = '', name } = movies[movie];
         const releaseDateInMs = releaseDate && new Date(releaseDate).setHours(0,0,0,0);
         if(moviesObj.length == 97){debugger;}

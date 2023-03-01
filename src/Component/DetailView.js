@@ -12,6 +12,7 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { getMaxWidth } from './../Utils/Utils';
 import { Tooltip } from '@mui/material';
+import MenuList from './Menu';
 const fields = getListViewColumns('dv');
 export default function DetailView(props) {
     const { 
@@ -214,13 +215,20 @@ export default function DetailView(props) {
                                     return (
                                             <Box sx={{p:2,m:2,borderRadius: 2,boxShadow: 1}}>
                                                 {field.type == 'url' ? (
-                                                    links.map((val,index)=>{
-                                                        return (
-                                                         <Tooltip title={field.label}>
-                                                            <Button color="secondary" href={val} disabled={val ? false : true} >{getLinksLabel(links, field.label)} {`${links.length > 1 ? '-'+ parseInt(index+1) : ''}`}</Button>
-                                                        </Tooltip>
+                                                    links.length < 3 ? (
+                                                         links.map((val,index)=>{
+                                                            return (
+                                                                <Tooltip title={field.label}>
+                                                                   <Button color="secondary" href={val} disabled={val ? false : true} >{getLinksLabel(val, field.label)} {`${links.length > 1 ? '-'+ parseInt(index+1) : ''}`}</Button>
+                                                               </Tooltip>
+                                                            )}
                                                         )
-                                                    })
+                                                    ) : (
+                                                        <MenuList 
+                                                            options={links}
+                                                            title={field.label}
+                                                        />
+                                                )
                                                 ) : field.type == 'rating' ? (
                                                     <Rating name="read-only" value={value} readOnly />
                                                 ) : field.type == 'date' ? (

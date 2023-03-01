@@ -13,6 +13,7 @@ import ClosedCaptionIcon from '@mui/icons-material/ClosedCaption';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import { ResponsiveReceiver } from '@zohodesk/components/lib/Responsive/CustomResponsive';
 import IconButton from '@mui/material/IconButton';
+import MenuList from './Menu';
  
 const ClassicView = props => {
 const [openImgPreview,toggleImgPreview] = React.useState(false);
@@ -62,6 +63,8 @@ const getImagePreview = () =>{
                     <Box sx={{m:isMobileView ? 0 : 2}}>
                         <Grid container spacing={isMobileView ? 3 : 7}>
                                 {rows.map((row)=>{
+                                    const downloadLinks = row['downloadLink'] != '' ? decodeURI(row['downloadLink']).split("|") : []
+                                    const subLink = row['subLink'] != '' ?decodeURI(row['subLink']).split("|") : []
                                     return ( 
                                     <Grid item xs={7} md={5} lg={3}>
                                             <Card sx={{ maxWidth: 345 }}>
@@ -73,7 +76,7 @@ const getImagePreview = () =>{
                                                 />
                                                 <CardContent>
                                                     <Typography gutterBottom variant="h5" component="div"  sx={{fontSize: "1.2rem" }}>
-                                                        {`${row['name']} ${row['releaseDate'] ? `[${new Date(row['releaseDate']).toLocaleDateString('en-GB')}]`: null}`} 
+                                                        {`${row['name']} ${row['releaseDate'] ? `[${new Date(row['releaseDate']).toLocaleDateString('en-GB')}]`: ''}`} 
                                                     </Typography>
                                                     <Rating name="read-only" value={row['rating']} readOnly sx={{fontSize: '1.2rem'}} />
                                                     <Typography variant="body2" color="text.secondary" sx={{fontSize: "1rem" }}>
@@ -83,33 +86,35 @@ const getImagePreview = () =>{
                                                 <CardActions>
                                                     {isMobileView ? (
                                                             <>
-                                                                <IconButton>
-                                                                    <DownloadIcon  onClick={()=>{openLink(row['downloadLink'])}} />
-                                                                </IconButton>
-                                                                <IconButton>
-                                                                    <ClosedCaptionIcon  onClick={()=>{openLink(row['subLink'])}} />
-                                                                </IconButton>
+                                                                 <MenuList 
+                                                                    options={downloadLinks}
+                                                                    title={'Download'}
+                                                                    isIconOnly={'downloadLink'}
+                                                                    />
+                                                                <MenuList 
+                                                                    options={subLink}
+                                                                    title={'Sub Link'}
+                                                                    isIconOnly={'subLink'}
+                                                                    />
                                                                 <IconButton>
                                                                     <OpenInFullIcon  onClick={()=>openDetailView(row)} />
                                                                 </IconButton>
                                                             </>
                                                     ) : (
-                                                        <>
-                                                                <Button noWrap color="secondary" href={row['downloadLink']} disabled={row['downloadLink'] ? false : true} > 
-                                                                    <Typography noWrap sx={{fontSize:'1rem'}}>
-                                                                        Download
-                                                                    </Typography>
-                                                                    </Button>
-                                                                <Button color="secondary" noWrap href={row['subLink']} disabled={row['subLink'] ? false : true} > 
-                                                                    <Typography noWrap sx={{fontSize:'1rem'}}>
-                                                                        Sub Link
-                                                                    </Typography>
-                                                                </Button>
-                                                                <Button color="secondary"  onClick={()=>openDetailView(row)}  >
-                                                                    <Typography noWrap sx={{fontSize:'1rem'}}>
-                                                                        Open DV
-                                                                    </Typography> 
-                                                                </Button>
+                                                        <>     
+                                                            <MenuList 
+                                                                options={downloadLinks}
+                                                                title={'Download'}
+                                                            />
+                                                            <MenuList 
+                                                                    options={subLink}
+                                                                    title={'Sub Link'}
+                                                                />
+                                                            <Button color="secondary"  onClick={()=>openDetailView(row)}  >
+                                                                <Typography noWrap sx={{fontSize:'0.9rem'}}>
+                                                                    Open DV
+                                                                </Typography> 
+                                                            </Button>
                                                         </>
                                                     )}
                                                 </CardActions>
