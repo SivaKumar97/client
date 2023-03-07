@@ -5,7 +5,7 @@ import { deleteDetails, getMvDetails, searchDetails } from '../Action/APIAction'
 import ClassicView from '../Component/ClassicView';
 import ListView from '../Component/ListView';
 import { closeForm, openForm, deleteMovie, getSearchedMovies, getMovies } from '../Dispatcher/Action';
-import { normalizeObj } from '../Utils/Utils';
+import { getMoviesLst, normalizeObj } from '../Utils/Utils';
 import { getSortedMovies } from './../Dispatcher/Action';
 import { getDatas } from './../Utils/selector';
 function ListViewContainer(props) {
@@ -34,11 +34,11 @@ function ListViewContainer(props) {
   const sortDetails = (sortField) =>{
     const type = fields[sortField] == 'asc' ? 'desc' : fields[sortField] == 'desc'? 'asc' : 'asc'
     fields[sortField] = type;
-    getMvDetails(sortField,type).then(
-      data=>{
+    // getSortedMvDetails(sortField,type,Object.values(movies)).then(
+    //   data=>{
         setFields({...fields})
-        getSortedMovies(normalizeObj(data.mvDetails,sortField,type))
-      })
+        getSortedMovies(normalizeObj(getMoviesLst(datas),sortField,type))
+      // })
   }
   return (
     <Drawer

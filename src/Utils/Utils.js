@@ -240,6 +240,19 @@ export const getMovieName = (movies) =>{
     return movieNames
 }
 
+export const getMoviesLst = (mvArr,movies)=>{
+    const movieObj = {};
+    if(typeof mvArr[0] == 'string'){
+        mvArr.map(mv=>{
+            movieObj[mv] = movies[mv]
+        })
+        return movieObj;
+    }else {
+        return mvArr;
+    }
+
+}
+
 export function getLinks(idCode){
     return {
           'Trailers' : `https://javtrailers.com/search/${idCode}`,
