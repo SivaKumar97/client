@@ -61,7 +61,7 @@ const mapStateToProps = state => {
       canShowImage: isShowImage,
       dataArr,
       movies,
-      movieDetail: datas[form.recordId] || datas[searchedMovies[0]] || movies[form.recordId] || {}
+      movieDetail: datas[searchedMovies[0]] || movies[form.recordId] || {}
     }
 };
 
