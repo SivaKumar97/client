@@ -80,7 +80,7 @@ const mapStateToProps = state => {
   const datas = getDatas(state)
   return {
       state,
-      datas: Object.values(datas),
+      datas,
       canShowImage: isShowImage,
       movies,
       view

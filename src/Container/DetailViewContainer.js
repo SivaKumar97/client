@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import DetailView from '../Component/DetailView';
 import { closeForm, openForm } from '../Dispatcher/Action';
-import { getDatas, getMoviesSelector } from './../Utils/selector';
+import { getDatas } from './../Utils/selector';
 function DetailViewContainer(props) {
   const { 
     formType,
@@ -11,13 +11,15 @@ function DetailViewContainer(props) {
     movieDetail,
     movies,
     openForm,
-    searchContainer
+    searchContainer,
+    dataArr
    } = props;
    const getMvId = (type) =>{
-    const keys = Object.keys(movies)
-    let id = keys[keys.indexOf(movieDetail['mvId']+'')+1] || movieDetail['mvId'] ;
+    const keys = dataArr
+    const currentIndex = keys.findIndex(key=>key == movieDetail['mvId'])
+    let id = keys[currentIndex+1] || movieDetail['mvId'] ;
     if(type == 'prev'){
-      id = keys[keys.indexOf(movieDetail['mvId']+'')-1] || movieDetail['mvId']
+      id = keys[currentIndex-1] || movieDetail['mvId']
     }
     return id
    }
@@ -52,11 +54,13 @@ const mapStateToProps = state => {
   const { isShowImage } = config;
   const { searchedMovies = [],mvDetail=[] } = movies;
   const datas = getDatas(state)
+  const dataArr = searchedMovies.length > 0 ? searchedMovies : mvDetail.length > 0 ? mvDetail : Object.keys(movies)
   return {
       state,
       formType,
       canShowImage: isShowImage,
-      movies: datas,
+      dataArr,
+      movies,
       movieDetail: datas[form.recordId] || datas[searchedMovies[0]] || movies[form.recordId] || {}
     }
 };

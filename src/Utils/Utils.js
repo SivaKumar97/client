@@ -192,13 +192,14 @@ export const getReplacedDomains = (link)=>{
 }
 export const normalizeObj = (arr,key, isSortBy) =>{
     const getSortedObj = ()=>{
+        let sortedArr = arr.sort((prevMov,nextMov)=>{
+            if(isSortBy == 'asc' || isSortBy == 'mvId'){
+                return (prevMov[key] - nextMov[key] || prevMov[key].localeCompare(nextMov[key]))
+            }
+            return - (prevMov[key] - nextMov[key] || prevMov[key].localeCompare(nextMov[key]))
+        })
         return {
-            'mvDetail' : arr.sort((prevMov,nextMov)=>{
-                if(isSortBy == 'asc' || isSortBy == 'mvId'){
-                    return (prevMov[key] - nextMov[key] || prevMov[key].localeCompare(nextMov[key]))
-                }
-                return - (prevMov[key] - nextMov[key] || prevMov[key].localeCompare(nextMov[key]))
-            })
+            'mvDetail' : sortedArr.map(arr=>arr.mvId)
            } 
     }
     if(isSortBy && isSortBy != 'mvId'){

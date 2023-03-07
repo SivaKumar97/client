@@ -3,11 +3,12 @@ export const movieReducer = (state={}, action)=>{
     console.log(action, state)
     switch(action.type){
         case 'UPDATE_MOVIES':
+            const key = Object.keys(action.data)[0]
             if(searchedMovies.length > 0){
-                searchedMovies.splice(0,0,Object.keys(action.data)[0])
+                !searchedMovies.includes(key) && searchedMovies.splice(0,0,Object.keys(action.data)[0])
             }
             if(mvDetail.length > 0){
-                mvDetail.splice(0,0,Object.values(action.data)[0])
+                !mvDetail.includes(key) && mvDetail.splice(0,0,Object.keys(action.data)[0])
             }
             return {...state, ...action.data, mvDetail, searchedMovies}
         case 'GET_MOVIES':

@@ -1,7 +1,7 @@
 export const getMoviesSelector = (searchedList=[],movies) =>{
-    const movieList = {};
+    const movieList = [];
     searchedList.map(mv=>{
-        movieList[mv] = movies[mv]
+        movieList.push(movies[mv])
     })
     return movieList;
 }
@@ -9,10 +9,11 @@ export const getMoviesSelector = (searchedList=[],movies) =>{
 export const getDatas = (state) =>{
     const { movies } = state;
     const { mvDetail=[],searchedMovies=[] } = movies;
-    const datas = searchedMovies.length != 0 ? getMoviesSelector(searchedMovies, movies) : mvDetail.length > 0 ? mvDetail : {...movies}  || {};
+    let datas = searchedMovies.length != 0 ? getMoviesSelector(searchedMovies, movies) : mvDetail.length > 0 ? getMoviesSelector(mvDetail, movies) : {...movies}  || {};
     if( mvDetail.length == 0 && searchedMovies.length == 0){
         delete datas.mvDetail;
         delete datas.searchedMovies
+        datas = Object.values(datas)
       }
     return datas
 }
