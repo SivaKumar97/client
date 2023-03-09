@@ -20,7 +20,9 @@ export const movieReducer = (state={}, action)=>{
         case 'DELETE_MOVIE':
             const oldState = state;
             delete oldState[action.data];
-            return { ...oldState}
+            mvDetail.splice(mvDetail.indexOf(action.data),1)
+            searchedMovies.splice(mvDetail.indexOf(action.data),1)
+            return { ...oldState, mvDetail, searchedMovies}
         default:
             return state;
     }
