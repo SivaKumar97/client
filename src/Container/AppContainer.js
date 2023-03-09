@@ -21,10 +21,17 @@ function AppContainer(props) {
       if(!initialCallMade){
         setInitialCall(true)
         intialCall = true;
-        getMvDetails().then(
-          data=>{
-            getMovies(normalizeObj(data.mvDetails,'mvId', 'mvId'))
-          })
+        let mvDetails = JSON.parse(localStorage['mvDetails'] || "{}")
+        if(Object.keys(mvDetails).length > 0){
+          getMovies(mvDetails)
+        }else{
+          getMvDetails().then(
+            data=>{
+              mvDetails = normalizeObj(data.mvDetails,'mvId', 'mvId')
+              localStorage['mvDetails'] = JSON.stringify(mvDetails);
+              getMovies(mvDetails)
+            })
+        }
       }
     },initialCallMade)
     const searchDv = (str) =>{

@@ -1,3 +1,4 @@
+
 const HOST = 'https://javmov.ksiva2.repl.co/api/v1/';
 
 const getFullUrl = (url) =>{
@@ -14,7 +15,9 @@ export const getMvDetails = (field='',type) =>{
             }
             return response.json();
             })
-            .then(data => resolve(data))
+            .then(data => {
+                resolve(data)
+            })
             .catch(error => reject(error));
     });
 }

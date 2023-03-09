@@ -1,10 +1,8 @@
 /* eslint-disable */
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -12,8 +10,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import Toolbar from '@mui/material/Toolbar';
-import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
-import { Avatar, IconButton, Switch, Typography } from '@mui/material';
+import LinearProgress from '@mui/material/LinearProgress';
+import { IconButton, Switch, Typography } from '@mui/material';
 import BackupIcon from '@mui/icons-material/Backup';
 import { generate, normalizeObj } from '../Utils/Utils';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
@@ -35,6 +33,9 @@ export default function LeftPanel(props) {
       }else if(type == 'viewToggle'){
         toggleView()
       }else if(Object.keys(leftPanelObj['search']).includes(type)){
+        if(type == 'totalMovies'){
+          return '';
+        }
         const datas = type == 'allData' ? [] : getDatasByDay(movies,type)
         getSearchedMovies(normalizeObj(datas,'mvId'))
       }else {
@@ -49,6 +50,7 @@ export default function LeftPanel(props) {
     }
     const leftPanelkeys = Object.keys(leftPanelObj);
     const isTodayReleased = getDatasByDay(movies,'today').length
+    const totalMoviesLen = Object.keys(movies).length
     const getListItems = (isMobileView)=>{
         const listArr = [];
         const getList = (key)=>{
@@ -103,13 +105,10 @@ export default function LeftPanel(props) {
                                       : null}
                                     </ListItemIcon>
                                     {!isMobile && <ListItemText primary={label} />}
-                                    {apiName == 'today' && isTodayReleased > 0 ? 
-                                    ( <Avatar
-                                          sx={{ bgcolor: 'black',width: 20, height: 20, fontSize:12  }}
-                                          alt="Remy Sharp"
-                                        >
-                                          {isTodayReleased}
-                                        </Avatar>) : null}
+                                    {(apiName == 'today' && isTodayReleased > 0 || apiName == 'addForm') ? 
+                                    (<Typography variant="30" component="h5">
+                                      {apiName == 'addForm' ? totalMoviesLen : isTodayReleased}
+                                    </Typography> ) :  null}
                               </ListItemButton>
                           </Tooltip>
                           ) 
