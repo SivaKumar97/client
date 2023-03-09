@@ -27,6 +27,16 @@ export default function LeftPanel(props) {
     const { window, leftPanelObj, openForm, isShowImage = false, exportData, windowSize, toggleView,getSearchedMovies, movies } = props;
     const [loading,setLoading] = React.useState(false);
     const [loadingVal,setLoadingVal] = React.useState(0)
+    const moviesByDay = {};
+    Object.keys(leftPanelObj['search']).map(type =>{
+      if(type == 'totalMovies'){
+        return '';
+      }else if(type == 'allData'){
+        moviesByDay[type] = movies
+      }else{
+        moviesByDay[type] = getDatasByDay(movies,type)
+      }
+    })
     const leftPanelAction = (type) =>{
       if(type == 'addForm'){
         openForm(type);
@@ -36,7 +46,7 @@ export default function LeftPanel(props) {
         if(type == 'totalMovies'){
           return '';
         }
-        const datas = type == 'allData' ? [] : getDatasByDay(movies,type)
+        const datas = type == 'allData' ? [] : moviesByDay[type]
         getSearchedMovies(normalizeObj(datas,'mvId'))
       }else {
         setLoading(true)
@@ -105,9 +115,9 @@ export default function LeftPanel(props) {
                                       : null}
                                     </ListItemIcon>
                                     {!isMobile && <ListItemText primary={label} />}
-                                    {(apiName == 'today' && isTodayReleased > 0 || apiName == 'addForm') ? 
+                                    {iconName == 'today' ? 
                                     (<Typography variant="30" component="h5">
-                                      {apiName == 'addForm' ? totalMoviesLen : isTodayReleased}
+                                      {Object.keys(moviesByDay[apiName]).length}
                                     </Typography> ) :  null}
                               </ListItemButton>
                           </Tooltip>
