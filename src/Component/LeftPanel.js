@@ -27,6 +27,7 @@ export default function LeftPanel(props) {
     const { window, leftPanelObj, openForm, isShowImage = false, exportData, windowSize, toggleView,getSearchedMovies, movies } = props;
     const [loading,setLoading] = React.useState(false);
     const [loadingVal,setLoadingVal] = React.useState(0)
+    const [currentTab, setCurrentTab] = React.useState('allData')
     const moviesByDay = {};
     Object.keys(leftPanelObj['search']).map(type =>{
       if(type == 'totalMovies'){
@@ -47,6 +48,7 @@ export default function LeftPanel(props) {
           return '';
         }
         const datas = type == 'allData' ? [] : moviesByDay[type]
+        setCurrentTab(type)
         getSearchedMovies(normalizeObj(datas,'mvId'))
       }else {
         setLoading(true)
@@ -59,8 +61,6 @@ export default function LeftPanel(props) {
       isShowImage ? hideImage() : showImage();
     }
     const leftPanelkeys = Object.keys(leftPanelObj);
-    const isTodayReleased = getDatasByDay(movies,'today').length
-    const totalMoviesLen = Object.keys(movies).length
     const getListItems = (isMobileView)=>{
         const listArr = [];
         const getList = (key)=>{
@@ -69,6 +69,8 @@ export default function LeftPanel(props) {
                 <List>
                     {Object.keys(leftPanelObj[key]).map((option, index) => {
                       const { label, apiName, iconName } =  leftPanelObj[key][option];
+                      const bgColor = currentTab == apiName ? 'black' : 'white';
+                      const fontColor = currentTab == apiName ? 'white' : 'black';
                       return (
                         apiName == 'imgConfig' ?
                               generate(
@@ -107,8 +109,8 @@ export default function LeftPanel(props) {
                         ) 
                         :(
                           <Tooltip title={isMobile && label}>
-                            <ListItemButton sx={{display:'flex' , pt:isMobile ? 5 : 0}} onClick={()=>leftPanelAction(apiName)}>
-                                    <ListItemIcon>
+                            <ListItemButton sx={{display:'flex' , pt:isMobile ? 5 : 0,backgroundColor:bgColor,color:fontColor}} onClick={()=>leftPanelAction(apiName)}>
+                                    <ListItemIcon sx={{color:fontColor}}>
                                     { iconName == 'AddToPhotosIcon' ? <AddToPhotosIcon /> 
                                       : iconName == 'viewToggle' ? <ViewAgendaIcon /> 
                                       : iconName == 'today' ? <TodayIcon />

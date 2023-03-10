@@ -39,7 +39,6 @@ export const getDatasByDay = (movies,type) =>{
     Object.keys(movieObj).map(movie=>{
         const { releaseDate = '', name } = movies[movie];
         const releaseDateInMs = releaseDate && new Date(releaseDate).setHours(0,0,0,0);
-        if(moviesObj.length == 97){debugger;}
         if(type == 'releasedMovies'){
             if(releaseDateInMs <= startTime || !releaseDate){
                 moviesObj.push(movies[movie]);
