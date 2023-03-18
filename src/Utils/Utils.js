@@ -136,15 +136,38 @@ export const getRightPanelObj = (type,mvObj={}) =>{
 }
 export const getListViewColumns = (type) =>{
     const columns =  [
-                { id: 'mvId', label: 'Date', minWidth: 130, type:'date' },
-                { id: 'name', label: 'Name', minWidth: 130, type:'text' },
-                { id: 'actName', label: 'Act Name', minWidth: 170 , type:'text' },
-                { id: 'releaseDate', label: 'Release Date', minWidth: 130, type:'date' },
-                { id: 'downloadLink', label: 'Download Link', minWidth: 100, type:'url', sLabel: 'D Link' },
+                { 
+                    id: 'mvId', 
+                    label: 'Date',
+                    type:'date', 
+                    // minWidth: 50 
+                },
+                { 
+                    id: 'name',
+                    label: 'Name',  
+                    type:'text',
+                    // minWidth: 100
+                 },
+                { 
+                    id: 'actName', 
+                    label: 'Act Name', 
+                    // minWidth: 150 , 
+                    type:'text' },
+                { 
+                    id: 'releaseDate', 
+                    label: 'Release Date', 
+                    // minWidth: 100, 
+                    type:'date' },
+                { 
+                    id: 'downloadLink', 
+                    label: 'Download Link', 
+                    // minWidth: 60, 
+                    type:'url', 
+                    sLabel: 'D Link' },
                 {
                     id: 'subLink',
                     label: 'Sub Link',
-                    minWidth: 170,
+                    // minWidth: 150,
                     align: 'left', 
                     type:'url',
                     sLabel: 'S Link'
@@ -152,11 +175,17 @@ export const getListViewColumns = (type) =>{
                 {
                     id: 'rating',
                     label: 'Rating',
-                    minWidth: 170,
+                    // minWidth: 100,
                     align: 'left',
                     type:'rating'
                 },
-                { id: 'icons', label: '', minWidth: 100, type: 'icons', align: 'right' },
+                { 
+                    id: 'icons', 
+                    label: '', 
+                    // minWidth: 100, 
+                    type: 'icons', 
+                    align: 'right' 
+                },
     ]
     //return type == 'dv' ? columns : columns.slice(1,columns.length)
     return columns

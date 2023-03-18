@@ -8,6 +8,7 @@ import { closeForm, openForm, deleteMovie, getSearchedMovies, getMovies } from '
 import { getMoviesLst, normalizeObj } from '../Utils/Utils';
 import { getSortedMovies } from './../Dispatcher/Action';
 import { getDatas } from './../Utils/selector';
+import MovieContainer from './MovieContainer';
 function ListViewContainer(props) {
   const { 
     openForm : openDv,
@@ -53,7 +54,7 @@ function ListViewContainer(props) {
             }
           }}
         >
-          
+      <MovieContainer />    
       {searchContainer("LV")}
       {view == 'table' ? (<ListView 
         openDv={openDv}
