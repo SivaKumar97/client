@@ -5,10 +5,10 @@ export const movieReducer = (state={}, action)=>{
         case 'UPDATE_MOVIES':
             const key = Object.keys(action.data)[0]
             if(searchedMovies.length > 0){
-                !searchedMovies.includes(key) && searchedMovies.splice(0,0,Object.keys(action.data)[0])
+                !searchedMovies.includes(parseInt(key)) && searchedMovies.splice(0,0,key)
             }
             if(mvDetail.length > 0){
-                !mvDetail.includes(key) && mvDetail.splice(0,0,Object.keys(action.data)[0])
+                !mvDetail.includes(parseInt(key)) && mvDetail.splice(0,0,key)
             }
             const updateMovies = {...state, ...action.data}
             localStorage['mvDetails'] = JSON.stringify(updateMovies)
