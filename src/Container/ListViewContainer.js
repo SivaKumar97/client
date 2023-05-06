@@ -1,10 +1,10 @@
 import {  Drawer } from '@mui/material';
 import React from 'react'
 import { connect } from 'react-redux'
-import { deleteDetails, getMvDetails, searchDetails } from '../Action/APIAction';
+import { deleteDetails, getMvDetails, searchDetails, updateDetails } from '../Action/APIAction';
 import ClassicView from '../Component/ClassicView';
 import ListView from '../Component/ListView';
-import { closeForm, openForm, deleteMovie, getSearchedMovies, getMovies } from '../Dispatcher/Action';
+import { closeForm, openForm, deleteMovie, getSearchedMovies, getMovies, updateMovies } from '../Dispatcher/Action';
 import { getMoviesLst, normalizeObj } from '../Utils/Utils';
 import { getSortedMovies } from './../Dispatcher/Action';
 import { getDatas } from './../Utils/selector';
@@ -41,6 +41,13 @@ function ListViewContainer(props) {
         getSortedMovies(normalizeObj(getMoviesLst(datas),sortField,type))
       // })
   }
+  const updateMvDetails = (payload)=>{
+    updateDetails(payload).then((res)=>{
+      updateMovies(normalizeObj(res.mvDetails,'mvId'))
+    },err=>{
+      console.log("Error Found",err)
+    })
+  }
   return (
     <Drawer
           open
@@ -68,6 +75,7 @@ function ListViewContainer(props) {
           rows={datas}
           openDv={openDv}
           canShowImage={canShowImage}
+          updateMvDetails={updateMvDetails}
           />
         )}
       
@@ -94,5 +102,6 @@ export default connect(mapStateToProps, {
   deleteMovie,
   getSearchedMovies,
   getMovies,
-  getSortedMovies
+  getSortedMovies,
+  updateDetails
 })(ListViewContainer);

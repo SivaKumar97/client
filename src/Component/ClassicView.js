@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Box, Grid, Rating, Modal, Tooltip } from '@mui/material';
+import { Box, Grid, Rating, Modal, Tooltip, Checkbox } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -17,7 +17,7 @@ import MenuList from './Menu';
  
 const ClassicView = props => {
 const [openImgPreview,toggleImgPreview] = React.useState(false);
-const { openDv } = props;
+const { openDv, updateMvDetails } = props;
 const toggleImagePreview = (row={})=>{
     toggleImgPreview(!row['imageLink'])
 }
@@ -49,6 +49,11 @@ const getImagePreview = () =>{
         </Box>
         </Modal>
     )
+}
+const updateSubLink = (row) =>{
+    const link = `https://raw.githubusercontent.com/SivaKumar97/JavMov/main/SrtFiles/${row['name']}_en.srt`
+    row['subLink'] = link
+    updateMvDetails(row)
 }
   const openLink = (link) =>{
     window.open(link,"_blank")
@@ -115,6 +120,15 @@ const getImagePreview = () =>{
                                                                     Open DV
                                                                 </Typography> 
                                                             </Button>
+                                                            {subLink.length == 0 && (
+                                                                <Checkbox
+                                                                value="checkedA"
+                                                                inputProps={{
+                                                                    'aria-label': 'Checkbox A',
+                                                                }}
+                                                                onChange={()=>updateSubLink(row)}
+                                                            />
+                                                            )}
                                                         </>
                                                     )}
                                                 </CardActions>
