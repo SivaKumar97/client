@@ -1,5 +1,5 @@
 
-const HOST = 'http://javmov.ksiva2.repl.co/api/v1/';
+const HOST = 'https://javmov.ksiva2.repl.co/api/v1/';
 
 const getFullUrl = (url) =>{
     return `${HOST}${url}`;
