@@ -52,6 +52,7 @@ export const formReducer = (state={},action) =>{
                 oldState['form'] = isFormType
             }else if(isFormType == 'detailView'){
                 oldState['detailView'] = true
+                oldState['form'] = false;
             }else if(isFormType == 'showRecent'){
                 oldState['listView'] = isFormType
             }
