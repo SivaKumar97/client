@@ -24,6 +24,7 @@ export const movieReducer = (state={}, action)=>{
             delete oldState[action.data];
             mvDetail.splice(mvDetail.indexOf(action.data),1)
             searchedMovies.splice(mvDetail.indexOf(action.data),1)
+            localStorage['mvDetails'] = JSON.stringify({...oldState})
             return { ...oldState, mvDetail, searchedMovies}
         default:
             return state;
