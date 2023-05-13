@@ -44,15 +44,16 @@ export const formReducer = (state={},action) =>{
                 form: false
             }
             const oldState = state || pageObj;
-            if(isFormType.indexOf('Form') != -1){
+            if(!isFormType){
+                oldState['detailView'] = false;
+                oldState['form'] = false;
+            }
+            else if(isFormType.indexOf('Form') != -1){
                 oldState['form'] = isFormType
             }else if(isFormType == 'detailView'){
                 oldState['detailView'] = true
             }else if(isFormType == 'showRecent'){
                 oldState['listView'] = isFormType
-            }else if(!isFormType){
-                oldState['detailView'] = false;
-                oldState['form'] = false;
             }
             return {...pageObj , ...oldState,...action.data}
         default:
