@@ -5,7 +5,7 @@ import { closeForm, openForm } from '../Dispatcher/Action';
 import { getDatas } from './../Utils/selector';
 function DetailViewContainer(props) {
   const { 
-    formType,
+    isDeailViewOpened,
     closeForm,
     canShowImage,
     movieDetail,
@@ -33,7 +33,7 @@ function DetailViewContainer(props) {
   return (
       Object.keys(movieDetail).length > 0 ? (
         <DetailView 
-          formType={formType}
+          isDeailViewOpened={isDeailViewOpened}
           closeForm={closeForm}
           canShowImage={canShowImage}
           movieDetail={movieDetail}
@@ -50,14 +50,14 @@ function DetailViewContainer(props) {
 
 const mapStateToProps = state => {
   const { config={}, form={}, movies } = state;
-  const formType = form.isFormOpened;
+  const isDeailViewOpened = form['detailView'];
   const { isShowImage } = config;
   const { searchedMovies = [],mvDetail=[] } = movies;
   const datas = getDatas(state)
   const dataArr = searchedMovies.length > 0 ? searchedMovies : mvDetail.length > 0 ? mvDetail : Object.keys(movies)
   return {
       state,
-      formType,
+      isDeailViewOpened,
       canShowImage: isShowImage,
       dataArr,
       movies,

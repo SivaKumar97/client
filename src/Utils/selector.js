@@ -7,8 +7,12 @@ export const getMoviesSelector = (searchedList=[],movies) =>{
 }
 
 export const getDatas = (state) =>{
-    const { movies } = state;
-    const { mvDetail=[],searchedMovies=[] } = movies;
+    const { movies, form } = state;
+    const { mvDetail=[],searchedMovies=[], recentMovies={} } = movies;
+    const formType = form['listView']
+    if(formType == 'showRecent'){
+        return Object.values(recentMovies)
+    }
     let datas = searchedMovies.length != 0 ? getMoviesSelector(searchedMovies, movies) : mvDetail.length > 0 ? getMoviesSelector(mvDetail, movies) : {...movies}  || {};
     if( mvDetail.length == 0 && searchedMovies.length == 0){
         delete datas.mvDetail;

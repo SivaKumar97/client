@@ -1,7 +1,9 @@
-export const openForm = (formType, datas={}) => ({
-    type: 'SET_FORM_STATE',
-    data: { 'isFormOpened': formType, ...datas }
-});
+export const openForm = (formType, datas={}) => {
+    return {
+        type: 'SET_FORM_STATE',
+        data: { 'isFormOpened': formType, ...datas }
+    }
+};
 
 export const closeForm = () => ({
     type: 'SET_FORM_STATE',
@@ -31,6 +33,10 @@ export const getSearchedMovies = (data) =>({
 })
 export const getSortedMovies = (data) =>({
     type: 'SORTED_MOVIES',
+    data
+})
+export const getRecentMovies = (data) =>({
+    type: 'GET_RECENT_MOVIES',
     data
 })
 

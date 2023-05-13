@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { exportDatas, exportProject, getPercentage, importDatas } from '../Action/APIAction';
+import { exportDatas, exportProject, getPercentage, importDatas, getRecentDatas } from '../Action/APIAction';
 import LeftPanel from '../Component/LeftPanel';
 import { closeForm, openForm, showImage, hideImage, getMovies } from '../Dispatcher/Action';
 import { getLeftPanelObj, normalizeObj } from '../Utils/Utils';
-import { toggleView, getSearchedMovies } from './../Dispatcher/Action';
+import { toggleView, getSearchedMovies, getRecentMovies } from './../Dispatcher/Action';
 function LeftPanelContainer(props) {
   const { 
     openForm, 
@@ -16,8 +16,16 @@ function LeftPanelContainer(props) {
     windowSize,
     toggleView,
     movies,
-    getSearchedMovies
+    getSearchedMovies,
+    getRecentMovies
   } = props;
+  const getRecentMovie = ()=>{
+    getRecentDatas().then((res=[])=>{
+        const { recentLst= [] } = res[0]
+        getRecentMovies(recentLst)
+        openForm('showRecent')
+    })
+  }
   const exportData = (type,setLoading,setLoadingVal)=>{
       const getProgress = ()=>{
       setLoadingVal(0)
@@ -57,6 +65,7 @@ function LeftPanelContainer(props) {
         toggleView={toggleView}
         getSearchedMovies={getSearchedMovies}
         movies={movies}
+        getRecentMovie={getRecentMovie}
         
       />
     </React.Fragment>
@@ -80,5 +89,6 @@ export default connect(mapStateToProps,{
   hideImage,
   getMovies,
   toggleView,
-  getSearchedMovies 
+  getSearchedMovies,
+  getRecentMovies
 })(LeftPanelContainer);

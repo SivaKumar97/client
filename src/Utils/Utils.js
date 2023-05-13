@@ -53,6 +53,16 @@ export const getLeftPanelObj = () => {
                 apiName: 'releasedMovies',
                 iconName: 'today'
             }
+        },
+        'recentMovie':{
+            'getRecent': {
+                label: 'Get Recent',
+                apiName: 'getRecent',
+            },
+            'showRecent': {
+                label: 'Show Recent',
+                apiName: 'showRecent',
+            }
         }
         // 'google' : {
         //     'importData' : {

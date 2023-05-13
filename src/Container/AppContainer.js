@@ -9,15 +9,16 @@ import RightPanelContainer from './RightPanelContainer';
 import DetailViewContainer from './DetailViewContainer';
 import { getMovies, getSearchedMovies } from '../Dispatcher/Action';
 import { normalizeObj } from '../Utils/Utils';
-import { searchDetails } from './../Action/APIAction';
+import { searchDetails, updateAllMovies } from './../Action/APIAction';
 import Paper from '@mui/material/Paper';
 import SearchIcon from '@mui/icons-material/Search';
 import { selectn } from './../Utils/Utils';
 let intialCall = false;
 function AppContainer(props) {
-    const { state, getMovies, getSearchedMovies, movies } = props;
+    const { state, getMovies, getSearchedMovies, movies, updateAllMovies } = props;
     let [initialCallMade, setInitialCall ] = useState(false)
     useEffect(()=>{
+      // updateAllMovies()
       if(!initialCallMade){
         setInitialCall(true)
         intialCall = true;
@@ -114,7 +115,8 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps,{
   getMovies,
-  getSearchedMovies
+  getSearchedMovies,
+  updateAllMovies
 })(AppContainer);
 
 function useWindowSize() {

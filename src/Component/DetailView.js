@@ -18,7 +18,7 @@ export default function DetailView(props) {
     const { 
       window, 
       rightPanelObj={},
-      formType, 
+      isDeailViewOpened, 
       closeForm,
       openForm,
       canShowImage,
@@ -85,7 +85,7 @@ export default function DetailView(props) {
             return (
                 <Drawer
                 anchor={'right'}
-                open={formType == 'detailView'}
+                open={isDeailViewOpened}
                 onClose={closeForm}
                 >
                 {getImagePreview(isMobileView)}

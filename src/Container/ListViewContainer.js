@@ -22,7 +22,8 @@ function ListViewContainer(props) {
     showSearch,
     getSortedMovies,
     canShowImage,
-    view
+    view,
+    formType
    } = props;
   const deleteDv = (id) =>{
     deleteDetails(id).then(resp=>{
@@ -63,7 +64,7 @@ function ListViewContainer(props) {
         >
       <MovieContainer />    
       {searchContainer("LV")}
-      {view == 'table' ? (<ListView 
+      {view == 'table' && formType != 'showRecent' ? (<ListView 
         openDv={openDv}
         rows={datas}
         deleteDv={deleteDv}
@@ -73,9 +74,10 @@ function ListViewContainer(props) {
       />) : (
         <ClassicView 
           rows={datas}
-          openDv={openDv}
+          openDv={formType != 'showRecent' && openDv}
           canShowImage={canShowImage}
-          updateMvDetails={updateMvDetails}
+          updateMvDetails={formType != 'showRecent' && updateMvDetails}
+          formType={formType}
           />
         )}
       
@@ -84,15 +86,17 @@ function ListViewContainer(props) {
 }
 
 const mapStateToProps = state => {
-  const { movies, config={} } =state;
+  const { movies, config={}, form } =state;
   const { isShowImage, view='table' } = config;
   const datas = getDatas(state)
+  const formType = form['listView']
   return {
       state,
       datas,
       canShowImage: isShowImage,
       movies,
-      view
+      view,
+      formType
     }
 };
 

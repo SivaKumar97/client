@@ -26,6 +26,8 @@ export const movieReducer = (state={}, action)=>{
             searchedMovies.splice(mvDetail.indexOf(action.data),1)
             localStorage['mvDetails'] = JSON.stringify({...oldState})
             return { ...oldState, mvDetail, searchedMovies}
+        case 'GET_RECENT_MOVIES':
+            return {...state,  recentMovies: {...action.data}, }
         default:
             return state;
     }
@@ -34,7 +36,25 @@ export const movieReducer = (state={}, action)=>{
 export const formReducer = (state={},action) =>{
     switch(action.type){
         case 'SET_FORM_STATE':
-            return {...state,...action.data}
+            const isFormType = action.data['isFormOpened']
+            delete action.data['isFormOpened']
+            const pageObj = {
+                listView: 'listview',
+                detailView: false,
+                form: false
+            }
+            const oldState = state || pageObj;
+            if(isFormType.indexOf('form') != -1){
+                oldState['form'] = isFormType
+            }else if(isFormType == 'detailView'){
+                oldState['detailView'] = true
+            }else if(isFormType == 'showRecent'){
+                oldState['listView'] = isFormType
+            }else if(!isFormType){
+                oldState['detailView'] = false;
+                oldState['form'] = false;
+            }
+            return {...pageObj , ...oldState,...action.data}
         default:
             return state;
     }

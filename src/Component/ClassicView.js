@@ -7,7 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { NO_IMAGE, responsiveFunc } from '../Utils/Utils';
+import { NO_IMAGE, getLinks, responsiveFunc } from '../Utils/Utils';
 import DownloadIcon from '@mui/icons-material/Download';
 import ClosedCaptionIcon from '@mui/icons-material/ClosedCaption';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
@@ -17,7 +17,7 @@ import MenuList from './Menu';
  
 const ClassicView = props => {
 const [openImgPreview,toggleImgPreview] = React.useState(false);
-const { openDv, updateMvDetails } = props;
+const { openDv, updateMvDetails, formType } = props;
 const toggleImagePreview = (row={})=>{
     toggleImgPreview(!row['imageLink'])
 }
@@ -89,7 +89,14 @@ const updateSubLink = (row) =>{
                                                     </Typography>
                                                 </CardContent>
                                                 <CardActions>
-                                                    {isMobileView ? (
+                                                    {formType == 'showRecent' ? (
+                                                        <MenuList 
+                                                        options={[getLinks(row['name'])['Trailers']]}
+                                                        title={'JT'}
+                                                        openNewTab
+                                                        />
+                                                    ) : 
+                                                    isMobileView ? (
                                                             <>
                                                                  <MenuList 
                                                                     options={downloadLinks}
@@ -110,6 +117,7 @@ const updateSubLink = (row) =>{
                                                             <MenuList 
                                                                 options={downloadLinks}
                                                                 title={'Download'}
+                                                                
                                                             />
                                                             <MenuList 
                                                                     options={subLink}

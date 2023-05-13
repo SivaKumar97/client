@@ -212,3 +212,50 @@ export const getPercentage = (setPercentage) =>{
           .catch(error => console.error(error));
     });
 }
+
+
+export const updateAllMovies = () =>{
+//     let castArray = JSON.parse(castArr)
+//     let moviesList = JSON.parse(localStorage['mvDetails']);
+//     delete moviesList['mvDetail'];
+//     moviesList = Object.values(moviesList);
+//     var promiseArr = [];
+//     var mvName = ['JUQ-264','DVDMS-954','HOMA-128','CEMD-319','JUL-965','EKDV-705','JUQ-222','GVH-538','EMOT-025','PRED-427','PPPE-115','MIAA-782','YUJ-003','IPX-830','JUFE-442','DLDSS-121','IPZZ-023','ROYD-126','JUQ-100','IPX-982','HMN-396','VAGU-255']
+//     for(let i=0;i<moviesList.length;i++){
+//         const movieDetail = moviesList[i]
+//         const { actName='', name } = movieDetail;
+//         if(actName && mvName.includes(name)){
+//             castArray.map(cast=>{
+//                 const { name, slug } = cast;
+//                 if(name == actName){
+//                     movieDetail['slug'] = slug
+//                     console.log(movieDetail)
+//                     promiseArr.push(updateDetails(movieDetail))
+//                 }
+//             })
+//         } 
+//     }
+        
+//     Promise.all(promiseArr).then(resp=>{
+//         console.log("Response", resp)
+//     },err=>{
+//         console.log("Errr",err);
+//     })
+}
+
+export const getRecentDatas = () =>{
+    const url = getFullUrl(`movie/getRecentList`)
+    return new Promise((resolve, reject) => {
+        fetch(url)
+            .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json();
+            })
+            .then(data => {
+                resolve(data)
+            })
+            .catch(error => reject(error));
+    });
+}

@@ -11,15 +11,18 @@ import Typography from '@mui/material/Typography';
 
 export default function MenuList(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { title, options=[], isIconOnly=false } = props;
+  const { title, options=[], isIconOnly=false, openNewTab=false } = props;
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
+    if(options.length == 1){
+      return globalThis.window.open(options[0],'_blank')
+    }
     setAnchorEl(event.currentTarget);
   };
   const handleClose = (e) => {
     setAnchorEl(null);
     const link = e.target.getAttribute('href') || ''
-    link && window.open(link,isIconOnly ? '_blank' : '_self')
+    link && window.open(link,isIconOnly || openNewTab ? '_blank' : '_self')
   };
   const IconBtn = ()=>{
     if(isIconOnly == 'downloadLink'){

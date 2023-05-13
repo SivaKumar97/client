@@ -6,7 +6,7 @@ import { closeForm, openForm, updateMovies } from '../Dispatcher/Action';
 import { getActName, getMovieName, getRightPanelObj, normalizeObj } from '../Utils/Utils';
 function RightPanelContainer(props) {
   const { 
-    formType,
+    formPage,
     closeForm,
     movies,
     updateMovies,
@@ -34,11 +34,11 @@ function RightPanelContainer(props) {
     })
   }
   return (
-    (formType == 'addForm' || formType == 'editForm') ? (
+    (formPage == 'addForm' || formPage == 'editForm') ? (
       <React.Fragment>  
         <RightPanel
-          rightPanelObj={getRightPanelObj(formType,movies[recordId])}
-          formType={formType}
+          rightPanelObj={getRightPanelObj(formPage,movies[recordId])}
+          formType={formPage}
           closeForm={closeForm}
           submitForm={submitForm}
           mvDetail={movies[recordId]}
@@ -54,13 +54,13 @@ function RightPanelContainer(props) {
 
 const mapStateToProps = state => {
   const { form, movies } = state;
-  const formType = form.isFormOpened
+  const formPage = form['form']
   const actName = getActName(movies);
   const name = getMovieName(movies);
   const recordId = form.recordId;
   return {
       state,
-      formType,
+      formPage,
       movies,
       actName,
       name,
