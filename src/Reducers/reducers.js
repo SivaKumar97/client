@@ -44,7 +44,7 @@ export const formReducer = (state={},action) =>{
                 form: false
             }
             const oldState = state || pageObj;
-            if(isFormType.indexOf('form') != -1){
+            if(isFormType.indexOf('Form') != -1){
                 oldState['form'] = isFormType
             }else if(isFormType == 'detailView'){
                 oldState['detailView'] = true
