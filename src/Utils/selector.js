@@ -14,6 +14,7 @@ export const getDatas = (state) =>{
         return Object.values(recentMovies)
     }
     let datas = searchedMovies.length != 0 ? getMoviesSelector(searchedMovies, movies) : mvDetail.length > 0 ? getMoviesSelector(mvDetail, movies) : {...movies}  || {};
+    delete datas.recentMovies
     if( mvDetail.length == 0 && searchedMovies.length == 0){
         delete datas.mvDetail;
         delete datas.searchedMovies
@@ -40,6 +41,7 @@ export const getDatasByDay = (movies,type) =>{
     }
     delete movieObj['mvDetail']
     delete movieObj['searchedMovies']
+    delete movieObj['recentMovies']
     Object.keys(movieObj).map(movie=>{
         const { releaseDate = '', name } = movies[movie];
         const releaseDateInMs = releaseDate && new Date(releaseDate).setHours(0,0,0,0);

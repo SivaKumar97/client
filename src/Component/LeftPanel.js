@@ -50,6 +50,7 @@ export default function LeftPanel(props) {
         const datas = type == 'allData' ? [] : moviesByDay[type]
         setCurrentTab(type)
         getSearchedMovies(normalizeObj(datas,'mvId'))
+        openForm(type);
       }else if(type == 'getRecent'){
         globalThis.window.open('https://javtrailers.com/getfav','_blank')
         setTimeout(getRecentMovie,5000);
