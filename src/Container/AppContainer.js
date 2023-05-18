@@ -7,16 +7,20 @@ import ListViewContainer from './ListViewContainer';
 import LeftPanelContainer from './LeftPanelContainer';
 import RightPanelContainer from './RightPanelContainer';
 import DetailViewContainer from './DetailViewContainer';
-import { getMovies, getSearchedMovies } from '../Dispatcher/Action';
-import { normalizeObj } from '../Utils/Utils';
+import { getMovies, getSearchedMovies, getSortedMovies } from '../Dispatcher/Action';
+import { getMoviesLst, normalizeObj } from '../Utils/Utils';
 import { searchDetails, updateAllMovies } from './../Action/APIAction';
 import Paper from '@mui/material/Paper';
 import SearchIcon from '@mui/icons-material/Search';
 import { selectn } from './../Utils/Utils';
 let intialCall = false;
 function AppContainer(props) {
-    const { state, getMovies, getSearchedMovies, movies, updateAllMovies } = props;
+    const { state, getMovies, getSearchedMovies, movies, updateAllMovies, getSortedMovies } = props;
     let [initialCallMade, setInitialCall ] = useState(false)
+    const sortMovies = (datas)=>{
+      delete datas['mvDetail']
+      getSortedMovies(normalizeObj(getMoviesLst(Object.values(datas)),'releaseDate','desc'))
+    }
     useEffect(()=>{
       // updateAllMovies()
       if(!initialCallMade){
@@ -25,12 +29,14 @@ function AppContainer(props) {
         let mvDetails = JSON.parse(localStorage['mvDetails'] || "{}")
         if(Object.keys(mvDetails).length > 0){
           getMovies(mvDetails)
+          sortMovies(mvDetails)
         }else{
           getMvDetails().then(
             data=>{
               mvDetails = normalizeObj(data.mvDetails,'mvId', 'mvId')
               localStorage['mvDetails'] = JSON.stringify(mvDetails);
               getMovies(mvDetails)
+              sortMovies(mvDetails)
             })
         }
       }
@@ -116,7 +122,8 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps,{
   getMovies,
   getSearchedMovies,
-  updateAllMovies
+  updateAllMovies,
+  getSortedMovies
 })(AppContainer);
 
 function useWindowSize() {

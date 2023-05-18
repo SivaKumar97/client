@@ -4,7 +4,7 @@ import { exportDatas, exportProject, getPercentage, importDatas, getRecentDatas 
 import LeftPanel from '../Component/LeftPanel';
 import { closeForm, openForm, showImage, hideImage, getMovies } from '../Dispatcher/Action';
 import { getLeftPanelObj, normalizeObj } from '../Utils/Utils';
-import { toggleView, getSearchedMovies, getRecentMovies } from './../Dispatcher/Action';
+import { toggleView, getSearchedMovies, getRecentMovies, getSortedMovies } from './../Dispatcher/Action';
 function LeftPanelContainer(props) {
   const { 
     openForm, 
@@ -17,7 +17,8 @@ function LeftPanelContainer(props) {
     toggleView,
     movies,
     getSearchedMovies,
-    getRecentMovies
+    getRecentMovies,
+    getSortedMovies
   } = props;
   const getRecentMovie = ()=>{
     getRecentDatas().then((res=[])=>{
@@ -66,7 +67,7 @@ function LeftPanelContainer(props) {
         getSearchedMovies={getSearchedMovies}
         movies={movies}
         getRecentMovie={getRecentMovie}
-        
+        getSortedMovies={getSortedMovies}
       />
     </React.Fragment>
   );
@@ -90,5 +91,7 @@ export default connect(mapStateToProps,{
   getMovies,
   toggleView,
   getSearchedMovies,
-  getRecentMovies
+  getRecentMovies,
+  getSortedMovies
+  
 })(LeftPanelContainer);

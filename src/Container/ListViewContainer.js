@@ -32,7 +32,7 @@ function ListViewContainer(props) {
       console.log("LV Error :",err)
     })
   }
-  const [fields,setFields] = React.useState({})
+  const [fields,setFields] = React.useState({releaseDate: 'desc'})
   const sortDetails = (sortField) =>{
     const type = fields[sortField] == 'asc' ? 'desc' : fields[sortField] == 'desc'? 'asc' : 'asc'
     fields[sortField] = type;

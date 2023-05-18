@@ -13,7 +13,7 @@ import Toolbar from '@mui/material/Toolbar';
 import LinearProgress from '@mui/material/LinearProgress';
 import { IconButton, Switch, Typography } from '@mui/material';
 import BackupIcon from '@mui/icons-material/Backup';
-import { generate, normalizeObj } from '../Utils/Utils';
+import { generate, getMoviesLst, normalizeObj } from '../Utils/Utils';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { LEFT_PANEL_WIDTH, isMobileSize } from '../Utils/CssCalc';
 import { Tooltip } from '@mui/material';
@@ -24,7 +24,7 @@ import LEDTime from './LEDTime';
 import TodayIcon from '@mui/icons-material/Today';
 import { getDatasByDay } from '../Utils/selector';
 export default function LeftPanel(props) {
-    const { window,getRecentMovie, leftPanelObj, openForm, isShowImage = false, exportData, windowSize, toggleView,getSearchedMovies, movies } = props;
+    const { window,getRecentMovie, getSortedMovies, leftPanelObj, openForm, isShowImage = false, exportData, windowSize, toggleView,getSearchedMovies, movies } = props;
     const [loading,setLoading] = React.useState(false);
     const [loadingVal,setLoadingVal] = React.useState(0)
     const [currentTab, setCurrentTab] = React.useState('allData')
@@ -33,7 +33,10 @@ export default function LeftPanel(props) {
       if(type == 'totalMovies'){
         return '';
       }else if(type == 'allData'){
-        moviesByDay[type] = movies
+        const allDataMovies = { ...movies};
+        delete allDataMovies['mvDetail']
+        delete allDataMovies['searchedMovies']
+        moviesByDay[type] = Object.values(movies)
       }else{
         moviesByDay[type] = getDatasByDay(movies,type)
       }
@@ -47,9 +50,9 @@ export default function LeftPanel(props) {
         if(type == 'totalMovies'){
           return '';
         }
-        const datas = type == 'allData' ? [] : moviesByDay[type]
+        const datas = type == 'allData' ? moviesByDay[type] : moviesByDay[type]
         setCurrentTab(type)
-        getSearchedMovies(normalizeObj(datas,'mvId'))
+        getSortedMovies(normalizeObj(getMoviesLst(datas),'releaseDate','desc'))
         openForm(type);
       }else if(type == 'getRecent'){
         globalThis.window.open('https://javtrailers.com/getfav','_blank')
