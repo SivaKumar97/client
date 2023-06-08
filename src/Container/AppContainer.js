@@ -19,6 +19,7 @@ function AppContainer(props) {
     let [initialCallMade, setInitialCall ] = useState(false)
     const sortMovies = (datas)=>{
       delete datas['mvDetail']
+      delete datas['searchedMovies']
       getSortedMovies(normalizeObj(getMoviesLst(Object.values(datas)),'releaseDate','desc'))
     }
     useEffect(()=>{
