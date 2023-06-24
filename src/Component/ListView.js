@@ -42,13 +42,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 export default function ListView(props) {
   const [searchMvStr,searchMvState] = React.useState('')
-  const { rows, openDv, deleteDv,toggleSearch, sortDetails} = props
+  const { rows, openDv, deleteDv,toggleSearch, sortDetails, searchMv} = props
 
   const editDetails = (id) =>{
     openDv('editForm',{"recordId": id});
   }
 
-  const openDetailView = (id) =>{
+  const openDetailView = (id, columnType, value) =>{
+    if(columnType == 'actName'){
+      return searchMv({target : {value}})
+    }
     openDv('detailView',{"recordId": id});
   }
   
@@ -140,7 +143,7 @@ export default function ListView(props) {
           ) : column.type == 'date' ? (
             <Box sx={{fontSize: '1rem'}} onClick={()=>openDetailView(row['mvId'])}>{(value > 50 || (value && value.indexOf("T") !=-1)) ? new Date(value).toLocaleDateString('en-GB'): value}</Box>
           )
-          : <Box sx={{fontSize: '1rem'}} onClick={()=>openDetailView(row['mvId'])}>{value}</Box>  }
+          : <Box sx={{fontSize: '1rem'}} onClick={()=>openDetailView(row['mvId'], column.id, value)}>{value}</Box>  }
           </StyledTableCell >
         )
       })

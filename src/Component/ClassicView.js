@@ -17,7 +17,7 @@ import MenuList from './Menu';
  
 const ClassicView = props => {
 const [openImgPreview,toggleImgPreview] = React.useState(false);
-const { openDv, updateMvDetails, formType } = props;
+const { openDv, updateMvDetails, formType, searchMv } = props;
 const toggleImagePreview = (row={})=>{
     toggleImgPreview(!row['imageLink'])
 }
@@ -55,6 +55,9 @@ const updateSubLink = (row) =>{
     row['subLink'] = link
     updateMvDetails(row)
 }
+const searchStr = (value)=>{
+    searchMv({target:{value}})
+}
   const openLink = (link) =>{
     window.open(link,"_blank")
   }
@@ -84,7 +87,7 @@ const updateSubLink = (row) =>{
                                                         {`${row['name']} ${row['releaseDate'] ? `[${new Date(row['releaseDate']).toLocaleDateString('en-GB')}]`: ''}`} 
                                                     </Typography>
                                                     <Rating name="read-only" value={row['rating']} readOnly sx={{fontSize: '1.2rem'}} />
-                                                    <Typography variant="body2" color="text.secondary" sx={{fontSize: "1rem" }}>
+                                                    <Typography variant="body2" color="text.secondary" sx={{fontSize: "1rem" }} onClick={(e)=>searchStr(row['actName'], e)}>
                                                         { `Act Name : ${row['actName']}`}
                                                     </Typography>
                                                 </CardContent>

@@ -23,7 +23,8 @@ function ListViewContainer(props) {
     getSortedMovies,
     canShowImage,
     view,
-    formType
+    formType,
+    searchMv
    } = props;
   const deleteDv = (id) =>{
     deleteDetails(id).then(resp=>{
@@ -71,6 +72,7 @@ function ListViewContainer(props) {
         searchContainer={searchContainer}
         sortDetails={sortDetails}
         toggleSearch={toggleSearch}
+        searchMv={searchMv}
       />) : (
         <ClassicView 
           rows={datas}
@@ -78,6 +80,7 @@ function ListViewContainer(props) {
           canShowImage={canShowImage}
           updateMvDetails={formType != 'showRecent' && updateMvDetails}
           formType={formType}
+          searchMv={searchMv}
           />
         )}
       

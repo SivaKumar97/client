@@ -97,7 +97,7 @@ function AppContainer(props) {
     <Container sx={{ display: 'flex', p:0, m:0, height:'100%'}}> 
         <LeftPanelContainer windowSize={size}/>
         <RightPanelContainer />
-        <ListViewContainer searchContainer={searchContainer} toggleSearch={toggleSearch} showSearch={showSearch}/>
+        <ListViewContainer searchContainer={searchContainer} searchMv={searchMv} toggleSearch={toggleSearch} showSearch={showSearch}/>
         <DetailViewContainer searchContainer={searchContainer} />
     </Container>
       // <Box sx={{height: maxHeight, display:'inline-flex'}}>
