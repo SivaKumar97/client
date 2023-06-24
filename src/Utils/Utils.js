@@ -62,6 +62,10 @@ export const getLeftPanelObj = () => {
             'showRecent': {
                 label: 'Show Recent',
                 apiName: 'showRecent',
+            },
+            'deleteByRating': {
+                label: 'Delete By Rating',
+                apiName: 'deleteByRating',
             }
         }
         // 'google' : {

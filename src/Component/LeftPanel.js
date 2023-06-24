@@ -24,7 +24,7 @@ import LEDTime from './LEDTime';
 import TodayIcon from '@mui/icons-material/Today';
 import { getDatasByDay } from '../Utils/selector';
 export default function LeftPanel(props) {
-    const { window,getRecentMovie, getSortedMovies, leftPanelObj, openForm, isShowImage = false, exportData, windowSize, toggleView,getSearchedMovies, movies } = props;
+    const { window,getRecentMovie, deleteByRating, getSortedMovies, leftPanelObj, openForm, isShowImage = false, exportData, windowSize, toggleView,getSearchedMovies, movies } = props;
     const [loading,setLoading] = React.useState(false);
     const [loadingVal,setLoadingVal] = React.useState(0)
     const [currentTab, setCurrentTab] = React.useState('allData')
@@ -61,6 +61,8 @@ export default function LeftPanel(props) {
       }else if(type == 'showRecent'){
         getRecentMovie();
         setCurrentTab(type)
+      }else if(type == 'deleteByRating'){
+        deleteByRating()
       }else {
         setLoading(true)
         exportData(type,setLoading,setLoadingVal)

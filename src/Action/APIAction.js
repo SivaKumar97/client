@@ -259,3 +259,25 @@ export const getRecentDatas = () =>{
             .catch(error => reject(error));
     });
 }
+export const deleteByRate = () =>{
+    const url = getFullUrl(`movie/deleteByRating`)
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+            if (!response.ok) {
+                alert("Not all data delete properly")
+                throw new Error(response.statusText);
+            }
+            return response.json();
+            })
+            .then(data => {
+                resolve(data)
+            })
+            .catch(error => reject(error));
+    });
+}

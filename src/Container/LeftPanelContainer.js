@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { exportDatas, exportProject, getPercentage, importDatas, getRecentDatas } from '../Action/APIAction';
+import { exportDatas, exportProject, getPercentage, importDatas, getRecentDatas, deleteByRate } from '../Action/APIAction';
 import LeftPanel from '../Component/LeftPanel';
 import { closeForm, openForm, showImage, hideImage, getMovies } from '../Dispatcher/Action';
 import { getLeftPanelObj, normalizeObj } from '../Utils/Utils';
@@ -18,13 +18,20 @@ function LeftPanelContainer(props) {
     movies,
     getSearchedMovies,
     getRecentMovies,
-    getSortedMovies
+    getSortedMovies,
+    deleteByRate
   } = props;
   const getRecentMovie = ()=>{
     getRecentDatas().then((res=[])=>{
         const { recentLst= [] } = res[0]
         getRecentMovies(recentLst)
         openForm('showRecent')
+    })
+  }
+  const deleteByRating = () =>{
+    deleteByRate().then(res=>{
+      delete localStorage['mvDetails'];
+      window.location.reload()
     })
   }
   const exportData = (type,setLoading,setLoadingVal)=>{
@@ -68,6 +75,7 @@ function LeftPanelContainer(props) {
         movies={movies}
         getRecentMovie={getRecentMovie}
         getSortedMovies={getSortedMovies}
+        deleteByRating={deleteByRating}
       />
     </React.Fragment>
   );
@@ -92,6 +100,7 @@ export default connect(mapStateToProps,{
   toggleView,
   getSearchedMovies,
   getRecentMovies,
-  getSortedMovies
+  getSortedMovies,
+  deleteByRate
   
 })(LeftPanelContainer);
