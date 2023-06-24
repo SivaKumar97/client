@@ -86,7 +86,7 @@ function AppContainer(props) {
                 onChange={searchMv}
                 value={searchMvStr}
             />
-              <IconButton type="button" sx={{ p: '3px' }} aria-label="search">
+              <IconButton type="button" sx={{ p: '3px' }} aria-label="search" onClick={toggleSearch}>
                 <SearchIcon />
               </IconButton>
           </Paper>
