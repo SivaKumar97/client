@@ -18,8 +18,7 @@ function LeftPanelContainer(props) {
     movies,
     getSearchedMovies,
     getRecentMovies,
-    getSortedMovies,
-    deleteByRate
+    getSortedMovies
   } = props;
   const getRecentMovie = ()=>{
     getRecentDatas().then((res=[])=>{
@@ -100,7 +99,5 @@ export default connect(mapStateToProps,{
   toggleView,
   getSearchedMovies,
   getRecentMovies,
-  getSortedMovies,
-  deleteByRate
-  
+  getSortedMovies
 })(LeftPanelContainer);
