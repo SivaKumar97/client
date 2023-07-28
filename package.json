@@ -76,7 +76,8 @@
     "simplebar": "^5.3.6",
     "simplebar-react": "^2.3.6",
     "web-vitals": "^2.1.4",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "react-virtualized": "^9.22.5"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5"
