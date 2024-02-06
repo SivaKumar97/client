@@ -1,6 +1,13 @@
 
-const HOST = (localStorage['replDomain'] || 'https://javmov--ksiva2.repl.co') + '/api/v1/';
+const HOST = (getHost() || 'https://704b29c9-b8ab-462e-8017-6a0dd3ddaa46-00-23teai1t92ghv.global.replit.dev' ||'https://javmov--ksiva2.repl.co') + '/api/v1/';
 
+const getHost = ()=>{
+    const { replDomain } = Object.fromEntries(new URLSearchParams(window.location.search));
+    if(replDomain){
+        localStorage['replDomain'] = replDomain;
+    }
+   return localStorage['replDomain'];
+}
 const getFullUrl = (url) =>{
     return `${HOST}${url}`;
 }
