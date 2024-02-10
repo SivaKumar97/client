@@ -1,6 +1,6 @@
 const getHost = ()=>{
     let replDomain = localStorage['replDomain'];
-    if(!replDomain){
+    if(!replDomain || replDomain == 'null'){
         replDomain = prompt('URL Please');
     }
     localStorage['replDomain'] = replDomain;
