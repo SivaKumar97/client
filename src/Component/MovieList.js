@@ -42,7 +42,7 @@ export default function MovieList(props) {
                     if(rating > 3 || isTodayReleased){
                         return (
                             <>
-                                <img width="200px" height="150px" src={imageComLink || imageLink} alt={name} onClick={()=>openDetailView(mvId)} className={classes.image} />
+                                <img width="200px" height="150px" src={imageComLink || imageLink} alt={name} onClick={()=>openDetailView(mvId)} loading="lazy" className={classes.image} />
                             </>
                     )
                     }

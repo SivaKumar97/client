@@ -22,7 +22,8 @@ export default function MenuList(props) {
   const handleClose = (e) => {
     setAnchorEl(null);
     const link = e.target.getAttribute('href') || ''
-    link && window.open(link,isIconOnly || openNewTab ? '_blank' : '_self')
+    // link && window.open(link,isIconOnly || openNewTab ? '_blank' : '_self')
+    link && window.open(link,'_blank')
   };
   const IconBtn = ()=>{
     if(isIconOnly == 'downloadLink'){

@@ -72,6 +72,7 @@ const searchStr = (value)=>{
                     sx={{  height: isMobileView ? 100 : 230}}
                     image={canShowImage ? (row['imageComLink'] || row['imageLink']) : NO_IMAGE}
                     title="green iguana"
+                    loading="lazy"
                     onClick={()=>toggleImagePreview(row)}
                 />
                 <CardContent>
