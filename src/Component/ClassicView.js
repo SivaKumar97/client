@@ -146,12 +146,10 @@ const searchStr = (value)=>{
   {openImgPreview && getImagePreview()}
   <AutoSizer>
     {({ height, width }) => {
-      const itemsPerRow = Math.ceil(width / CARD_WIDTH) || 1; // A calculation to establish how many cards will go on each row.
-
-      // The || 1 part is a simple hack that makes it work in a really small viewport (if someone totally collapses the window)
-
-      const rowCount = Math.ceil(rows.length / itemsPerRow); // List will need the number of rows in order to be able to properly know what to render and what not to
-
+      const itemsPerRow = Math.round(width / CARD_WIDTH) || 1; 
+      const rowCount = Math.round(rows.length / itemsPerRow);
+      let overscanRowCount = Math.round(height/CARD_WIDTH) || 1;
+      overscanRowCount = overscanRowCount < 1 ? 1 : overscanRowCount;
       return (
         <div>
           <List
@@ -159,45 +157,23 @@ const searchStr = (value)=>{
             height={height}
             rowCount={rowCount}
             rowHeight={CARD_WIDTH}
-            // CARD_WIDTH is a constant of 340
-
+            overscanRowCount={overscanRowCount}
             rowRenderer={({ index, key, style }) => {
-              // This is where stuff gets interesting/confusing
-
-              // We are going to constantly update an array of items that our rowRenderer will render
-
               const items = [];
-
-              // This array will have a start and an end.
-
-              // The start is the top of the window
-
-              // The end is the bottom of the window
-
-              // the for loop below will constantly be updated as the the user scrolls down
-
               const fromIndex = index * itemsPerRow;
-
               const toIndex = Math.min(
                 fromIndex + itemsPerRow,
                 rows.length
               );
-
               for (let i = fromIndex; i < toIndex; i++) {
                 let row = rows[i];
-
                 items.push(
                 <div style={{ display: "inline-block", padding:5}} key={i}>
                     {renderRow(row)}
                   </div>
-
-                  // Each of these items has the LocationCard in them
                 );
               }
-
               return (
-                // They get rendered into the Row
-
                 <div  key={key} style={style}>
                   {items}
                 </div>
