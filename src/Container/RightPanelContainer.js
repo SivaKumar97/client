@@ -14,7 +14,8 @@ function RightPanelContainer(props) {
     movieList,
     otherConfig,
     updateOtherConfig,
-    setMovieList
+    setMovieList,
+    getMovieById
    } = props;
   const closeForm = () =>{
     updateOtherConfig({editId: '', formPage: ''})
@@ -33,7 +34,7 @@ function RightPanelContainer(props) {
       if(formPage == 'editForm'){
         movieList[editId] = {name: movie_id, mvId, actName: actor_name, rating, downloadLink: download_link, subLink: subtitle_link, releaseDate: release_date, date, imgLink: image_link};
         setMovieList(movieList);
-        return updateOtherConfig({formPage: 'detailView', dvId: res})
+        return updateOtherConfig({formPage: 'detailView', dvId: editId})
       }else{
         setMovieList([{name: movie_id, actName: actor_name, rating, downloadLink: download_link, subLink: subtitle_link, releaseDate: release_date, date, imgLink: image_link, mvId:res.id},...movieList])
       }
@@ -55,7 +56,8 @@ function RightPanelContainer(props) {
           actName={actName}
           name={name}
           openForm={openForm}
-          recordId={recordId}
+          recordId={editId}
+          getMovieById={getMovieById}
         />
     </React.Fragment>
     ) : null

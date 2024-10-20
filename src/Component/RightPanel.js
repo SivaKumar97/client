@@ -50,22 +50,23 @@ export default class RightPanel extends Component {
     }
     getFromClipBoard(){
       const { rightPanelObject } = this.state;
-      const {name:existNames=[]} = this.props;
+      const {name:existNames=[], getMovieById} = this.props;
       const movieDetail = prompt('Enter the copied Datas')
       const { dvdId:name, casts=[], releaseDate, image:imageLink } = JSON.parse(movieDetail);
       const actName = casts[0] && casts[0].name || '';
       const fieldObj = {
         name, actName, imageLink, releaseDate
       }
-      const existMovie = existNames.filter(obj=>obj.label.indexOf(name) != -1);
-      Object.keys(fieldObj).map((type)=>{
-        rightPanelObject[type].value = fieldObj[type]
-      })
-      if(existMovie.length > 0){
-        this.rightPanObj = rightPanelObject
-        return this.changeFormDetails('',existMovie[0])
-      }
-      this.setRightPanelObject(rightPanelObject)
+      // const existMovie = existNames.filter(obj=>obj.label.indexOf(name) != -1);
+      // Object.keys(fieldObj).map((type)=>{
+      //   rightPanelObject[type].value = fieldObj[type]
+      // })
+      // if(existMovie.length > 0){
+      //   this.rightPanObj = rightPanelObject
+      //   return this.changeFormDetails('',existMovie[0])
+      // }
+      // this.setRightPanelObject(rightPanelObject)
+      getMovieById(name)
     }
     componentDidUpdate(prevProps,prevStat){
       if(prevProps.recordId != this.props.recordId){

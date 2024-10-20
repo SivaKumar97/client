@@ -7,7 +7,7 @@ const getHost = ()=>{
     // const { replDomain } = Object.fromEntries(new URLSearchParams(window.location.search));
    return localStorage['replDomain'];
 }
-const HOST = ('https://shahinshaas-2642.zcodeusers.com'||'https://sivakumar9550.pythonanywhere.com' || getHost() || 'https://704b29c9-b8ab-462e-8017-6a0dd3ddaa46-00-23teai1t92ghv.global.replit.dev' ||'https://javmov--ksiva2.repl.co') + '/api/v1/';
+const HOST = ('http://localhost:8443'||'https://sivakumar9550.pythonanywhere.com' || getHost() || 'https://704b29c9-b8ab-462e-8017-6a0dd3ddaa46-00-23teai1t92ghv.global.replit.dev' ||'https://javmov--ksiva2.repl.co') + '/api/v1/';
 const getFullUrl = (url) =>{
     return `${HOST}${url}`;
 }
@@ -36,6 +36,22 @@ export const getCountDetails = () =>{
 }
 export const getMvDetails = ({from,searchStr='',sortField='ID', sortOrder='DESC'}) =>{
     const url = getFullUrl(`movies?from=${from}&searchStr=${searchStr}&sortField=${sortField}&sortOrder=${sortOrder}`)
+    return new Promise((resolve, reject) => {
+        fetch(url)
+            .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json();
+            })
+            .then(data => {
+                resolve(data.response)
+            })
+            .catch(error => reject(error));
+    });
+}
+export const getMvDetail = (id) =>{
+    const url = getFullUrl(`movies/${id}`)
     return new Promise((resolve, reject) => {
         fetch(url)
             .then(response => {

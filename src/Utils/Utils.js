@@ -112,7 +112,7 @@ export const getRightPanelObj = (type,mvObj={}) =>{
                 'fieldName' : 'Release Date',
                 'type' : 'releaseDate',
                 'apiName' : 'release_date',
-                'value' : mvObj['releaseDate'] || ''
+                'value' : mvObj['releaseDate'] ? new Date(mvObj['releaseDate']) : ''
             },
             'downloadLink' : {
                 'fieldName' : 'DownloadLink',

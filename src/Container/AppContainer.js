@@ -2,7 +2,7 @@ import { Container, InputBase, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { getCountDetails, getMvDetails } from '../Action/APIAction';
+import { getCountDetails, getMvDetail, getMvDetails } from '../Action/APIAction';
 import ListViewContainer from './ListViewContainer';
 import LeftPanelContainer from './LeftPanelContainer';
 import RightPanelContainer from './RightPanelContainer';
@@ -67,6 +67,12 @@ function AppContainer(props) {
         setCountObj(data)
       })
     },[])
+    const getMovieById = (id)=>{
+      getMvDetail(id).then(res=>{
+        setMovieList([...movieList, ...res])
+        updateOtherConfig({formPage:'editForm',editId:movieList.length})
+      })
+    }
     const size = useWindowSize();
     const searchMv = (e) =>{
       const searchStr = selectn('target.value',e) || ''
@@ -120,6 +126,7 @@ function AppContainer(props) {
           updateOtherConfig={updateOtherConfig} 
           movieList={movieList} 
           otherConfig={otherConfig}
+          getMovieById={getMovieById}
         />
         <ListViewContainer 
           setMovieList={setMovieList} 

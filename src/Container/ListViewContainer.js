@@ -39,7 +39,7 @@ function ListViewContainer(props) {
   const  TableVirtuosoRef= React.useRef(null);
   const fetchNextData = ()=>{
     if(!otherConfig.isNoMoreData){
-      updateConfig({from: configState.from+50})
+      updateConfig({from: configState.from+20})
       // TableVirtuosoRef.current && TableVirtuosoRef.current.scrollToOffset(configState.from)
     }
   }
