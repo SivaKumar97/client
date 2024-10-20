@@ -57,7 +57,7 @@ function AppContainer(props) {
     useEffect(()=>{
         getMvDetails(configState).then(
           data=>{
-            updateOtherConfig({isNoMoreData: data.length < 50})
+            updateOtherConfig({isNoMoreData: data.length < 20})
             console.log([...movieList,...data])
             setMovieList([...movieList, ...data])
           })
