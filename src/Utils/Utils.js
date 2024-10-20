@@ -112,7 +112,7 @@ export const getRightPanelObj = (type,mvObj={}) =>{
                 'fieldName' : 'Release Date',
                 'type' : 'releaseDate',
                 'apiName' : 'release_date',
-                'value' : mvObj['releaseDate'] ? new Date(mvObj['releaseDate']) : ''
+                'value' : mvObj['releaseDate'] ? reFormatDate(mvObj['releaseDate']) : ''
             },
             'downloadLink' : {
                 'fieldName' : 'DownloadLink',
@@ -352,4 +352,8 @@ export function getCurrentDate(date='', isNormalFormat) {
     const day = String(date.getDate()).padStart(2, '0');         // Pad day with leading zero
 
     return isNormalFormat ? `${day}-${month}-${year}` : `${year}-${month}-${day}`;
+}
+export function reFormatDate(date){
+    const [day,month,year] = date.split("-");
+    return `${year}-${month}-${day}`
 }
