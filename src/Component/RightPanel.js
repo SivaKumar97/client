@@ -155,7 +155,7 @@ export default class RightPanel extends Component {
       const { formType, submitForm } = this.props;
       this.setLoading(true);
       this.setRightPanelObject(rightPanelObject)
-      submitForm(getAPIAndValue(rightPanelObject,'apiName','value'), this.setLoading, formType);
+      submitForm(getAPIAndValue(rightPanelObject,'apiName','value'), this.setLoading);
     }
     render(){
       const { 

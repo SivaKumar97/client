@@ -18,12 +18,12 @@ import { AutoSizer, List } from 'react-virtualized';
  
 const ClassicView = props => {
 const [openImgPreview,toggleImgPreview] = React.useState(false);
-const { openDv, updateMvDetails, formType, searchMv } = props;
+const { openDv, updateMvDetails, formType, searchMv, updateOtherConfig, fetchNextData, hasMore } = props;
 const toggleImagePreview = (row={})=>{
     toggleImgPreview(!row['imageLink'])
 }
-const openDetailView = (row) =>{
-    openDv('detailView',{"recordId": row['mvId']});
+const openDetailView = (id) =>{
+  updateOtherConfig({dvId: id+'', formPage: 'detailView'});
   }
 const getImagePreview = () =>{
     const width = canShowImage ?'1000' : '400'
@@ -62,7 +62,7 @@ const searchStr = (value)=>{
   const openLink = (link) =>{
     window.open(link,"_blank")
   }
-  const renderRow = (row) =>{
+  const renderRow = (row, index) =>{
     const isMobileView = false
     const downloadLinks = row['downloadLink'] != '' ? decodeURI(row['downloadLink']).split("|") : []
     const subLink = row['subLink'] != '' ?decodeURI(row['subLink']).split("|") : []
@@ -77,7 +77,7 @@ const searchStr = (value)=>{
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div"  sx={{fontSize: "1.2rem" }}>
-                        {`${row['name']} ${row['releaseDate'] ? `[${new Date(row['releaseDate']).toLocaleDateString('en-GB')}]`: ''}`} 
+                        {`${row['name']} ${row['releaseDate'] ? `[${row['releaseDate']}]`: ''}`} 
                     </Typography>
                     <Rating name="read-only" value={row['rating']} readOnly sx={{fontSize: '1.2rem'}} />
                     <Typography variant="body2" color="text.secondary" sx={{fontSize: "1rem" }} onClick={(e)=>searchStr(row['actName'], e)}>
@@ -105,7 +105,7 @@ const searchStr = (value)=>{
                                     isIconOnly={'subLink'}
                                     />
                                 <IconButton>
-                                    <OpenInFullIcon  onClick={()=>openDetailView(row)} />
+                                    <OpenInFullIcon  onClick={()=>openDetailView(index)} />
                                 </IconButton>
                             </>
                     ) : (
@@ -119,7 +119,7 @@ const searchStr = (value)=>{
                                     options={subLink}
                                     title={'Sub Link'}
                                 />
-                            <Button color="secondary"  onClick={()=>openDetailView(row)}  >
+                            <Button color="secondary"  onClick={()=>openDetailView(index)}  >
                                 <Typography noWrap sx={{fontSize:'0.9rem'}}>
                                     Open DV
                                 </Typography> 
@@ -147,7 +147,7 @@ const searchStr = (value)=>{
   <AutoSizer>
     {({ height, width }) => {
       const itemsPerRow = Math.round(width / CARD_WIDTH) || 1; 
-      const rowCount = Math.round(rows.length / itemsPerRow);
+      const rowCount = Math.ceil(rows.length / itemsPerRow);
       let overscanRowCount = Math.round(height/CARD_WIDTH) || 1;
       overscanRowCount = overscanRowCount < 1 ? 1 : overscanRowCount;
       return (
@@ -169,7 +169,7 @@ const searchStr = (value)=>{
                 let row = rows[i];
                 items.push(
                 <div style={{ display: "inline-block", padding:5}} key={i}>
-                    {renderRow(row)}
+                    {renderRow(row, i)}
                   </div>
                 );
               }
@@ -178,6 +178,11 @@ const searchStr = (value)=>{
                   {items}
                 </div>
               );
+            }}
+            onScroll={({ scrollTop, scrollHeight }) => {
+              if (scrollTop + height >= scrollHeight && hasMore) {
+                fetchNextData();
+              }
             }}
           />
         </div>

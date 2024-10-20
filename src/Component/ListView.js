@@ -16,6 +16,7 @@ import { Box, Button, IconButton, Input, InputBase, Rating, Tooltip } from '@mui
 import SearchIcon from '@mui/icons-material/Search';
 import { TableVirtuoso } from 'react-virtuoso';
 import MenuList from './Menu';
+import { useScrollToEnd } from '../hooks/scrollEndHook';
 
 const columns = getListViewColumns();
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -41,18 +42,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 export default function ListView(props) {
-  const [searchMvStr,searchMvState] = React.useState('')
-  const { rows, openDv, deleteDv,toggleSearch, sortDetails, searchMv} = props
+  const { rows,  TableVirtuosoRef,configState, deleteDv,toggleSearch, sortDetails, searchMv, updateOtherConfig, fetchNextData } = props
 
   const editDetails = (id) =>{
-    openDv('editForm',{"recordId": id});
+    updateOtherConfig({editId: id, formPage: 'editForm', dvId: ''})
   }
 
   const openDetailView = (id, columnType, value) =>{
     if(columnType == 'actName'){
       return searchMv({target : {value}})
     }
-    openDv('detailView',{"recordId": id});
+    updateOtherConfig({editId: '', formPage: 'detailView', dvId: id+''})
   }
   
   const VirtuosoTableComponents = {
@@ -73,7 +73,7 @@ export default function ListView(props) {
             key={column.id}
             align={column.align}
             style={{ minWidth: column.minWidth}}
-            onClick={column.id == 'icons' ? ()=>{} :()=>sortDetails(column.id)}
+            onClick={column.id == 'icons' ? ()=>{} :()=>sortDetails(column.apiKey)}
             sx={{
               backgroundColor: 'background.paper',
               fontSize: '0.8rem',
@@ -106,12 +106,12 @@ export default function ListView(props) {
             { column.type == 'icons' ? (
             <React.Fragment>
               <Tooltip title="Edit">
-                <IconButton edge="end" size={"small"} onClick={()=>editDetails(row['mvId'])}>
+                <IconButton edge="end" size={"small"} onClick={()=>editDetails(_index)}>
                   <ModeEditOutlineIcon fontSize={"small"} color={'action'}  sx={{p:1}} />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Delete">
-                <IconButton edge="end"  size={"small"} onClick={()=>deleteDv(row['mvId'])}>
+                <IconButton edge="end"  size={"small"} onClick={()=>deleteDv(_index)}>
                   <DeleteIcon fontSize={"small"} color={'action'}  sx={{p:1}}/>
                 </IconButton>
               </Tooltip>
@@ -141,15 +141,16 @@ export default function ListView(props) {
                   }}
                 />
           ) : column.type == 'date' ? (
-            <Box sx={{fontSize: '1rem'}} onClick={()=>openDetailView(row['mvId'])}>{(value > 50 || (value && value.indexOf("T") !=-1)) ? new Date(value).toLocaleDateString('en-GB'): value}</Box>
+            <Box sx={{fontSize: '1rem'}} onClick={()=>openDetailView(_index)}>{(value > 50 || (value && value.indexOf("T") !=-1)) ? new Date(value).toLocaleDateString('en-GB'): value}</Box>
           )
-          : <Box sx={{fontSize: '1rem'}} onClick={()=>openDetailView(row['mvId'], column.id, value)}>{value}</Box>  }
+          : <Box sx={{fontSize: '1rem'}} onClick={()=>openDetailView(_index, column.id, value)}>{value}</Box>  }
           </StyledTableCell >
         )
       })
     )
       
   }
+  console.log("form",configState.from)
   return (
     <Paper style={{ height: "100%" }}>
       <TableVirtuoso
@@ -157,6 +158,9 @@ export default function ListView(props) {
         components={VirtuosoTableComponents}
         fixedHeaderContent={fixedHeaderContent}
         itemContent={rowContent}
+        endReached={fetchNextData}
+        // scrollSeekConfiguration
+        ref={TableVirtuosoRef}
       />
     </Paper>
   );

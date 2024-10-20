@@ -18,17 +18,17 @@ export default function DetailView(props) {
     const { 
       window, 
       rightPanelObj={},
-      isDeailViewOpened, 
       closeForm,
-      openForm,
       canShowImage,
-      movieDetail,
       changeDv,
       getMvId,
       movies,
       editForm,
-      searchContainer
+      searchContainer,
+      movieList,
+      otherConfig
     } = props;
+    const movieObj = movieList[otherConfig.dvId]
     const prevId = getMvId('prev');
     const nextId = getMvId('next');
     // const [searchMvStr,searchMvState] = React.useState('')
@@ -45,12 +45,12 @@ export default function DetailView(props) {
     
     //   }
     const openNext = ()=>{
-        changeDv('next')
+        changeDv(nextId)
     }
     const openPrev = ()=>{
-        changeDv('prev')
+        changeDv(prevId)
     }
-    const extraOptions = getLinks(movieDetail['name'])
+    const extraOptions = getLinks(movieObj['name'])
     const getImagePreview = (isMobileView) =>{
         const width = canShowImage && !isMobileView ? '1000' : '400'
         const style = {
@@ -72,7 +72,7 @@ export default function DetailView(props) {
             aria-describedby="modal-modal-description"
           >
             <Box sx={style}>
-                <img width={width} src={canShowImage ? movieDetail['imageLink'] : NO_IMAGE} />
+                <img width={width} src={canShowImage ? movieObj['imageLink'] : NO_IMAGE} />
             </Box>
           </Modal>
         )
@@ -85,7 +85,7 @@ export default function DetailView(props) {
             return (
                 <Drawer
                 anchor={'right'}
-                open={isDeailViewOpened}
+                open={true}
                 onClose={closeForm}
                 >
                 {getImagePreview(isMobileView)}
@@ -107,7 +107,7 @@ export default function DetailView(props) {
                                     width:'100%',                            
                                     textAlign: 'center'
                                 }}>
-                                {movieDetail.name}
+                                {movieObj.name}
                                 <IconButton edge="end" sx={{ml:2}} aria-label="close" onClick={editForm} color="info">
                                         <ModeEditOutlineIcon sx={{color:'background.paper'}}/>
                                     </IconButton>
@@ -126,7 +126,7 @@ export default function DetailView(props) {
                                     justifyContent: 'center',
                                     display:'flex'
                             }}>
-                                {prevId != movieDetail['mvId'] ? (
+                                {prevId != otherConfig.dvId ? (
                                     <Box sx={{
                                     // boxShadow: 3,
                                     bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#101010' : '#fff'),
@@ -146,7 +146,7 @@ export default function DetailView(props) {
                                         <NavigateBeforeIcon sx={{fontSize: '50px'}}/>
                                     </IconButton>
                                 ) : (
-                                    <img onClick={openPrev} width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? (movies[prevId]['imageComLink'] || movies[prevId]['imageLink'])  : NO_IMAGE} />
+                                    <img onClick={openPrev} width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? (movieList[prevId]['imageComLink'] || movieList[prevId]['imageLink'])  : NO_IMAGE} />
                                 )}
                                 {/*  */}
                                 
@@ -167,9 +167,9 @@ export default function DetailView(props) {
                                         cursor:'pointer'
                                     }}
                                 >
-                                        <img onClick={toggleImagePreview} width={isMobileView ? '200' : '450'} src={canShowImage ? (movieDetail['imageComLink'] || movieDetail['imageLink']) : NO_IMAGE} />
+                                        <img onClick={toggleImagePreview} width={isMobileView ? '200' : '450'} src={canShowImage ? (movieObj['imageComLink'] || movieObj['imageLink']) : NO_IMAGE} />
                                 </Box >
-                                {nextId != movieDetail['mvId'] ? (
+                                {nextId != otherConfig.dvId ? (
                                 <Box sx={{
                                         // boxShadow: 3,
                                         bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#101010' : '#fff'),
@@ -189,7 +189,7 @@ export default function DetailView(props) {
                                         <NavigateNextIcon sx={{fontSize: '50px'}}/>
                                     </IconButton>
                                     ) : (
-                                        <img onClick={openNext}  width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? (movies[nextId]['imageComLink'] || movies[nextId]['imageLink']) : NO_IMAGE} />
+                                        <img onClick={openNext}  width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? (movieList[nextId]['imageComLink'] || movieList[nextId]['imageLink']) : NO_IMAGE} />
                                     )}
                                 </Box>
                                 ):null}
@@ -207,7 +207,7 @@ export default function DetailView(props) {
                                 }}
                             >
                                 {fields.map((field) => {
-                                    const value = movieDetail[field.id];
+                                    const value = movieObj[field.id];
                                     if(field.type == 'icons'){
                                         return null;
                                     }

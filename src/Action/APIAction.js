@@ -7,13 +7,35 @@ const getHost = ()=>{
     // const { replDomain } = Object.fromEntries(new URLSearchParams(window.location.search));
    return localStorage['replDomain'];
 }
-const HOST = ('https://sivakumar9550.pythonanywhere.com' || getHost() || 'https://704b29c9-b8ab-462e-8017-6a0dd3ddaa46-00-23teai1t92ghv.global.replit.dev' ||'https://javmov--ksiva2.repl.co') + '/api/v1/';
+const HOST = ('https://shahinshaas-2642.zcodeusers.com'||'https://sivakumar9550.pythonanywhere.com' || getHost() || 'https://704b29c9-b8ab-462e-8017-6a0dd3ddaa46-00-23teai1t92ghv.global.replit.dev' ||'https://javmov--ksiva2.repl.co') + '/api/v1/';
 const getFullUrl = (url) =>{
     return `${HOST}${url}`;
 }
-
-export const getMvDetails = (field='',type) =>{
-    const url = getFullUrl(`movie/list${typeof type == 'string' ? `?field=${field}&type=${type}` : ''}`)
+export const getCountDetails = () =>{
+    const url = getFullUrl(`movies/counts`);
+    const countData = localStorage['countObj'];
+    return new Promise((resolve, reject) => {
+        if(countData){
+            return resolve(JSON.parse(countData));
+        }
+        fetch(url)
+            .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json();
+            })
+            .then(data => {
+                const { all_movies, today, thisWeek, nextWeek, otherRelease } = data.response;
+                data.response['releasedMovies'] = all_movies - ((thisWeek - today) + nextWeek + otherRelease);
+                localStorage['countObj'] = JSON.stringify(data.response)
+                resolve(data.response)
+            })
+            .catch(error => reject(error));
+    });
+}
+export const getMvDetails = ({from,searchStr='',sortField='ID', sortOrder='DESC'}) =>{
+    const url = getFullUrl(`movies?from=${from}&searchStr=${searchStr}&sortField=${sortField}&sortOrder=${sortOrder}`)
     return new Promise((resolve, reject) => {
         fetch(url)
             .then(response => {
@@ -23,16 +45,16 @@ export const getMvDetails = (field='',type) =>{
             return response.json();
             })
             .then(data => {
-                resolve(data)
+                resolve(data.response)
             })
             .catch(error => reject(error));
     });
 }
 export const updateDetails = (payload) =>{
-    const url = getFullUrl('movie/update')
+    const url = getFullUrl('movies/'+payload.mvId)
     return new Promise((resolve, reject) => {
         fetch(url,{
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -49,7 +71,7 @@ export const updateDetails = (payload) =>{
     });
 }
 export const addDetails = (payload) =>{
-    const url = getFullUrl('movie/addMv')
+    const url = getFullUrl('movies')
     return new Promise((resolve, reject) => {
         fetch(url,{
             method: 'POST',
@@ -70,7 +92,7 @@ export const addDetails = (payload) =>{
 }
 
 export const deleteDetails = (id) =>{
-    const url = getFullUrl(`movie/delete/${id}`)
+    const url = getFullUrl(`movies/${id}`)
     return new Promise((resolve, reject) => {
         fetch(url,{
             method: 'DELETE',

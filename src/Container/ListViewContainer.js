@@ -1,5 +1,5 @@
 import {  Drawer } from '@mui/material';
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { deleteDetails, getMvDetails, searchDetails, updateDetails } from '../Action/APIAction';
 import ClassicView from '../Component/ClassicView';
@@ -12,40 +12,45 @@ import MovieContainer from './MovieContainer';
 function ListViewContainer(props) {
   const { 
     openForm : openDv,
-    datas,
-    deleteMovie,
-    getSearchedMovies,
-    getMovies,
-    movies,
     searchContainer,
     toggleSearch,
-    showSearch,
-    getSortedMovies,
-    canShowImage,
-    view,
     formType,
-    searchMv
+    searchMv,
+    movieList,
+    updateConfig,
+    configState,
+    updateOtherConfig,
+    otherConfig,
+    setMovieList,
    } = props;
+   const { 
+    viewType,
+    imagePreview
+   } = otherConfig;
   const deleteDv = (id) =>{
-    deleteDetails(id).then(resp=>{
-      deleteMovie(id)
+    const { mvId } = movieList[id]
+    deleteDetails(mvId).then(resp=>{
+      movieList.splice(id,1);
+      return setMovieList([...movieList]);
     },err=>{
       console.log("LV Error :",err)
     })
   }
-  const [fields,setFields] = React.useState({releaseDate: 'desc'})
+  const  TableVirtuosoRef= React.useRef(null);
+  const fetchNextData = ()=>{
+    if(!otherConfig.isNoMoreData){
+      updateConfig({from: configState.from+50})
+      // TableVirtuosoRef.current && TableVirtuosoRef.current.scrollToOffset(configState.from)
+    }
+  }
   const sortDetails = (sortField) =>{
-    const type = fields[sortField] == 'asc' ? 'desc' : fields[sortField] == 'desc'? 'asc' : 'asc'
-    fields[sortField] = type;
-    // getSortedMvDetails(sortField,type,Object.values(movies)).then(
-    //   data=>{
-        setFields({...fields})
-        getSortedMovies(normalizeObj(getMoviesLst(datas),sortField,type))
-      // })
+    updateConfig({sortField,from:0, sortOrder: sortField == configState.sortField ? configState.sortOrder == 'ASC' ? 'DESC' : 'ASC' : 'DESC'})
   }
   const updateMvDetails = (payload)=>{
     updateDetails(payload).then((res)=>{
-      updateMovies(normalizeObj(res.mvDetails,'mvId'))
+      movieList[editId] = {name: movie_id, mvId, actName: actor_name, rating, downloadLink: download_link, subLink: subtitle_link, releaseDate: release_date, date, imgLink: image_link};
+      setMovieList(movieList);
+      return updateOtherConfig({formPage: 'detailView', dvId: res})
     },err=>{
       console.log("Error Found",err)
     })
@@ -65,50 +70,33 @@ function ListViewContainer(props) {
         >
       <MovieContainer />    
       {searchContainer("LV")}
-      {view == 'table' && formType != 'showRecent' ? (<ListView 
+      {viewType == 'tableView' && formType != 'showRecent' ? (<ListView 
         openDv={openDv}
-        rows={datas}
+        rows={movieList}
         deleteDv={deleteDv}
         searchContainer={searchContainer}
         sortDetails={sortDetails}
         toggleSearch={toggleSearch}
         searchMv={searchMv}
+        updateOtherConfig={updateOtherConfig}
+        fetchNextData={fetchNextData}
+        TableVirtuosoRef={TableVirtuosoRef}
+        configState={configState}
       />) : (
         <ClassicView 
-          rows={datas}
+          rows={movieList}
           openDv={formType != 'showRecent' && openDv}
-          canShowImage={canShowImage}
+          canShowImage={imagePreview}
           updateMvDetails={formType != 'showRecent' && updateMvDetails}
           formType={formType}
+          updateOtherConfig={updateOtherConfig}
           searchMv={searchMv}
+          hasMore={!otherConfig.isNoMoreData}
+          fetchNextData={fetchNextData}
           />
         )}
       
     </Drawer>
   )
 }
-
-const mapStateToProps = state => {
-  const { movies, config={}, form } =state;
-  const { isShowImage, view='table' } = config;
-  const datas = getDatas(state)
-  const formType = form['listView']
-  return {
-      state,
-      datas,
-      canShowImage: isShowImage,
-      movies,
-      view,
-      formType
-    }
-};
-
-export default connect(mapStateToProps, {
-  closeForm,
-  openForm,
-  deleteMovie,
-  getSearchedMovies,
-  getMovies,
-  getSortedMovies,
-  updateDetails
-})(ListViewContainer);
+export default ListViewContainer

@@ -24,36 +24,35 @@ import LEDTime from './LEDTime';
 import TodayIcon from '@mui/icons-material/Today';
 import { getDatasByDay } from '../Utils/selector';
 export default function LeftPanel(props) {
-    const { window,getRecentMovie, deleteByRating, getSortedMovies, leftPanelObj, openForm, isShowImage = false, exportData, windowSize, toggleView,getSearchedMovies, movies } = props;
+    const { window,getRecentMovie, countObj,updateConfig, toggleImagePreview, deleteByRating, getSortedMovies, leftPanelObj, openForm, isShowImage = false, exportData, windowSize, toggleView,getSearchedMovies, movies } = props;
     const [loading,setLoading] = React.useState(false);
     const [loadingVal,setLoadingVal] = React.useState(0)
-    const [currentTab, setCurrentTab] = React.useState('allData')
+    const [currentTab, setCurrentTab] = React.useState('all_movies')
     const moviesByDay = {};
-    Object.keys(leftPanelObj['search']).map(type =>{
-      if(type == 'totalMovies'){
-        return '';
-      }else if(type == 'allData'){
-        const allDataMovies = { ...movies};
-        delete allDataMovies['mvDetail']
-        delete allDataMovies['searchedMovies']
-        moviesByDay[type] = Object.values(movies)
-      }else{
-        moviesByDay[type] = getDatasByDay(movies,type)
-      }
-    })
+    // Object.keys(leftPanelObj['search']).map(type =>{
+    //   if(type == 'totalMovies'){
+    //     return '';
+    //   }else if(type == 'all_movies'){
+    //     const allDataMovies = { ...movies};
+    //     delete allDataMovies['mvDetail']
+    //     delete allDataMovies['searchedMovies']
+    //     moviesByDay[type] = Object.values(movies)
+    //   }else{
+    //     moviesByDay[type] = getDatasByDay(movies,type)
+    //   }
+    // })
     const leftPanelAction = (type) =>{
       if(type == 'addForm'){
         openForm(type);
       }else if(type == 'viewToggle'){
         toggleView()
       }else if(Object.keys(leftPanelObj['search']).includes(type)){
-        if(type == 'totalMovies'){
-          return '';
-        }
-        const datas = type == 'allData' ? moviesByDay[type] : moviesByDay[type]
         setCurrentTab(type)
-        getSortedMovies(normalizeObj(getMoviesLst(datas),'releaseDate','desc'))
-        openForm(type);
+        updateConfig({from:0, searchStr: type == 'all_movies' ? '' : type})
+        // const datas = type == 'all_movies' ? moviesByDay[type] : moviesByDay[type]
+        // setCurrentTab(type)
+        // getSortedMovies(normalizeObj(getMoviesLst(datas),'releaseDate','desc'))
+        // openForm(type);
       }else if(type == 'getRecent'){
         globalThis.window.open('https://javtrailers.com/getfav','_blank')
         setTimeout(getRecentMovie,5000);
@@ -69,10 +68,6 @@ export default function LeftPanel(props) {
       }
     }
     const isMobile = isMobileSize(windowSize);
-    const toggleImage = () =>{
-      const { showImage, hideImage } = props;
-      isShowImage ? hideImage() : showImage();
-    }
     const leftPanelkeys = Object.keys(leftPanelObj);
     const getListItems = (isMobileView)=>{
         const listArr = [];
@@ -92,7 +87,7 @@ export default function LeftPanel(props) {
                                     <IconButton edge="end" aria-label="close">
                                       <Switch 
                                         checked={isShowImage}
-                                        onChange={toggleImage}
+                                        onChange={toggleImagePreview}
                                         inputProps={{ 'aria-label': 'controlled' }}
                                       />
                                     </IconButton>
@@ -132,7 +127,7 @@ export default function LeftPanel(props) {
                                     {!isMobile && <ListItemText primary={label} />}
                                     {iconName == 'today' ? 
                                     (<Typography variant="30" component="h5">
-                                      {Object.keys(moviesByDay[apiName]).length}
+                                      {countObj[apiName]}
                                     </Typography> ) :  null}
                               </ListItemButton>
                           </Tooltip>

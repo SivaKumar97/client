@@ -1,71 +1,50 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import DetailView from '../Component/DetailView';
-import { closeForm, openForm } from '../Dispatcher/Action';
 import { getDatas } from './../Utils/selector';
 function DetailViewContainer(props) {
   const { 
-    isDeailViewOpened,
-    closeForm,
     canShowImage,
-    movieDetail,
-    movies,
-    openForm,
     searchContainer,
-    dataArr
+    movieList,
+    otherConfig,
+    updateOtherConfig
    } = props;
+   const { dvId, imagePreview } = otherConfig;
    const getMvId = (type) =>{
-    const keys = dataArr
-    const currentIndex = keys.findIndex(key=>key == movieDetail['mvId'])
-    let id = keys[currentIndex+1] || movieDetail['mvId'] ;
+    let currentId = parseInt(dvId);
     if(type == 'prev'){
-      id = keys[currentIndex-1] || movieDetail['mvId']
+      currentId -= 1
+    }else{
+      currentId +=1
     }
-    return id
+    currentId = currentId >= movieList.length ? dvId : currentId < 0 ? dvId : currentId;
+    return currentId+''
    }
-  const changeDv = (type)=>{
-    const id = getMvId(type)
-    openForm('detailView',{"recordId": id})
+  const changeDv = (id)=>{
+    updateOtherConfig({dvId: id+''})
   }
   const editForm = ()=>{
-    openForm('editForm')
+    updateOtherConfig({dvId: '', formPage: 'editForm', editId: dvId+''});
+  }
+  const closeForm = ()=>{
+    updateOtherConfig({dvId: '', formPage: ''})
   }
   return (
-      Object.keys(movieDetail).length > 0 ? (
         <DetailView 
-          isDeailViewOpened={isDeailViewOpened}
+          isDeailViewOpened={true}
           closeForm={closeForm}
-          canShowImage={canShowImage}
-          movieDetail={movieDetail}
+          canShowImage={imagePreview}
+          movieList={movieList}
           getMvId={getMvId}
-          movies={movies}
           changeDv={changeDv}
           editForm={editForm}
           searchContainer={searchContainer}
+          otherConfig={otherConfig}
         />
-      ) : null
       
   )
 }
 
-const mapStateToProps = state => {
-  const { config={}, form={}, movies } = state;
-  const isDeailViewOpened = form['detailView'];
-  const { isShowImage } = config;
-  const { searchedMovies = [],mvDetail=[] } = movies;
-  const datas = getDatas(state)
-  const dataArr = searchedMovies.length > 0 ? searchedMovies : mvDetail.length > 0 ? mvDetail : Object.keys(movies)
-  return {
-      state,
-      isDeailViewOpened,
-      canShowImage: isShowImage,
-      dataArr,
-      movies,
-      movieDetail: form.recordId && movies[form.recordId] || datas[searchedMovies[0]] || {}
-    }
-};
 
-export default connect(mapStateToProps, {
-  closeForm,
-  openForm
-})(DetailViewContainer);
+export default DetailViewContainer

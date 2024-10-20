@@ -7,24 +7,31 @@ import { getLeftPanelObj, normalizeObj } from '../Utils/Utils';
 import { toggleView, getSearchedMovies, getRecentMovies, getSortedMovies } from './../Dispatcher/Action';
 function LeftPanelContainer(props) {
   const { 
-    openForm, 
     closeForm,
-    isShowImage,
-    showImage, 
-    hideImage,
     getMovies,
     windowSize,
-    toggleView,
     movies,
     getSearchedMovies,
     getRecentMovies,
-    getSortedMovies
+    getSortedMovies,
+    updateOtherConfig,
+    otherConfig,
+    countObj,
+    updateConfig
   } = props;
+  const toggleView = () =>{
+    updateOtherConfig({viewType: otherConfig.viewType == 'tableView' ? 'classicView' : 'tableView'})
+  }
+  const toggleImagePreview = () =>{
+    updateOtherConfig({imagePreview: !otherConfig.imagePreview})
+  }
+  const openForm = ()=>{
+    updateOtherConfig({formPage: 'addForm'})
+  }
   const getRecentMovie = ()=>{
     getRecentDatas().then((res=[])=>{
         const { recentLst= [] } = res[0]
         getRecentMovies(recentLst)
-        openForm('showRecent')
     })
   }
   const deleteByRating = () =>{
@@ -64,9 +71,8 @@ function LeftPanelContainer(props) {
         leftPanelObj={getLeftPanelObj()}
         openForm={openForm}
         closeForm={closeForm}
-        isShowImage={isShowImage}
-        showImage={showImage}
-        hideImage={hideImage}
+        isShowImage={otherConfig.imagePreview}
+        toggleImagePreview={toggleImagePreview}
         exportData={exportData}
         windowSize={windowSize}
         toggleView={toggleView}
@@ -75,29 +81,12 @@ function LeftPanelContainer(props) {
         getRecentMovie={getRecentMovie}
         getSortedMovies={getSortedMovies}
         deleteByRating={deleteByRating}
+        countObj={countObj}
+        updateConfig={updateConfig}
       />
     </React.Fragment>
   );
 }
 
-const mapStateToProps = state => {
-  const { config, movies={} } = state;
-  const { isShowImage = false } = config
-  return {
-      state,
-      isShowImage,
-      movies
-    }
-};
 
-export default connect(mapStateToProps,{
-  openForm,
-  closeForm,
-  showImage, 
-  hideImage,
-  getMovies,
-  toggleView,
-  getSearchedMovies,
-  getRecentMovies,
-  getSortedMovies
-})(LeftPanelContainer);
+export default LeftPanelContainer

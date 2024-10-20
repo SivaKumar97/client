@@ -2,7 +2,7 @@ import { Container, InputBase, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { getMvDetails } from '../Action/APIAction';
+import { getCountDetails, getMvDetails } from '../Action/APIAction';
 import ListViewContainer from './ListViewContainer';
 import LeftPanelContainer from './LeftPanelContainer';
 import RightPanelContainer from './RightPanelContainer';
@@ -17,49 +17,62 @@ let intialCall = false;
 function AppContainer(props) {
     const { state, getMovies, getSearchedMovies, movies, updateAllMovies, getSortedMovies } = props;
     let [initialCallMade, setInitialCall ] = useState(false)
-    const sortMovies = (datas)=>{
-      delete datas['mvDetail']
-      delete datas['searchedMovies']
-      getSortedMovies(normalizeObj(getMoviesLst(Object.values(datas)),'releaseDate','desc'))
+    const [movieList, setMovieList] = useState([]);
+    const [otherConfig, setOtherConfig] = useState({
+      formPage: '', 
+      editId: '', 
+      dvId: '', 
+      viewType: 'tableView',
+      imagePreview: false,
+      isNoMoreData: false
+    })
+    const [ countObj, setCountObj ] = useState({
+      all_movies:0, 
+      today:0,
+      thisWeek:0,
+      nextWeek:0,
+      otherRelease:0,
+      releasedMovies:0
+    })
+    const [configState, setConfigState] = useState({
+      from: 0,
+      searchStr: '',
+      sortField: 'ID',
+      sortOrder:'DESC'
+    })
+    const [searchMvStr,searchMvState] = React.useState('')
+    const updateOtherConfig = (obj) =>{
+      setOtherConfig({...otherConfig, ...obj})
+    }
+    const updateConfig = (obj)=>{
+      const {from=0, searchStr='', sortField='ID', sortOrder='DESC', viewType="tableView"} = obj;
+      if(from == 0){
+        setMovieList([]);
+      }
+      if(searchStr){
+        searchMvState('')
+      }
+      setConfigState({...configState, ...obj})
     }
     useEffect(()=>{
-      // updateAllMovies()
-      if(!initialCallMade){
-        setInitialCall(true)
-        intialCall = true;
-        let mvDetails = JSON.parse(localStorage['mvDetails'] || "{}")
-        if(Object.keys(mvDetails).length > 0){
-          getMovies(mvDetails)
-          sortMovies(mvDetails)
-        }else{
-          getMvDetails().then(
-            data=>{
-              mvDetails = normalizeObj(data.mvDetails,'mvId', 'mvId')
-              localStorage['mvDetails'] = JSON.stringify(mvDetails);
-              getMovies(mvDetails)
-              sortMovies(mvDetails)
-            })
-        }
-      }
-    },initialCallMade)
-    const searchDv = (str) =>{
-      const searchCall = str.length  == 0 ? getMvDetails : searchDetails;
-      searchCall(str,Object.values(movies)).then(resp=>{
-        if(str == ''){
-          return getMovies(normalizeObj(resp.mvDetails,'mvId', 'mvId'))
-        }
-        getSearchedMovies(normalizeObj(resp.mvDetails,'mvId'))
-      },err=>{
-  
+        getMvDetails(configState).then(
+          data=>{
+            updateOtherConfig({isNoMoreData: data.length < 50})
+            console.log([...movieList,...data])
+            setMovieList([...movieList, ...data])
+          })
+    },[configState])
+    useEffect(()=>{
+      getCountDetails().then(data=>{
+        setCountObj(data)
       })
-    }
+    },[])
     const size = useWindowSize();
-    const [searchMvStr,searchMvState] = React.useState('')
     const searchMv = (e) =>{
-      const str = selectn('target.value',e) || ''
-      searchMvState(str)
-      if(str.length > 2 || str.length == 0){
-        searchDv(str);
+      const searchStr = selectn('target.value',e) || ''
+      searchMvState(searchStr)
+      if(searchStr.length > 2 || searchStr.length == 0){
+        updateConfig({from: 0, searchStr});
       }
     }
     const [showSearch, canShowSearch] = React.useState(false)
@@ -84,7 +97,7 @@ function AppContainer(props) {
                 placeholder="Search Here"
                 inputProps={{ 'aria-label': 'search here' }}
                 onChange={searchMv}
-                value={searchMvStr}
+                value={searchMvStr || configState.searchStr}
             />
               <IconButton type="button" sx={{ p: '3px' }} aria-label="search" onClick={toggleSearch}>
                 <SearchIcon />
@@ -95,10 +108,41 @@ function AppContainer(props) {
     }
   return (
     <Container sx={{ display: 'flex', p:0, m:0, height:'100%'}}> 
-        <LeftPanelContainer windowSize={size}/>
-        <RightPanelContainer />
-        <ListViewContainer searchContainer={searchContainer} searchMv={searchMv} toggleSearch={toggleSearch} showSearch={showSearch}/>
-        <DetailViewContainer searchContainer={searchContainer} />
+        <LeftPanelContainer 
+          windowSize={size} 
+          updateOtherConfig={updateOtherConfig} 
+          otherConfig={otherConfig}
+          countObj={countObj}
+          updateConfig={updateConfig}
+        />
+        <RightPanelContainer 
+          setMovieList={setMovieList}
+          updateOtherConfig={updateOtherConfig} 
+          movieList={movieList} 
+          otherConfig={otherConfig}
+        />
+        <ListViewContainer 
+          setMovieList={setMovieList} 
+          updateOtherConfig={updateOtherConfig} 
+          otherConfig={otherConfig}  
+          movieList={movieList} 
+          configState={configState} 
+          updateConfig={updateConfig} 
+          searchContainer={searchContainer} 
+          searchMv={searchMv} 
+          toggleSearch={toggleSearch} 
+          showSearch={showSearch}
+        />
+        {otherConfig.dvId != '' ? (
+          <DetailViewContainer
+            updateOtherConfig={updateOtherConfig} 
+            otherConfig={otherConfig}
+            movieList={movieList}
+            searchContainer={searchContainer} 
+          />
+        ) : null}
+          
+        
     </Container>
       // <Box sx={{height: maxHeight, display:'inline-flex'}}>
       //   <Box sx={{width:'15%', background:'Yellow'}}>

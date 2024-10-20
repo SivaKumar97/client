@@ -23,9 +23,9 @@ export const getLeftPanelObj = () => {
             }           
         },
         'search':{
-            'allData': {
+            'all_movies': {
                 label: 'All Data',
-                apiName: 'allData',
+                apiName: 'all_movies',
                 iconName: 'today'
             },
             'today': {
@@ -43,9 +43,9 @@ export const getLeftPanelObj = () => {
                 apiName: 'nextWeek',
                 iconName: 'today'
             },
-            'otherReleases':{
+            'otherRelease':{
                 label: 'Other Releases',
-                apiName: 'otherReleases',
+                apiName: 'otherRelease',
                 iconName: 'today'
             },
             'releasedMovies':{
@@ -93,37 +93,37 @@ export const getRightPanelObj = (type,mvObj={}) =>{
             'name' : {
                 'fieldName' : 'Name',
                 'type' : 'autocompleteText',
-                'apiName' : 'name',
+                'apiName' : 'movie_id',
                 'value' : mvObj['name'] || ''
             },
             'imageLink' : {
                 'fieldName' : 'Image',
                 'type' : 'imageLink',
-                'apiName' : 'imageLink',
+                'apiName' : 'image_link',
                 'value' : mvObj['imageLink'] || ''
             },
             'actName' : {
                 'fieldName' : 'Act Name',
                 'type' : 'autocompleteText',
-                'apiName' : 'actName',
+                'apiName' : 'actor_name',
                 'value' : mvObj['actName'] ||''
             },
             'releaseDate':{
                 'fieldName' : 'Release Date',
                 'type' : 'releaseDate',
-                'apiName' : 'releaseDate',
+                'apiName' : 'release_date',
                 'value' : mvObj['releaseDate'] || ''
             },
             'downloadLink' : {
                 'fieldName' : 'DownloadLink',
                 'type' : 'url',
-                'apiName' : 'downloadLink',
+                'apiName' : 'download_link',
                 'value' : mvObj['downloadLink'] || ''
             },
             'subLink' : {
                 'fieldName' : 'SubLink',
                 'type' : 'url',
-                'apiName' : 'subLink',
+                'apiName' : 'subtitle_link',
                 'value' : mvObj['subLink'] || ''
             },
             'rating' : {
@@ -151,36 +151,42 @@ export const getRightPanelObj = (type,mvObj={}) =>{
 export const getListViewColumns = (type) =>{
     const columns =  [
                 { 
-                    id: 'mvId', 
+                    id: 'date', 
                     label: 'Date',
-                    type:'date', 
+                    type:'date',
+                    apiKey: 'added_date'
                     // minWidth: 50 
                 },
                 { 
                     id: 'name',
                     label: 'Name',  
                     type:'text',
+                    apiKey: 'movie_id'
                     // minWidth: 100
                  },
                 { 
                     id: 'actName', 
                     label: 'Act Name', 
+                    apiKey: 'actor_name',
                     // minWidth: 150 , 
                     type:'text' },
                 { 
                     id: 'releaseDate', 
                     label: 'Release Date', 
+                    apiKey: 'release_date',
                     // minWidth: 100, 
                     type:'date' },
                 { 
                     id: 'downloadLink', 
                     label: 'Download Link', 
+                    apiKey: 'download_link',
                     // minWidth: 60, 
                     type:'url', 
                     sLabel: 'D Link' },
                 {
                     id: 'subLink',
                     label: 'Sub Link',
+                    apiKey: 'subtitle_link',
                     // minWidth: 150,
                     align: 'left', 
                     type:'url',
@@ -189,6 +195,7 @@ export const getListViewColumns = (type) =>{
                 {
                     id: 'rating',
                     label: 'Rating',
+                    apiKey: 'rating',
                     // minWidth: 100,
                     align: 'left',
                     type:'rating'
@@ -234,30 +241,13 @@ export const getReplacedDomains = (link)=>{
     return link.replace("pics.dmm.co.jp", "pics.vpdmm.cc");
 }
 export const normalizeObj = (arr,key, isSortBy) =>{
-    const getSortedObj = ()=>{
-        let sortedArr = arr.sort((prevMov,nextMov)=>{
-            const prevKey = key != 'rating' ? prevMov[key] : parseInt(prevMov[key])
-            const nextKey = key != 'rating' ? nextMov[key] : parseInt(nextMov[key])
-            if(isSortBy == 'asc' || isSortBy == 'mvId'){
-                return (key == 'rating' ? prevKey - nextKey : (prevKey - nextKey || prevKey.localeCompare(nextKey)))
-            }
-            return - (key == 'rating' ? prevKey - nextKey : (prevKey - nextKey || prevKey.localeCompare(nextKey))) 
-        })
-        return {
-            'mvDetail' : sortedArr.map(arr=>arr.mvId)
-           } 
-    }
-    if(isSortBy && isSortBy != 'mvId'){
-        return getSortedObj()
-    }
-    let resultObj = {};
-    arr.map(val=>{
-        resultObj[val[key].toString()] = val;
-    })
-    if(isSortBy == 'mvId'){
-        resultObj = {...resultObj, ... getSortedObj()}
-    }
-    return resultObj;
+   const result = [];
+   const resultObj = {}
+   for(let i=0;i<arr.length;i++){
+        result.push(arr[i][key]);
+        resultObj[arr[i][key]] = arr[i][key]
+   }
+   return {result, resultObj}
 }
 
 export const getActName = (movies) =>{
@@ -352,4 +342,14 @@ export const getLinksLabel = (link, label) =>{
         return 'GitHub Link'
     }
     return label 
+}
+export function getCurrentDate(date='', isNormalFormat) {
+    date = date ? new Date(date) : new Date();
+
+    // Get year, month, and day
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');  // Months are 0-based, so we add 1
+    const day = String(date.getDate()).padStart(2, '0');         // Pad day with leading zero
+
+    return isNormalFormat ? `${day}-${month}-${year}` : `${year}-${month}-${day}`;
 }
