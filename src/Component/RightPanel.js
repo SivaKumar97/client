@@ -58,15 +58,15 @@ export default class RightPanel extends Component {
         name, actName, imageLink, releaseDate
       }
       // const existMovie = existNames.filter(obj=>obj.label.indexOf(name) != -1);
-      // Object.keys(fieldObj).map((type)=>{
-      //   rightPanelObject[type].value = fieldObj[type]
-      // })
+      Object.keys(fieldObj).map((type)=>{
+        rightPanelObject[type].value = fieldObj[type]
+      })
       // if(existMovie.length > 0){
       //   this.rightPanObj = rightPanelObject
       //   return this.changeFormDetails('',existMovie[0])
       // }
       // this.setRightPanelObject(rightPanelObject)
-      getMovieById(name)
+      getMovieById(name, ()=>this.setRightPanelObject(rightPanelObject))
     }
     componentDidUpdate(prevProps,prevStat){
       if(prevProps.recordId != this.props.recordId){

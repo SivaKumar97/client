@@ -67,10 +67,13 @@ function AppContainer(props) {
         setCountObj(data)
       })
     },[])
-    const getMovieById = (id)=>{
+    const getMovieById = (id, callbck)=>{
       getMvDetail(id).then(res=>{
-        setMovieList([...movieList, ...res])
-        updateOtherConfig({formPage:'editForm',editId:movieList.length})
+        if(res.length){
+          setMovieList([...movieList, ...res])
+          return updateOtherConfig({formPage:'editForm',editId:movieList.length})
+        }
+        callbck();
       })
     }
     const size = useWindowSize();
