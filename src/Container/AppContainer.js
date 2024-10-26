@@ -12,7 +12,7 @@ import { getMoviesLst, normalizeObj } from '../Utils/Utils';
 import { searchDetails, updateAllMovies } from './../Action/APIAction';
 import Paper from '@mui/material/Paper';
 import SearchIcon from '@mui/icons-material/Search';
-import { selectn } from './../Utils/Utils';
+import { selectn, debounce } from './../Utils/Utils';
 let intialCall = false;
 function AppContainer(props) {
     const { state, getMovies, getSearchedMovies, movies, updateAllMovies, getSortedMovies } = props;
@@ -49,9 +49,9 @@ function AppContainer(props) {
       if(from == 0){
         setMovieList([]);
       }
-      if(searchStr){
-        searchMvState('')
-      }
+      // if(searchStr){
+      //   searchMvState('')
+      // }
       setConfigState({...configState, ...obj})
     }
     useEffect(()=>{
@@ -80,10 +80,18 @@ function AppContainer(props) {
     const searchMv = (e) =>{
       const searchStr = selectn('target.value',e) || ''
       searchMvState(searchStr)
-      if(searchStr.length > 2 || searchStr.length == 0){
-        updateConfig({from: 0, searchStr});
-      }
     }
+    useEffect(() => {
+      const handleDebounce = setTimeout(() => {
+        // Perform the search or other action here
+        if(searchMvStr.length > 2 || searchMvStr.length == 0){
+          console.log(searchMvStr)
+          updateConfig({from: 0, searchStr:searchMvStr});
+        }
+      }, 1000); // Adjust the delay time as needed
+  
+      return () => clearTimeout(handleDebounce);
+    }, [searchMvStr]);
     const [showSearch, canShowSearch] = React.useState(false)
     const toggleSearch = ()=>{
       canShowSearch(!showSearch)
