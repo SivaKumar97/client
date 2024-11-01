@@ -29,7 +29,7 @@ export const getLeftPanelObj = () => {
                 iconName: 'today'
             },
             'today': {
-                label: 'Today Release',
+                label: 'Today Releases',
                 apiName: 'today',
                 iconName: 'today'
             },
