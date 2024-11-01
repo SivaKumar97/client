@@ -3,9 +3,7 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - '*'
+      - secondary
 jobs:
   build:
     name: Build
@@ -49,3 +47,6 @@ jobs:
           firebase hosting:channel:list --project ssproject-376507 --json | jq -r '.channels[] | select(.id == "'${{ github.ref_name }}'") | .url'
         env:
          FIREBASE_TOKEN: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SSPROJECT_376507 }}"
+
+
+        # firebase hosting:channel:deploy preview --project ssproject-376507
