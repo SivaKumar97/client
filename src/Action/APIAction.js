@@ -35,7 +35,7 @@ export const getCountDetails = () =>{
     });
 }
 export const getMvDetails = ({from,searchStr='',sortField='ID', sortOrder='DESC'}) =>{
-    const url = getFullUrl(`movies?from=${from}&searchStr=${searchStr}&sortField=${sortField}&sortOrder=${sortOrder}`)
+    const url = getFullUrl(`movies?isAdmin=955011247&from=${from}&searchStr=${searchStr}&sortField=${sortField}&sortOrder=${sortOrder}`)
     return new Promise((resolve, reject) => {
         fetch(url)
             .then(response => {
