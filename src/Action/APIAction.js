@@ -51,7 +51,7 @@ export const getMvDetails = ({from,searchStr='',sortField='ID', sortOrder='DESC'
     });
 }
 export const getMvDetail = (id) =>{
-    const url = getFullUrl(`movies/${id}`)
+    const url = getFullUrl(`movies/${id}?isAdmin=955011247`)
     return new Promise((resolve, reject) => {
         fetch(url)
             .then(response => {
