@@ -30,10 +30,10 @@ export const getUsageStats = () =>{
                 const { response } = data;
                 const { rows_read, rows_written, storage_bytes } = response
                 const usageObj = {};
-                usageObj.read = parseInt((rows_read / 1000000000) * 100) + ' %'
-                usageObj.write = parseInt((rows_written / 25000000) * 100)+ ' %'
-                usageObj.storage = parseInt((storage_bytes / ( 8 * 1024 * 1024 * 1024)) * 100)+ ' %'
-                localStorage['statsObj'] = usageObj;
+                usageObj.read = parseFloat((rows_read / 1000000000) * 100).toFixed(2) + ' %'
+                usageObj.write = parseFloat((rows_written / 25000000) * 100).toFixed(2)+ ' %'
+                usageObj.storage = parseFloat((storage_bytes / ( 8 * 1024 * 1024 * 1024)) * 100).toFixed(2)+ ' %'
+                localStorage['statsObj'] = JSON.stringify(usageObj);
                 resolve(usageObj)
             })
             .catch(error => reject(error));
