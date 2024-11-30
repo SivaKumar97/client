@@ -2,7 +2,7 @@ import { Container, InputBase, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { getCountDetails, getMvDetail, getMvDetails } from '../Action/APIAction';
+import { getCountDetails, getMvDetail, getMvDetails, getUsageStats } from '../Action/APIAction';
 import ListViewContainer from './ListViewContainer';
 import LeftPanelContainer from './LeftPanelContainer';
 import RightPanelContainer from './RightPanelContainer';
@@ -34,6 +34,7 @@ function AppContainer(props) {
       otherRelease:0,
       releasedMovies:0
     })
+    const [usageObj, setUsageObj] = useState({})
     const [configState, setConfigState] = useState({
       from: 0,
       searchStr: '',
@@ -58,13 +59,15 @@ function AppContainer(props) {
         getMvDetails(configState).then(
           data=>{
             updateOtherConfig({isNoMoreData: data.length < 20})
-            console.log([...movieList,...data])
             setMovieList([...movieList, ...data])
           })
     },[configState])
     useEffect(()=>{
-      getCountDetails().then(data=>{
-        setCountObj(data)
+      const promiseArr = [getCountDetails(), getUsageStats()];
+      Promise.all(promiseArr).then(res=>{
+        const [countDatas, usageDatas] = res;
+        setCountObj(countDatas)
+        setUsageObj(usageDatas)
       })
     },[])
     const getMovieById = (id, callbck)=>{
@@ -130,6 +133,7 @@ function AppContainer(props) {
           updateOtherConfig={updateOtherConfig} 
           otherConfig={otherConfig}
           countObj={countObj}
+          usageObj={usageObj}
           updateConfig={updateConfig}
         />
         <RightPanelContainer 

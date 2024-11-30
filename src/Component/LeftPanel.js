@@ -24,7 +24,7 @@ import LEDTime from './LEDTime';
 import TodayIcon from '@mui/icons-material/Today';
 import { getDatasByDay } from '../Utils/selector';
 export default function LeftPanel(props) {
-    const { window,getRecentMovie, countObj,updateConfig, toggleImagePreview, deleteByRating, getSortedMovies, leftPanelObj, openForm, isShowImage = false, exportData, windowSize, toggleView,getSearchedMovies, movies } = props;
+    const { usageObj, window,getRecentMovie, countObj,updateConfig, toggleImagePreview, deleteByRating, getSortedMovies, leftPanelObj, openForm, isShowImage = false, exportData, windowSize, toggleView,getSearchedMovies, movies } = props;
     const [loading,setLoading] = React.useState(false);
     const [loadingVal,setLoadingVal] = React.useState(0)
     const [currentTab, setCurrentTab] = React.useState('all_movies')
@@ -153,6 +153,28 @@ export default function LeftPanel(props) {
             <Toolbar />
             <LEDTime />
             {getListItems(isMobileView)}
+            {!isMobile && (
+                        <>
+                        <ListItemButton sx={{display:'flex'}}>
+                          <ListItemText primary="Read" />
+                          <Typography variant="30" component="h5">
+                            {usageObj['read']}
+                          </Typography> 
+                        </ListItemButton>
+                        <ListItemButton sx={{display:'flex'}}>
+                          <ListItemText primary="Write" />
+                          <Typography variant="30" component="h5">
+                            {usageObj['write']}
+                          </Typography> 
+                        </ListItemButton>
+                        <ListItemButton sx={{display:'flex'}}>
+                          <ListItemText primary="Storage" />
+                          <Typography variant="30" component="h5">
+                            {usageObj['storage']}
+                          </Typography> 
+                        </ListItemButton>
+                        </>
+                       )}
           </>
           )}}
         </ResponsiveReceiver>

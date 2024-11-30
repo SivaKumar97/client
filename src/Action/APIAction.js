@@ -11,6 +11,34 @@ const HOST = (window.location.href.includes("localhost") ? 'http://localhost:844
 const getFullUrl = (url) =>{
     return `${HOST}/api/v1/${url}`;
 }
+
+export const getUsageStats = () =>{
+    const url = getFullUrl(`movies/apiusage`)
+    const statsData = localStorage['statsObj']
+    return new Promise((resolve, reject) => {
+        if(statsData){
+            return resolve(JSON.parse(statsData));
+        }
+        fetch(url)
+            .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json();
+            })
+            .then(data => {
+                const { response } = data;
+                const { rows_read, rows_written, storage_bytes } = response
+                const usageObj = {};
+                usageObj.read = parseInt((rows_read / 1000000000) * 100) + ' %'
+                usageObj.write = parseInt((rows_written / 25000000) * 100)+ ' %'
+                usageObj.storage = parseInt((storage_bytes / ( 8 * 1024 * 1024 * 1024)) * 100)+ ' %'
+                localStorage['statsObj'] = usageObj;
+                resolve(usageObj)
+            })
+            .catch(error => reject(error));
+    });
+}
 export const getCountDetails = () =>{
     const url = getFullUrl(`movies/counts`);
     const countData = localStorage['countObj'];
@@ -287,7 +315,6 @@ export const updateAllMovies = () =>{
 //         console.log("Errr",err);
 //     })
 }
-
 export const getRecentDatas = () =>{
     const url = getFullUrl(`movie/getRecentList`)
     return new Promise((resolve, reject) => {

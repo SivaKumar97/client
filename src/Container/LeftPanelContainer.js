@@ -17,7 +17,8 @@ function LeftPanelContainer(props) {
     updateOtherConfig,
     otherConfig,
     countObj,
-    updateConfig
+    updateConfig,
+    usageObj
   } = props;
   const toggleView = () =>{
     updateOtherConfig({viewType: otherConfig.viewType == 'tableView' ? 'classicView' : 'tableView'})
@@ -83,6 +84,7 @@ function LeftPanelContainer(props) {
         deleteByRating={deleteByRating}
         countObj={countObj}
         updateConfig={updateConfig}
+        usageObj={usageObj}
       />
     </React.Fragment>
   );
