@@ -7,7 +7,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { NO_IMAGE, getLinks, responsiveFunc } from '../Utils/Utils';
+import { NO_IMAGE, getLinks, getReplaceDomains, responsiveFunc } from '../Utils/Utils';
 import DownloadIcon from '@mui/icons-material/Download';
 import ClosedCaptionIcon from '@mui/icons-material/ClosedCaption';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
@@ -70,7 +70,7 @@ const searchStr = (value)=>{
             <Card sx={{ maxWidth: 345}}>
                 <CardMedia
                     sx={{  height: isMobileView ? 100 : 230}}
-                    image={canShowImage ? (row['imageComLink'] || row['imageLink']) : NO_IMAGE}
+                    image={canShowImage ? getReplaceDomains((row['imageComLink'] || row['imageLink'])) : NO_IMAGE}
                     title="green iguana"
                     loading="lazy"
                     onClick={()=>toggleImagePreview(row)}

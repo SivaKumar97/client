@@ -240,6 +240,13 @@ export const getAPIAndValue = (obj,key,value)=>{
 export const getReplacedDomains = (link)=>{
     return link.replace("pics.dmm.co.jp", "pics.vpdmm.cc");
 }
+export const getReplaceDomains = (link, isTumbnail)=>{
+    if(isTumbnail){
+        link = link.replace('ps','pl')
+    }
+    return link.replace("pics.vpdmm.cc", "pics.dmm.co.jp");
+    
+}
 export const normalizeObj = (arr,key, isSortBy) =>{
    const result = [];
    const resultObj = {}

@@ -7,6 +7,7 @@ import { ResponsiveReceiver } from '@zohodesk/components/lib/Responsive/CustomRe
 import LEDTime from './LEDTime';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box } from '@mui/material';
+import { getReplaceDomains } from '../Utils/Utils';
 
 
 const useStyles = makeStyles({
@@ -42,7 +43,7 @@ export default function MovieList(props) {
                     if(rating > 3 || isTodayReleased){
                         return (
                             <>
-                                <img width="200px" height="150px" src={imageComLink || imageLink} alt={name} onClick={()=>openDetailView(mvId)} loading="lazy" className={classes.image} />
+                                <img width="200px" height="150px" src={getReplaceDomains(imageComLink || imageLink, true)} alt={name} onClick={()=>openDetailView(mvId)} loading="lazy" className={classes.image} />
                             </>
                     )
                     }

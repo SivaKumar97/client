@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import Drawer from '@mui/material/Drawer';
 import CloseIcon from '@mui/icons-material/Close';
 import { Button, Modal, Rating, TextField} from '@mui/material';
-import { getLinks, getLinksLabel, getListViewColumns, NO_IMAGE, responsiveFunc } from '../Utils/Utils';
+import { getLinks, getLinksLabel, getListViewColumns, getReplaceDomains, NO_IMAGE, responsiveFunc } from '../Utils/Utils';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import { ResponsiveReceiver } from '@zohodesk/components/lib/Responsive/CustomResponsive';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
@@ -146,7 +146,7 @@ export default function DetailView(props) {
                                         <NavigateBeforeIcon sx={{fontSize: '50px'}}/>
                                     </IconButton>
                                 ) : (
-                                    <img onClick={openPrev} width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? (movieList[prevId]['imageComLink'] || movieList[prevId]['imageLink'])  : NO_IMAGE} />
+                                    <img onClick={openPrev} width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? getReplaceDomains((movieList[prevId]['imageComLink'] || movieList[prevId]['imageLink']))  : NO_IMAGE} />
                                 )}
                                 {/*  */}
                                 
@@ -167,7 +167,7 @@ export default function DetailView(props) {
                                         cursor:'pointer'
                                     }}
                                 >
-                                        <img onClick={toggleImagePreview} width={isMobileView ? '200' : '450'} src={canShowImage ? (movieObj['imageComLink'] || movieObj['imageLink']) : NO_IMAGE} />
+                                        <img onClick={toggleImagePreview} width={isMobileView ? '200' : '450'} src={canShowImage ? getReplaceDomains((movieObj['imageComLink'] || movieObj['imageLink'])) : NO_IMAGE} />
                                 </Box >
                                 {nextId != otherConfig.dvId ? (
                                 <Box sx={{
@@ -189,7 +189,7 @@ export default function DetailView(props) {
                                         <NavigateNextIcon sx={{fontSize: '50px'}}/>
                                     </IconButton>
                                     ) : (
-                                        <img onClick={openNext}  width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? (movieList[nextId]['imageComLink'] || movieList[nextId]['imageLink']) : NO_IMAGE} />
+                                        <img onClick={openNext}  width={canShowImage ? '150' : '50'} height={canShowImage ? '150' : '50'} src={canShowImage ? getReplaceDomains((movieList[nextId]['imageComLink'] || movieList[nextId]['imageLink'])) : NO_IMAGE} />
                                     )}
                                 </Box>
                                 ):null}
