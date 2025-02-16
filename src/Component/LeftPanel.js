@@ -47,8 +47,9 @@ export default function LeftPanel(props) {
       }else if(type == 'viewToggle'){
         toggleView()
       }else if(Object.keys(leftPanelObj['search']).includes(type)){
-        setCurrentTab(type)
-        updateConfig({from:0, searchStr: type == 'all_movies' ? '' : type})
+        setCurrentTab(type);
+        const { sortField="ID", sortOrder="DESC" } = leftPanelObj['search'][type];
+        updateConfig({from:0, searchStr: type == 'all_movies' ? '' : type, sortField, sortOrder})
         // const datas = type == 'all_movies' ? moviesByDay[type] : moviesByDay[type]
         // setCurrentTab(type)
         // getSortedMovies(normalizeObj(getMoviesLst(datas),'releaseDate','desc'))

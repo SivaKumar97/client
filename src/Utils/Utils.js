@@ -26,32 +26,44 @@ export const getLeftPanelObj = () => {
             'all_movies': {
                 label: 'All Data',
                 apiName: 'all_movies',
-                iconName: 'today'
+                iconName: 'today',
+                sortField: 'release_date',
+                sortOrder: 'DESC'
             },
             'today': {
                 label: 'Today Release',
                 apiName: 'today',
-                iconName: 'today'
+                iconName: 'today',
+                sortField: 'release_date',
+                sortOrder: 'DESC'
             },
             'thisWeek': {
                 label: 'This Week Release',
                 apiName: 'thisWeek',
-                iconName: 'today'
+                iconName: 'today',
+                sortField: 'release_date',
+                sortOrder: 'DESC'
             },
             'nextWeek':{
                 label: 'Next Week Release',
                 apiName: 'nextWeek',
-                iconName: 'today'
+                iconName: 'today',
+                sortField: 'release_date',
+                sortOrder: 'DESC'
             },
             'otherRelease':{
                 label: 'Other Releases',
                 apiName: 'otherRelease',
-                iconName: 'today'
+                iconName: 'today',
+                sortField: 'release_date',
+                sortOrder: 'DESC'
             },
             'releasedMovies':{
                 label: 'Released Movies',
                 apiName: 'releasedMovies',
-                iconName: 'today'
+                iconName: 'today',
+                sortField: 'release_date',
+                sortOrder: 'DESC'
             }
         },
         'recentMovie':{
