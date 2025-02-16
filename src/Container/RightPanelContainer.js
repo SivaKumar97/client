@@ -32,11 +32,11 @@ function RightPanelContainer(props) {
       setLoading(false)
       const {mvId, movie_id, actor_name, rating, download_link, subtitle_link, release_date, date=getCurrentDate('',true), image_link } = payload;
       if(formPage == 'editForm'){
-        movieList[editId] = {...movieList[editId], name: movie_id, mvId, actName: actor_name, rating, downloadLink: download_link, subLink: subtitle_link, releaseDate: getCurrentDate(release_date,true), imgLink: image_link};
+        movieList[editId] = {...movieList[editId], name: movie_id, mvId, actName: actor_name, rating, downloadLink: download_link, subLink: subtitle_link, releaseDate: getCurrentDate(release_date,true), imageLink: image_link};
         setMovieList(movieList);
         return updateOtherConfig({formPage: 'detailView', dvId: editId})
       }else{
-        setMovieList([{name: movie_id, actName: actor_name, rating, downloadLink: download_link, subLink: subtitle_link, releaseDate: getCurrentDate(release_date,true), date, imgLink: image_link, mvId:res.id},...movieList])
+        setMovieList([{name: movie_id, actName: actor_name, rating, downloadLink: download_link, subLink: subtitle_link, releaseDate: getCurrentDate(release_date,true), date, imageLink: image_link, mvId:res.id},...movieList])
       }
       closeForm();
     },err=>{
