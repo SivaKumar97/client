@@ -1,13 +1,5 @@
-const getHost = ()=>{
-    let replDomain = localStorage['replDomain'];
-    if(!replDomain || replDomain == 'null'){
-        replDomain = prompt('URL Please');
-    }
-    localStorage['replDomain'] = replDomain;
-    // const { replDomain } = Object.fromEntries(new URLSearchParams(window.location.search));
-   return localStorage['replDomain'];
-}
-const HOST = (window.location.href.includes("localhost") ? 'http://localhost:8443' : 'https://shahinshaas-2642.zcodeusers.com') //||'https://sivakumar9550.pythonanywhere.com' || getHost() || 'https://704b29c9-b8ab-462e-8017-6a0dd3ddaa46-00-23teai1t92ghv.global.replit.dev' ||'https://javmov--ksiva2.repl.co') + '/api/v1/';
+const getHost = ()=>localStorage['replDomain'];
+const HOST = getHost() || (window.location.href.includes("localhost") ? 'http://localhost:8443' : 'https://shahinshaas-2642-8443.zcodeusers.com') //||'https://sivakumar9550.pythonanywhere.com' || getHost() || 'https://704b29c9-b8ab-462e-8017-6a0dd3ddaa46-00-23teai1t92ghv.global.replit.dev' ||'https://javmov--ksiva2.repl.co') + '/api/v1/';
 const getFullUrl = (url) =>{
     return `${HOST}/api/v1/${url}`;
 }
