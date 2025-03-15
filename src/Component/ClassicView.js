@@ -142,7 +142,7 @@ const searchStr = (value)=>{
   const { rows, canShowImage } = props;
   let CARD_WIDTH = 420
   return (
-    <div style={{ marginTop: "10px", height: "80vh" }}>
+    <div style={{ marginTop: "10px", height: "90vh" }}>
   {openImgPreview && getImagePreview()}
   <AutoSizer>
     {({ height, width }) => {
