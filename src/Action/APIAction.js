@@ -22,9 +22,9 @@ export const getUsageStats = () =>{
                 const { response } = data;
                 const { rows_read, rows_written, storage_bytes } = response
                 const usageObj = {};
-                usageObj.read = parseFloat((rows_read / 1000000000) * 100).toFixed(2) + ' %'
-                usageObj.write = parseFloat((rows_written / 25000000) * 100).toFixed(2)+ ' %'
-                usageObj.storage = parseFloat((storage_bytes / ( 8 * 1024 * 1024 * 1024)) * 100).toFixed(2)+ ' %'
+                usageObj.read = parseFloat((rows_read / 5000000000) * 100).toFixed(2) + ' %'
+                usageObj.write = parseFloat((rows_written / 10000000) * 100).toFixed(2)+ ' %'
+                usageObj.storage = parseFloat((storage_bytes / ( 5 * 1024 * 1024 * 1024)) * 100).toFixed(2)+ ' %'
                 localStorage['statsObj'] = JSON.stringify(usageObj);
                 resolve(usageObj)
             })
